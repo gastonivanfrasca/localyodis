@@ -1,9 +1,9 @@
+import { Source } from "../types/storage";
+
 type LocallyStoredData = {
   theme: string;
   sources: Source[];
 };
-
-
 
 const defaultLocallyStoredData = {
   theme: "dark",
