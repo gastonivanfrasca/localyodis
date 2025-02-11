@@ -17,7 +17,7 @@ export const Menu = () => {
 
 const SourcesBtn = () => {
   return (
-    <Link to={"/sources"} className="flex gap-4 items-center dark:text-gray-200 p-2 underline">
+    <Link to={"/sources"} className="flex gap-4 items-center dark:text-gray-200 p-2 underline cursor-pointer">
         <Rss />
         <p>Sources</p>
     </Link>

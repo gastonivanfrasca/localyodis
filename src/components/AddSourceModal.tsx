@@ -2,6 +2,8 @@ import { getLocallyStoredData, storeDataLocally } from "../utils/storage";
 
 import { X } from "lucide-react";
 import { checkIfSourceExists } from "../utils/validations";
+import { fetchRSS } from "../utils/rss";
+import { v4 as uuidv4 } from "uuid";
 
 type AddSourceModalProps = {
   isOpen: boolean;
@@ -11,26 +13,49 @@ type AddSourceModalProps = {
 export const AddSourceModal = (props: AddSourceModalProps) => {
   const { isOpen, setIsModalOpen } = props;
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const name = (document.getElementById("rss-name") as HTMLInputElement)
-      .value;
-    const url = (document.getElementById("rss-url") as HTMLInputElement).value;
-    const localData = getLocallyStoredData();
-    const sources = localData.sources || [];
-    if (checkIfSourceExists(sources, name, url)) {
-      alert("Source already exists");
-      return;
+
+    try {
+      const url = (document.getElementById("rss-url") as HTMLInputElement)
+        .value;
+      if (!url) {
+        throw new Error("Name and URL are required");
+      }
+      const localData = getLocallyStoredData();
+      const sources = localData.sources || [];
+      if (checkIfSourceExists(sources,  url)) {
+        throw new Error("Source already exists");
+      }
+
+      const rssData = await fetchRSS(url);
+      const title = rssData?.querySelector("title")?.textContent;
+      const image = rssData
+        ?.querySelector("image")
+        ?.querySelector("url")?.textContent;
+      const description = rssData?.querySelector("description")?.textContent;
+
+      console.log({ title, image, description });
+      sources.push({
+        name: title,
+        url,
+        addedOn: new Date().toISOString(),
+        id: uuidv4(),
+        image: image,
+        description,
+      });
+      storeDataLocally({ ...localData, sources });
+      setIsModalOpen(false);
+    } catch (error) {
+      // TODO: Show error to user
+      console.error(error);
     }
-    sources.push({ name, url });
-    storeDataLocally({ ...localData, sources });
-    setIsModalOpen(false);
   };
 
   if (!isOpen) return null;
   return (
-    <div className="fixed top-0 left-0 w-full h-screen bg-black opacity-80 flex justify-center items-center">
-      <div className="bg-white dark:bg-neutral-800 p-8 rounded-md flex flex-col gap-2 dark:text-white">
+    <div className="fixed top-0 left-0 w-full h-screen bg-black  flex justify-center items-center p-8">
+      <div className="bg-white dark:bg-neutral-800 p-8 rounded-md flex flex-col gap-2 dark:text-white w-full md:max-w-[600px]">
         <button
           className="self-end cursor-pointer"
           onClick={() => setIsModalOpen(false)}
@@ -42,16 +67,6 @@ export const AddSourceModal = (props: AddSourceModalProps) => {
           <form className="flex flex-col gap-10" onSubmit={handleSubmit}>
             <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-2">
-                <label>Name</label>
-                <input
-                  type="text"
-                  name="rss-name"
-                  id="rss-name"
-                  className="p-2 border-2 border-neutral-400 rounded-sm"
-                />
-              </div>
-
-              <div className="flex flex-col gap-2">
                 <label>URL</label>
                 <input
                   type="text"
@@ -61,7 +76,7 @@ export const AddSourceModal = (props: AddSourceModalProps) => {
                 />
               </div>
             </div>
-            <button className="p-2 underline" type="submit">
+            <button className="p-2 underline cursor-pointer" type="submit">
               Add
             </button>
           </form>

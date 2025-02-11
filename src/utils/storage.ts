@@ -20,3 +20,10 @@ export const getLocallyStoredData = (): LocallyStoredData => {
     ? JSON.parse(storedData)
     : (defaultLocallyStoredData as LocallyStoredData);
 };
+
+export const removeSourceFromLocalData = (sourceId: string) => {
+  const localData = getLocallyStoredData();
+  const sources = localData.sources || [];
+  const updatedSources = sources.filter((source) => source.id !== sourceId);
+  storeDataLocally({ ...localData, sources: updatedSources });
+}
