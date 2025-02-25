@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { BottomNavBar } from "./components/BottomNavBar";
 import { fetchRSS } from "./utils/rss";
 import { getLocallyStoredData } from "./utils/storage";
-import rssPlaceholder from "./assets/rss_placeholder.png";
 
 type RSSItem = {
   title: string | null | undefined;
@@ -44,12 +43,12 @@ function App() {
       .catch(console.error);
   }, []);
 
-  const getImageBySourceID = (sourceID: string) => {
+/*   const getImageBySourceID = (sourceID: string) => {
     const source = getLocallyStoredData().sources.find(
       (source) => source.id === sourceID
     );
     return source?.image || rssPlaceholder;
-  };
+  }; */
 
   if (rssItems.length < 1) {
     return (
