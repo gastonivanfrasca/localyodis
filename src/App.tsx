@@ -50,18 +50,18 @@ function App() {
     return source?.image || rssPlaceholder;
   }; */
 
-  if (rssItems.length < 1) {
-    return (
-      <div className="w-full h-screen dark:bg-neutral-800 flex justify-center items-center">
-        <p className="text-lg dark:text-gray-200">No RSS items to display</p>
-      </div>
-    );
-  }
-
   if (loading) {
     return (
       <div className="w-full h-screen dark:bg-neutral-800 flex justify-center items-center">
         <p className="text-lg dark:text-gray-200">Loading...</p>
+      </div>
+    );
+  }
+
+  if (rssItems.length < 1) {
+    return (
+      <div className="w-full h-screen dark:bg-neutral-800 flex justify-center items-center">
+        <p className="text-lg dark:text-gray-200">No RSS items to display</p>
       </div>
     );
   }
