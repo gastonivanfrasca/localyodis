@@ -1,9 +1,10 @@
 import "./App.css";
 
+import { PubListEmpty, PubsList } from "./components/PubList";
 import { useEffect, useState } from "react";
 
 import { BottomNavBar } from "./components/BottomNavBar";
-import { PubsList } from "./components/PubList";
+import { LoadingSpinner } from "./components/LoadingSpinner";
 import { RSSItem } from "./types/rss";
 import { fetchRSS } from "./utils/rss";
 import { getLocallyStoredData } from "./utils/storage";
@@ -37,8 +38,9 @@ function App() {
   return (
     <div className="w-full h-screen dark:bg-neutral-800 max-h-screen">
       <div className="p-8 flex flex-col gap-8 max-h-full overflow-scroll items-center">
-        {loading && <p className="text-lg dark:text-gray-200">Loading...</p>}
-        {rssItems.length < 1 && <PubsList rssItems={rssItems} />}
+        {loading && <LoadingSpinner />}
+        {rssItems?.length < 1 && !loading && <PubListEmpty />}
+        {rssItems?.length > 1 && <PubsList rssItems={rssItems} />}
       </div>
       <BottomNavBar menu home />
     </div>

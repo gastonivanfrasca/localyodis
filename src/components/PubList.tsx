@@ -1,5 +1,6 @@
 import { RSSItem } from "../types/rss";
 import { formatPubDate } from "../utils/format";
+import { getImageBySourceID } from "../utils/storage";
 import { getSourceName } from "../utils/storage";
 
 type PubsListProps = {
@@ -18,17 +19,16 @@ export const PubsList = (props: PubsListProps) => {
         >
           <div className="flex flex-col gap-2 rounded-sm dark:text-gray-200  grow break-words max-w-full items-start pb-4">
             <div className="flex flex-row gap-2 items-start">
-              {/*
-                  <div className="flex items-center rounded-full pt-1 max-w-[20px]">
-                    <img
-                      src={getImageBySourceID(item.source || "")}
-                      alt={item.rssName || ""}
-                      className="rounded-full w-[200px] h-[20px]"
-                    />
-                  </div> */}
               <p className="font-semibold text-lg">{item.title}</p>
             </div>
             <div className="flex flex-row gap-2 w-full justify-end items-end mt-2">
+              <div className="flex items-center rounded-full pt-1 max-w-[20px]">
+                <img
+                  src={getImageBySourceID(item.source || "")}
+                  alt={item.rssName || ""}
+                  className="rounded-full w-[200px] h-[20px]"
+                />
+              </div>
               <p className="text-xs overflow-ellipsis whitespace-nowrap">
                 {getSourceName(item.source)} |{" "}
               </p>
@@ -41,6 +41,16 @@ export const PubsList = (props: PubsListProps) => {
           </div>
         </button>
       ))}
+    </div>
+  );
+};
+
+export const PubListEmpty = () => {
+  return (
+    <div className="p-8 flex flex-col gap-8 max-h-full overflow-scroll items-center">
+      <p className="text-lg dark:text-gray-200">
+        No rss sources added. Go to settings to add sources.
+      </p>
     </div>
   );
 };

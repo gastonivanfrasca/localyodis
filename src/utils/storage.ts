@@ -1,4 +1,5 @@
 import { Source } from "../types/storage";
+import rssPlaceholder from "../assets/rss_placeholder.png";
 
 type LocallyStoredData = {
   theme: string;
@@ -36,9 +37,9 @@ export const getSourceName = (sourceID: string | null | undefined) => {
   return source?.name || "Unknown";
 };
 
-/* const getImageBySourceID = (sourceID: string) => {
+export const getImageBySourceID = (sourceID: string) => {
     const source = getLocallyStoredData().sources.find(
       (source) => source.id === sourceID
     );
     return source?.image || rssPlaceholder;
-}; */
+};
