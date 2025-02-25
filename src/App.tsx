@@ -20,6 +20,7 @@ type RSSItem = {
 
 function App() {
   const [rssItems, setRssItems] = useState<RSSItem[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchRSSItems = async () => {
@@ -39,7 +40,7 @@ function App() {
       }
     };
     fetchRSSItems()
-      .then(() => console.log("Fetched RSS items"))
+      .then(() => setLoading(false))
       .catch(console.error);
   }, []);
 
@@ -50,7 +51,21 @@ function App() {
     return source?.image || rssPlaceholder;
   };
 
-  console.log(rssItems);
+  if (rssItems.length < 1) {
+    return (
+      <div className="w-full h-screen dark:bg-neutral-800 flex justify-center items-center">
+        <p className="text-lg dark:text-gray-200">No RSS items to display</p>
+      </div>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div className="w-full h-screen dark:bg-neutral-800 flex justify-center items-center">
+        <p className="text-lg dark:text-gray-200">Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full h-screen dark:bg-neutral-800 max-h-screen">
