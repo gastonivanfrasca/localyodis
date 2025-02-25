@@ -24,7 +24,7 @@ function App() {
   useEffect(() => {
     const fetchRSSItems = async () => {
       const localData = getLocallyStoredData();
-      if (!localData.sources) return;
+      if (localData.sources.length < 1) return;
       const sourcesURL = localData.sources.map((source) => {
         return {
           id: source.id,
