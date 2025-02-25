@@ -2,7 +2,7 @@ import { getLocallyStoredData, storeDataLocally } from "../utils/storage";
 
 import { X } from "lucide-react";
 import { checkIfSourceExists } from "../utils/validations";
-import { fetchRSS } from "../utils/rss";
+import { fetchSingleRSS } from "../utils/rss";
 import { v4 as uuidv4 } from "uuid";
 
 type AddSourceModalProps = {
@@ -24,16 +24,14 @@ export const AddSourceModal = (props: AddSourceModalProps) => {
       }
       const localData = getLocallyStoredData();
       const sources = localData.sources || [];
-      if (checkIfSourceExists(sources,  url)) {
+      if (checkIfSourceExists(sources, url)) {
         throw new Error("Source already exists");
       }
 
-      const rssData = await fetchRSS(url);
-      const title = rssData?.querySelector("title")?.textContent;
-      const image = rssData
-        ?.querySelector("image")
-        ?.querySelector("url")?.textContent;
-      const description = rssData?.querySelector("description")?.textContent;
+      const rssData = await fetchSingleRSS(url);
+      const title = rssData.title;
+      const image = rssData.image || "./rss_placeholder.png";
+      const description = rssData.description;
 
       console.log({ title, image, description });
       sources.push({

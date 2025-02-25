@@ -16,7 +16,7 @@ export const SourcesList = (props: SourcesListProps) => {
       <h1 className="text-lg font-bold dark:text-white">Sources</h1>
       {sources.map((source) => (
         <div
-          className="flex flex-col gap-2  w-full md:w-[320px] dark:bg-neutral-700 rounded-sm shadow-md bg-neutral-100 "
+          className="flex flex-col gap-2  w-full md:w-[320px] border-b-2 border-b-neutral-300 p-2"
           key={source.name}
         >
           <div
@@ -24,13 +24,6 @@ export const SourcesList = (props: SourcesListProps) => {
             className="flex flex-col gap-2 rounded-sm dark:text-gray-200 p-2 grow break-words max-w-full"
           >
             <div>
-              {source.image && (
-                <img
-                  src={source.image}
-                  alt={source.name || ""}
-                  className="w-full h-20 object-cover rounded-sm"
-                />
-              )}
               <p className="font-semibold text-lg text-center pt-4">
                 {source.name}
               </p>

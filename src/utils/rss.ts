@@ -1,10 +1,41 @@
-export const fetchRSS = async (url: string) => {
+import { getApiUrl } from "./api";
+
+type SourceToFetch = {
+  id: string;
+  url: string;
+};
+
+export const fetchRSS = async (sources: SourceToFetch[]) => {
   try {
-    const response = await fetch(`https://cors-anywhere.herokuapp.com/${url}`);
-    const text = await response.text();
-    const parser = new DOMParser();
-    const xml = parser.parseFromString(text, "text/xml");
-    return xml;
+    const response = await fetch(getApiUrl("/rss/fetch-feeds"), {
+      method: "POST",
+      body: JSON.stringify({
+        urls: sources,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const rssFeed = await response.json();
+    return rssFeed;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const fetchSingleRSS = async (url: string) => {
+  try {
+    const response = await fetch(getApiUrl('/rss'), {
+      method: "POST",
+      body: JSON.stringify({
+        url,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const rssFeed = await response.json();
+    return rssFeed;
   } catch (error) {
     console.log(error);
   }
