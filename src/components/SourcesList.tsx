@@ -1,13 +1,22 @@
 import { Source } from "../types/storage";
 import { Trash2 } from "lucide-react";
+import { getLocallyStoredData } from "../utils/storage";
 import { removeSourceFromLocalData } from "../utils/storage";
 
 type SourcesListProps = {
   sources: Source[];
+  setSources: (sources: Source[]) => void;
 };
 
 export const SourcesList = (props: SourcesListProps) => {
-  const { sources } = props;
+  const { sources, setSources } = props;
+
+  const handleRemoveSource = (id: string) => {
+    removeSourceFromLocalData(id);
+    const localData = getLocallyStoredData();
+    setSources(localData.sources);
+  };
+
   if (sources.length === 0) {
     return <p className="dark:text-gray-200">No sources added yet</p>;
   }
@@ -47,7 +56,4 @@ export const SourcesList = (props: SourcesListProps) => {
   );
 };
 
-const handleRemoveSource = (id: string) => {
-  removeSourceFromLocalData(id);
-  window.location.reload();
-};
+

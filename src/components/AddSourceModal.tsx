@@ -30,7 +30,7 @@ export const AddSourceModal = (props: AddSourceModalProps) => {
 
       const rssData = await fetchSingleRSS(url);
       const title = rssData.title;
-      const image = rssData.image || "./rss_placeholder.png";
+      const image = rssData.image[0].url[0] || "placeholder";
       const description = rssData.description;
 
       console.log({ title, image, description });

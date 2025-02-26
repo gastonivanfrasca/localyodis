@@ -22,13 +22,6 @@ export const PubsList = (props: PubsListProps) => {
               <p className="font-semibold text-lg">{item.title}</p>
             </div>
             <div className="flex flex-row gap-2 w-full justify-end items-end mt-2">
-              <div className="flex items-center rounded-full pt-1 max-w-[20px]">
-                <img
-                  src={getImageBySourceID(item.source || "")}
-                  alt={item.rssName || ""}
-                  className="rounded-full w-[200px] h-[20px]"
-                />
-              </div>
               <p className="text-xs overflow-ellipsis whitespace-nowrap">
                 {getSourceName(item.source)} |{" "}
               </p>
