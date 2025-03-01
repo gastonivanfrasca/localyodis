@@ -14,7 +14,7 @@ export const SourcesList = (props: SourcesListProps) => {
   const handleRemoveSource = (id: string) => {
     removeSourceFromLocalData(id);
     const localData = getLocallyStoredData();
-    setSources(localData.sources);
+    setSources([...localData.sources]);
   };
 
   if (sources.length === 0) {

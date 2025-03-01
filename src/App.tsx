@@ -37,7 +37,7 @@ function App() {
 
   return (
     <div className="w-full h-screen dark:bg-neutral-800 max-h-screen">
-      <div className="p-8 flex flex-col gap-8 max-h-full overflow-scroll items-center">
+      <div className="p-8 pb-24 flex flex-col gap-8 max-h-full overflow-scroll items-center">
         {loading && <LoadingSpinner />}
         {rssItems?.length < 1 && !loading && <PubListEmpty />}
         {rssItems?.length > 1 && <PubsList rssItems={rssItems} />}

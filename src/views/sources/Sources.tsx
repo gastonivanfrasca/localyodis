@@ -14,16 +14,19 @@ export const Sources = () => {
   const sourcesList = localData.sources;
   
   useEffect(() => {
-    setSources(sourcesList);
+    setSources([...sourcesList]);
   }, []);
 
   return (
     <div className="w-full h-screen dark:bg-neutral-800">
       <div className="p-8 flex flex-col gap-8">
         <AddSourceButton setIsModalOpen={setIsModalOpen} />
-        {sourcesList.length > 1 && (<SourcesList sources={sources} setSources={setSources} />)}
+        {sources.length > 0 && (<SourcesList sources={sources} setSources={setSources} />)}
+        {sources.length === 0 && (
+          <p className="dark:text-gray-200 text-lg">No sources added yet</p>
+        )}
       </div>
-      <AddSourceModal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+      <AddSourceModal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen} setSources={setSources} />
       <BottomNavBar backArrow home />
     </div>
   );

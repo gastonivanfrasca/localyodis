@@ -5,4 +5,7 @@ export type Source = {
   id: string;
   image: string | null | undefined;
   description: string | null | undefined;
+  color: string;
+  textColor: string;
+  initial: string;
 };

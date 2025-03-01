@@ -1,5 +1,6 @@
 import { getLocallyStoredData, storeDataLocally } from "../utils/storage";
 
+import { Source } from "../types/storage";
 import { X } from "lucide-react";
 import { checkIfSourceExists } from "../utils/validations";
 import { fetchSingleRSS } from "../utils/rss";
@@ -8,10 +9,11 @@ import { v4 as uuidv4 } from "uuid";
 type AddSourceModalProps = {
   isOpen: boolean;
   setIsModalOpen: (isOpen: boolean) => void;
+  setSources: (sources: Source[]) => void;
 };
 
 export const AddSourceModal = (props: AddSourceModalProps) => {
-  const { isOpen, setIsModalOpen } = props;
+  const { isOpen, setIsModalOpen, setSources } = props;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -29,11 +31,12 @@ export const AddSourceModal = (props: AddSourceModalProps) => {
       }
 
       const rssData = await fetchSingleRSS(url);
-      const title = rssData.title;
+      const title = rssData.title[0];
       const image = rssData.image[0].url[0] || "placeholder";
-      const description = rssData.description;
+      const description = rssData.description[0];
+      const bgColor = generateRandomColor();
+      const textColor = generateTextColorForBackground(bgColor);
 
-      console.log({ title, image, description });
       sources.push({
         name: title,
         url,
@@ -41,9 +44,14 @@ export const AddSourceModal = (props: AddSourceModalProps) => {
         id: uuidv4(),
         image: image,
         description,
+        color: bgColor,
+        textColor: textColor,
+        initial: title[0],
       });
+      
       storeDataLocally({ ...localData, sources });
       setIsModalOpen(false);
+      setSources([...sources]);
     } catch (error) {
       // TODO: Show error to user
       console.error(error);
@@ -83,3 +91,18 @@ export const AddSourceModal = (props: AddSourceModalProps) => {
     </div>
   );
 };
+
+
+const generateRandomColor = () => {
+  const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+  return "#" + randomColor.padStart(6, '0');
+}
+
+const generateTextColorForBackground = (bgColor: string) => {
+  const color = bgColor.replace("#", "");
+  const r = parseInt(color.substr(0, 2), 16);
+  const g = parseInt(color.substr(2, 2), 16);
+  const b = parseInt(color.substr(4, 2), 16);
+  const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+  return brightness >= 128 ? "#000000" : "#ffffff";
+}
