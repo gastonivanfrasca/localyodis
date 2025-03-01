@@ -1,8 +1,7 @@
 import { RSSItem } from "../types/rss";
+import { RoundedIdentifier } from "./RoundedIdentifier";
 import { formatPubDate } from "../utils/format";
-import {
-  getSourceByID,
-} from "../utils/storage";
+import { getSourceByID } from "../utils/storage";
 
 type PubsListProps = {
   rssItems: RSSItem[];
@@ -17,7 +16,7 @@ export const PubsList = (props: PubsListProps) => {
         if (!sourceData) return null;
         return (
           <button
-            className="flex flex-row w-full gap-1 md:w-[500px] rounded-sm border-b-2 border-neutral-500 dark:border-neutral-500 text-left cursor-pointer"
+            className="flex flex-row w-full gap-1 md:w-[800px] rounded-sm border-b-2 border-neutral-200 dark:border-neutral-600 text-left cursor-pointer"
             key={item.guid}
             onClick={() => window.open(item.link || "", "_blank")}
           >
@@ -26,14 +25,11 @@ export const PubsList = (props: PubsListProps) => {
                 <p className="font-semibold text-lg">{item.title}</p>
               </div>
               <div className="flex flex-row gap-2 w-full justify-end items-end mt-2">
-                <div
-                  className="rounded-full flex items-center justify-center w-[20px] h-[20px]"
-                  style={{ backgroundColor: sourceData.color }}
-                >
-                  <p className="text-xs p-1">
-                    {sourceData.initial}
-                  </p>
-                </div>
+                <RoundedIdentifier
+                  color={sourceData.color}
+                  textColor={sourceData.textColor}
+                  initial={sourceData.initial}
+                />
                 <p className="text-xs overflow-ellipsis whitespace-nowrap">
                   {sourceData.name}
                 </p>

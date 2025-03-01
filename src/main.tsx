@@ -1,5 +1,3 @@
-import "./index.css";
-
 import { BrowserRouter, Route, Routes } from "react-router";
 
 import App from "./App.tsx";

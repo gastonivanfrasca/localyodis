@@ -1,5 +1,4 @@
 import { Source } from "../types/storage";
-import rssPlaceholder from "../assets/rss_placeholder.png";
 
 type LocallyStoredData = {
   theme: string;
@@ -35,33 +34,4 @@ export const getSourceByID = (sourceID: string | null | undefined) => {
     (source) => source.id === sourceID
   );
   return source;
-}
-
-export const getSourceName = (sourceID: string | null | undefined) => {
-  if (!sourceID) return "Unknown";
-  const source = getLocallyStoredData().sources.find(
-    (source) => source.id === sourceID
-  );
-  return source?.name || "Unknown";
-};
-
-export const getImageBySourceID = (sourceID: string) => {
-    const source = getLocallyStoredData().sources.find(
-      (source) => source.id === sourceID
-    );
-    return source?.image || rssPlaceholder;
-};
-
-export const getColorBySourceID = (sourceID: string | null | undefined) => {
-  const source = getLocallyStoredData().sources.find(
-    (source) => source.id === sourceID
-  );
-  return source?.color || "#000000";
-}
-
-export const getInitialsBySourceID = (sourceID: string | null | undefined) => {
-  const source = getLocallyStoredData().sources.find(
-    (source) => source.id === sourceID
-  );
-  return source?.initial || "?";
 }
