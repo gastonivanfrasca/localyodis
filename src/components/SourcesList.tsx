@@ -1,8 +1,11 @@
+import { PencilLine, Trash2 } from "lucide-react";
+
+import { EditSourceModal } from "./EditSourceModal";
 import { RoundedIdentifier } from "./RoundedIdentifier";
 import { Source } from "../types/storage";
-import { Trash2 } from "lucide-react";
 import { getLocallyStoredData } from "../utils/storage";
 import { removeSourceFromLocalData } from "../utils/storage";
+import { useState } from "react";
 
 type SourcesListProps = {
   sources: Source[];
@@ -11,6 +14,7 @@ type SourcesListProps = {
 
 export const SourcesList = (props: SourcesListProps) => {
   const { sources, setSources } = props;
+  const [editingSource, setEditingSource] = useState<string | null>(null);
 
   const handleRemoveSource = (id: string) => {
     removeSourceFromLocalData(id);
@@ -39,20 +43,38 @@ export const SourcesList = (props: SourcesListProps) => {
                   textColor={source.textColor}
                   initial={source.initial}
                 />
-                <p className="font-semibold text-lg text-center">
+                <p className="font-semibold truncate max-w-[200px] text-center">
                   {source.name}
                 </p>
               </div>
-              <button
-                className="dark:text-gray-200 underline cursor-pointer"
-                onClick={() => handleRemoveSource(source.id)}
-              >
-                <Trash2 className="h-4 text-red-800 dark:text-red-400" />
-              </button>
+              <div className="flex flex-row gap-4">
+                <button
+                  className="dark:text-gray-200 underline cursor-pointer"
+                  onClick={() => setEditingSource(source.id)}
+                >
+                  <PencilLine className="h-4 text-gray-800 dark:text-gray-400" />
+                </button>
+                <button
+                  className="dark:text-gray-200 underline cursor-pointer"
+                  onClick={() => handleRemoveSource(source.id)}
+                >
+                  <Trash2 className="h-4 text-red-800 dark:text-red-400" />
+                </button>
+              </div>
             </div>
           </div>
         </div>
       ))}
+      {editingSource && (
+        <EditSourceModal
+          editingSourceId={editingSource}
+          sources={sources}
+          setSources={setSources}
+          setEditingSource={setEditingSource}
+        />
+      )}
     </div>
   );
 };
+
+
