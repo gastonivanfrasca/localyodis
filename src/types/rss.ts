@@ -4,7 +4,7 @@ export type RSSItem = {
   description: string | null | undefined;
   rssName: string | null | undefined;
   rssImage: string | null | undefined;
-  guid: string | null | undefined;
+  guid: string[] | null | undefined;
   pubDate: string | null | undefined;
   source: string | null | undefined;
 };

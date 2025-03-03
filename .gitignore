@@ -28,3 +28,4 @@ dist-ssr
 dev-dist/workbox-54d0af47.js
 dev-dist/sw.js
 dev-dist/registerSW.js
+test.json

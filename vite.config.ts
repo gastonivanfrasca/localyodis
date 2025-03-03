@@ -21,8 +21,11 @@ export default defineConfig(({ mode }) => {
         manifest: {
           name: 'Localyodis',
           short_name: 'Localyodis',
+          background_color: '#1e7bc0',
+          categories: ["rss", "reader", "news"],
+          display: 'standalone',
           description: 'A local RSS reader',
-          theme_color: '#ffffff',
+          theme_color: '#1e7bc0',
           icons: [
             {
               src: 'pwa-192x192.png',

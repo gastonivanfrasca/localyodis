@@ -9,3 +9,10 @@ export type Source = {
   textColor: string;
   initial: string;
 };
+
+export type Bookmark = {
+  title: string | null | undefined;
+  link: string | null | undefined;
+  source: string | null | undefined;
+  pubDate: string | null | undefined;
+};
