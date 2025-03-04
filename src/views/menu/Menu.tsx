@@ -10,7 +10,7 @@ export const Menu = () => {
         <ThemeSwitcher />
         <SourcesBtn />
       </div>
-      <BottomNavBar backArrow home />
+      <BottomNavBar backArrow home={"link"} />
     </div>
   );
 };

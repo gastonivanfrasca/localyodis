@@ -36,7 +36,7 @@ export const Sources = () => {
         setSources={setSources}
         setLoading={setLoading}
       />
-      <BottomNavBar backArrow home />
+      <BottomNavBar backArrow home={"link"} />
       {loading && <LoadingSpinner />}
     </div>
   );

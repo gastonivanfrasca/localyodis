@@ -1,15 +1,17 @@
 import { Bookmark, Source } from "../types/storage";
 
-type LocallyStoredData = {
+export type LocallyStoredData = {
   theme: string;
   sources: Source[];
   bookmarks: Bookmark[];
+  showBookmarkeds: boolean;
 };
 
 const defaultLocallyStoredData = {
   theme: "dark",
   sources: [],
   bookmarks: [],
+  showBookmarkeds: false,
 } as LocallyStoredData;
 
 export const storeDataLocally = (data: LocallyStoredData) => {
