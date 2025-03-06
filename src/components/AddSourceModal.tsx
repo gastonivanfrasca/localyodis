@@ -1,9 +1,10 @@
+import { TvMinimalPlay, X } from "lucide-react";
 import { getLocallyStoredData, storeDataLocally } from "../utils/storage";
 
 import { Source } from "../types/storage";
-import { X } from "lucide-react";
 import { checkIfSourceExists } from "../utils/validations";
 import { fetchSingleRSS } from "../utils/rss";
+import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 type AddSourceModalProps = {
@@ -15,17 +16,23 @@ type AddSourceModalProps = {
 
 export const AddSourceModal = (props: AddSourceModalProps) => {
   const { isOpen, setIsModalOpen, setSources, setLoading } = props;
+  const [video, setVideo] = useState<boolean>(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     setLoading(true);
     e.preventDefault();
 
     try {
-      const url = (document.getElementById("rss-url") as HTMLInputElement)
+      let url = (document.getElementById("rss-url") as HTMLInputElement)
         .value;
       if (!url) {
-        throw new Error("Name and URL are required");
+        throw new Error("URL is required");
       }
+
+      if (video) {
+        url = `https://www.youtube.com/feeds/videos.xml?channel_id=${url}`;
+      }
+      
       const localData = getLocallyStoredData();
       const sources = localData.sources || [];
       if (checkIfSourceExists(sources, url)) {
@@ -34,8 +41,6 @@ export const AddSourceModal = (props: AddSourceModalProps) => {
 
       const rssData = await fetchSingleRSS(url);
       const title = rssData.title[0];
-      const image = rssData.image[0].url[0] || "placeholder";
-      const description = rssData.description[0];
       const bgColor = generateRandomColor();
       const textColor = generateTextColorForBackground(bgColor);
 
@@ -44,8 +49,6 @@ export const AddSourceModal = (props: AddSourceModalProps) => {
         url,
         addedOn: new Date().toISOString(),
         id: uuidv4(),
-        image: image,
-        description,
         color: bgColor,
         textColor: textColor,
         initial: title[0],
@@ -77,13 +80,21 @@ export const AddSourceModal = (props: AddSourceModalProps) => {
           <form className="flex flex-col gap-10" onSubmit={handleSubmit}>
             <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-2">
-                <label>URL</label>
+                <label>{video ? 'ChannelID' : 'URL'}</label>
                 <textarea
                   name="rss-url"
                   id="rss-url"
                   className="p-2 border-2 border-neutral-400 rounded-sm h-[100px]"
                 />
               </div>
+            </div>
+            <div className="flex flex-row justify-end">
+              <TvMinimalPlay
+                className={`h-8 w-8 cursor-pointer ${
+                  video ? "text-red-500" : "text-neutral-400"
+                }`}
+                onClick={() => setVideo(!video)}
+              />
             </div>
             <button className="font-bold dark:text-white cursor-pointer text-lg py-2 px-6 border-2 border-neutral-300 dark:border-neutral-500 rounded-md mt-8 max-w-[200px] self-end" type="submit">
               Add
@@ -94,6 +105,8 @@ export const AddSourceModal = (props: AddSourceModalProps) => {
     </div>
   );
 };
+
+
 
 
 const generateRandomColor = () => {

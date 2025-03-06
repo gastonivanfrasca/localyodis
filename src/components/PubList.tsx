@@ -44,15 +44,18 @@ export const PubsList = (props: PubsListProps) => {
         const bookmark = bookmarks.find(
           (bookmark) => bookmark.link === getRSSItemStrProp(item, "link")
         );
+
+        const link = extractLink(item);
+
         return (
           <div
             className="flex flex-row w-full gap-1 md:w-[800px] rounded-sm border-b-2 border-neutral-200 dark:border-neutral-600 text-left cursor-pointer"
-            key={item.link}
+            key={link}
           >
             <div className="flex flex-col gap-2 rounded-sm dark:text-gray-200  grow break-words max-w-full items-start pb-4">
               <div className="flex flex-row gap-2 items-start">
                 <button
-                  onClick={() => window.open(item.link || "", "_blank")}
+                  onClick={() => window.open(link, "_blank")}
                   className="font-semibold text-lg text-left"
                 >
                   {item.title}
@@ -118,9 +121,21 @@ export const BookmarksEmpty = () => {
       </p>
     </div>
   );
-}
+};
 
 const getRSSItemStrProp = (item: RSSItem, prop: keyof RSSItem): string => {
   if (!item[prop]) return "";
   return Array.isArray(item[prop]) ? item[prop][0] : item[prop];
+};
+
+const extractLink = (item: RSSItem): string => {
+  if (Array.isArray(item.link) && item.link.length > 0) {
+    if (typeof item.link[0] === "object" && item.link[0]["$"]) {
+      return item.link[0]["$"].href;
+    }
+    if (typeof item.link[0] === "string") return item.link[0];
+  }
+
+  if (typeof item.link === "string") return item.link;
+  return "";
 };
