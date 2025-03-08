@@ -1,21 +1,55 @@
 import { Bookmark, BookmarkCheck } from "lucide-react";
 import { getSourceByID, storeDataLocally } from "../utils/storage";
 
-import { Bookmark as BookmarkT } from "../types/storage";
-import { LocallyStoredData } from "../utils/storage";
+import { LoadingSpinner } from "./LoadingSpinner";
 import { RSSItem } from "../types/rss";
 import { RoundedIdentifier } from "./RoundedIdentifier";
+import { fetchRSS } from "../utils/rss";
 import { formatPubDate } from "../utils/format";
+import { getLocallyStoredData } from "../utils/storage";
+import { useEffect } from "react";
+import { useState } from "react";
 
 type PubsListProps = {
-  rssItems: RSSItem[];
-  bookmarks: BookmarkT[];
-  setBookmarks: (bookmarks: BookmarkT[]) => void;
-  localData: LocallyStoredData;
+  bookmarkeds: boolean;
 };
 
 export const PubsList = (props: PubsListProps) => {
-  const { rssItems, localData, bookmarks, setBookmarks } = props;
+  const { bookmarkeds } = props;
+
+  const localData = getLocallyStoredData();
+  const [loading, setLoading] = useState(true);
+  const [rssItems, setRssItems] = useState<RSSItem[]>([]);
+  const [localBookmarks, setLocalBookmarks] = useState(localData.bookmarks);
+
+  useEffect(() => {
+    setLoading(true);
+    
+    if (bookmarkeds) {
+      setRssItems([...(localBookmarks as RSSItem[])]);
+      setLoading(false);
+      return;
+    }
+
+    const fetchRSSItems = async () => {
+      if (localData.sources.length < 1) return;
+      const sourcesURL = localData.sources.map((source) => {
+        return {
+          id: source.id,
+          url: source.url,
+        };
+      });
+      try {
+        const rssItems = await fetchRSS(sourcesURL);
+        setRssItems(rssItems);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchRSSItems()
+      .then(() => setLoading(false))
+      .catch(console.error);
+  }, [localBookmarks, bookmarkeds]);
 
   const bookmarkItem = (item: RSSItem) => {
     const newBookmark = {
@@ -24,24 +58,36 @@ export const PubsList = (props: PubsListProps) => {
       source: item.source,
       pubDate: getRSSItemStrProp(item, "pubDate"),
     };
-    storeDataLocally({ ...localData, bookmarks: [...bookmarks, newBookmark] });
-    setBookmarks([...bookmarks, newBookmark]);
+    storeDataLocally({
+      ...localData,
+      bookmarks: [...localBookmarks, newBookmark],
+    });
+    setLocalBookmarks([...localBookmarks, newBookmark]);
   };
 
   const unbookmarkItem = (item: RSSItem) => {
-    const updatedBookmarks = bookmarks.filter(
+    const updatedBookmarks = localBookmarks.filter(
       (bookmark) => bookmark.link !== getRSSItemStrProp(item, "link")
     );
     storeDataLocally({ ...localData, bookmarks: updatedBookmarks });
-    setBookmarks([...updatedBookmarks]);
+    setLocalBookmarks(updatedBookmarks);
   };
 
+  if (rssItems.length < 1 && !bookmarkeds && !loading) {
+    return <PubListEmpty />;
+  }
+
+  if (bookmarkeds && localBookmarks.length < 1 && !loading) {
+    return <BookmarksEmpty />;
+  }
+
   return (
+    <>
     <div className="p-8 flex flex-col gap-8 max-h-full overflow-scroll items-center">
       {rssItems.map((item) => {
         const sourceData = getSourceByID(item.source);
         if (!sourceData) return null;
-        const bookmark = bookmarks.find(
+        const bookmark = localBookmarks.find(
           (bookmark) => bookmark.link === getRSSItemStrProp(item, "link")
         );
 
@@ -100,6 +146,8 @@ export const PubsList = (props: PubsListProps) => {
         );
       })}
     </div>
+    {loading && <LoadingSpinner />}
+    </>
   );
 };
 
