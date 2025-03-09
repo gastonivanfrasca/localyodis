@@ -1,3 +1,5 @@
+import { Navigations } from "./navigation";
+
 export type Source = {
   name: string | null | undefined;
   url: string;
@@ -13,4 +15,11 @@ export type Bookmark = {
   link: string | null | undefined;
   source: string | null | undefined;
   pubDate: string | null | undefined;
+};
+
+export type LocallyStoredData = {
+  theme: string;
+  sources: Source[];
+  bookmarks: Bookmark[];
+  navigation: Navigations;
 };

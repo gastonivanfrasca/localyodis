@@ -1,58 +1,46 @@
 import "./App.css";
 
-import { Bookmark, BookmarkCheck } from "lucide-react";
-import { getLocallyStoredData, storeDataLocally } from "./utils/storage";
+import { HomeButtonModes, Navigations } from "./types/navigation";
 
+import { BookmarkedsButton } from "./components/BookmarkedsButton";
 import { BottomNavBar } from "./components/BottomNavBar";
+import { HomeButton } from "./components/HomeButton";
 import { PubsList } from "./components/PubList";
+import { SettingsButton } from "./components/SettingsButton";
+import { getLocallyStoredData } from "./utils/storage";
 import { useState } from "react";
 
 function App() {
   const localData = getLocallyStoredData();
-  const [bookmarkeds, setBoookmarkeds] = useState(localData.showBookmarkeds);
+  const [navigation, setNavigation] = useState<Navigations>(
+    localData.navigation
+  );
+
+  const HomeButtons = () => {
+    return (
+      <div className="w-full p-8 flex justify-between items-center">
+        <HomeButton
+          navigation={navigation}
+          setNavigation={setNavigation}
+          mode={HomeButtonModes.ACTION}
+        />
+        <BookmarkedsButton
+          navigation={navigation}
+          setNavigation={setNavigation}
+        />
+        <SettingsButton navigation={navigation} setNavigation={setNavigation} />
+      </div>
+    );
+  };
 
   return (
     <div className="w-full h-screen dark:bg-neutral-800 max-h-screen">
       <div className="p-8 pb-24 flex flex-col gap-8 max-h-full overflow-scroll items-center">
-        <PubsList bookmarkeds={bookmarkeds} />
+        <PubsList navigation={navigation} />
       </div>
-      <BottomNavBar
-        home="scroll"
-        menu
-        customButtons={
-          <BookmarkedsButton
-            bookmarkeds={bookmarkeds}
-            setBoookmarkeds={setBoookmarkeds}
-          />
-        }
-      />
+      <BottomNavBar customButtons={<HomeButtons />} />
     </div>
   );
 }
-
-type BookmarkedsButtonProps = {
-  bookmarkeds: boolean;
-  setBoookmarkeds: (value: boolean) => void;
-};
-
-export const BookmarkedsButton = (props: BookmarkedsButtonProps) => {
-  const { bookmarkeds, setBoookmarkeds } = props;
-  const localData = getLocallyStoredData();
-  return (
-    <button
-      onClick={() => {
-        setBoookmarkeds(!bookmarkeds);
-        storeDataLocally({ ...localData, showBookmarkeds: !bookmarkeds });
-      }}
-      className="cursor-pointer"
-    >
-      {bookmarkeds ? (
-        <BookmarkCheck style={{ color: "#1e7bc0" }} />
-      ) : (
-        <Bookmark className="text-gray-800 dark:text-gray-400" />
-      )}
-    </button>
-  );
-};
 
 export default App;

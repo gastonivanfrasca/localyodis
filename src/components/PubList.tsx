@@ -1,31 +1,45 @@
 import { Bookmark, BookmarkCheck } from "lucide-react";
 import { getSourceByID, storeDataLocally } from "../utils/storage";
+import { useEffect, useRef, useState } from "react";
 
 import { LoadingSpinner } from "./LoadingSpinner";
+import { Navigations } from "../types/navigation";
 import { RSSItem } from "../types/rss";
 import { RoundedIdentifier } from "./RoundedIdentifier";
 import { fetchRSS } from "../utils/rss";
 import { formatPubDate } from "../utils/format";
 import { getLocallyStoredData } from "../utils/storage";
-import { useEffect } from "react";
-import { useState } from "react";
 
 type PubsListProps = {
-  bookmarkeds: boolean;
+  navigation: Navigations;
 };
 
 export const PubsList = (props: PubsListProps) => {
-  const { bookmarkeds } = props;
+  const { navigation } = props;
 
   const localData = getLocallyStoredData();
   const [loading, setLoading] = useState(true);
   const [rssItems, setRssItems] = useState<RSSItem[]>([]);
   const [localBookmarks, setLocalBookmarks] = useState(localData.bookmarks);
+  const scrollPositionRef = useRef(0);
+  const navigationRef = useRef(navigation);
+
+  useEffect(() => {
+    const element = document.getElementById("pubs-list") as HTMLDivElement;
+    if (!element) return;
+
+    if (navigationRef.current !== navigation) {
+      element.scrollTop = 0;
+      navigationRef.current = navigation;
+    } else {
+      element.scrollTop = scrollPositionRef.current;
+    }
+  }, [navigation]);
 
   useEffect(() => {
     setLoading(true);
-    
-    if (bookmarkeds) {
+
+    if (navigation === Navigations.BOOKMARKEDS) {
       setRssItems([...(localBookmarks as RSSItem[])]);
       setLoading(false);
       return;
@@ -48,13 +62,16 @@ export const PubsList = (props: PubsListProps) => {
     };
     fetchRSSItems()
       .then(() => setLoading(false))
-      .catch(console.error);
-  }, [localBookmarks, bookmarkeds]);
+      .catch((error) => {
+        console.error(error);
+        setLoading(false);
+      });
+  }, [localBookmarks, navigation]);
 
   const bookmarkItem = (item: RSSItem) => {
     const newBookmark = {
       title: getRSSItemStrProp(item, "title"),
-      link: getRSSItemStrProp(item, "link"),
+      link: extractLink(item),
       source: item.source,
       pubDate: getRSSItemStrProp(item, "pubDate"),
     };
@@ -73,80 +90,100 @@ export const PubsList = (props: PubsListProps) => {
     setLocalBookmarks(updatedBookmarks);
   };
 
-  if (rssItems.length < 1 && !bookmarkeds && !loading) {
+  if (
+    rssItems.length < 1 &&
+    navigation !== Navigations.BOOKMARKEDS &&
+    !loading
+  ) {
     return <PubListEmpty />;
   }
 
-  if (bookmarkeds && localBookmarks.length < 1 && !loading) {
+  if (
+    navigation === Navigations.BOOKMARKEDS &&
+    localBookmarks.length < 1 &&
+    !loading
+  ) {
     return <BookmarksEmpty />;
   }
 
   return (
     <>
-    <div className="p-8 flex flex-col gap-8 max-h-full overflow-scroll items-center">
-      {rssItems.map((item) => {
-        const sourceData = getSourceByID(item.source);
-        if (!sourceData) return null;
-        const bookmark = localBookmarks.find(
-          (bookmark) => bookmark.link === getRSSItemStrProp(item, "link")
-        );
+      <div
+        id="pubs-list"
+        className="p-8 flex flex-col gap-8 max-h-full overflow-scroll items-center"
+        onScroll={(e) => {
+          const element = e.target as HTMLDivElement;
+          const bottom =
+            element.scrollHeight - element.scrollTop === element.clientHeight;
+          if (bottom && !loading) {
+            scrollPositionRef.current = element.scrollTop;
+            setLoading(true);
+          }
+        }}
+      >
+        {rssItems.map((item) => {
+          const sourceData = getSourceByID(item.source);
+          if (!sourceData) return null;
+          const bookmark = localBookmarks.find(
+            (bookmark) => bookmark.link === getRSSItemStrProp(item, "link")
+          );
 
-        const link = extractLink(item);
+          const link = extractLink(item);
 
-        return (
-          <div
-            className="flex flex-row w-full gap-1 md:w-[800px] rounded-sm border-b-2 border-neutral-200 dark:border-neutral-600 text-left cursor-pointer"
-            key={link}
-          >
-            <div className="flex flex-col gap-2 rounded-sm dark:text-gray-200  grow break-words max-w-full items-start pb-4">
-              <div className="flex flex-row gap-2 items-start">
-                <button
-                  onClick={() => window.open(link, "_blank")}
-                  className="font-semibold text-lg text-left"
-                >
-                  {item.title}
-                </button>
-              </div>
-              <div className="flex flex-row gap-2 w-full justify-end items-end mt-2">
-                <RoundedIdentifier
-                  color={sourceData.color}
-                  textColor={sourceData.textColor}
-                  initial={sourceData.initial}
-                />
-                <p className="text-xs overflow-ellipsis whitespace-nowrap">
-                  {sourceData.name}
-                </p>
-                {item.pubDate && (
-                  <p className="text-xs self-end text-right whitespace-nowrap">
-                    {formatPubDate(item.pubDate)}
+          return (
+            <div
+              className="flex flex-row w-full gap-1 md:w-[800px] rounded-sm border-b-2 border-neutral-200 dark:border-neutral-600 text-left cursor-pointer"
+              key={link}
+            >
+              <div className="flex flex-col gap-2 rounded-sm dark:text-gray-200  grow break-words max-w-full items-start pb-4">
+                <div className="flex flex-row gap-2 items-start">
+                  <button
+                    onClick={() => window.open(link, "_blank")}
+                    className="font-semibold text-lg text-left"
+                  >
+                    {item.title}
+                  </button>
+                </div>
+                <div className="flex flex-row gap-2 w-full justify-end items-end mt-2">
+                  <RoundedIdentifier
+                    color={sourceData.color}
+                    textColor={sourceData.textColor}
+                    initial={sourceData.initial}
+                  />
+                  <p className="text-xs overflow-ellipsis whitespace-nowrap">
+                    {sourceData.name}
                   </p>
-                )}
+                  {item.pubDate && (
+                    <p className="text-xs self-end text-right whitespace-nowrap">
+                      {formatPubDate(item.pubDate)}
+                    </p>
+                  )}
 
-                {bookmark !== undefined ? (
-                  <button
-                    className="dark:text-gray-200 underline cursor-pointer"
-                    onClick={() => unbookmarkItem(item)}
-                  >
-                    <BookmarkCheck
-                      className="h-4"
-                      style={{ color: "#1e7bc0" }}
-                    />
-                  </button>
-                ) : (
-                  <button
-                    className="dark:text-gray-200 underline cursor-pointer"
-                    onClick={() => bookmarkItem(item)}
-                  >
-                    <Bookmark className="h-4 text-gray-800 dark:text-gray-400 " />
-                  </button>
-                )}
+                  {bookmark !== undefined ? (
+                    <button
+                      className="dark:text-gray-200 underline cursor-pointer"
+                      onClick={() => unbookmarkItem(item)}
+                    >
+                      <BookmarkCheck
+                        className="h-4"
+                        style={{ color: "#1e7bc0" }}
+                      />
+                    </button>
+                  ) : (
+                    <button
+                      className="dark:text-gray-200 underline cursor-pointer"
+                      onClick={() => bookmarkItem(item)}
+                    >
+                      <Bookmark className="h-4 text-gray-800 dark:text-gray-400 " />
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        );
-      })}
-    </div>
-    {loading && <LoadingSpinner />}
+          );
+        })}
+      </div>
+      {loading && <LoadingSpinner />}
     </>
   );
 };
