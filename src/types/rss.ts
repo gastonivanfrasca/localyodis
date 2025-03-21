@@ -1,5 +1,6 @@
 export type RSSItem = {
   title: string | null | undefined;
+  id: string | null | undefined;
   link: string | null | undefined | YTLink | string[];
   description: string | null | undefined;
   rssName: string | null | undefined;

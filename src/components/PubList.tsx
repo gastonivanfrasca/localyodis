@@ -2,6 +2,7 @@ import { Bookmark, BookmarkCheck } from "lucide-react";
 import { getSourceByID, storeDataLocally } from "../utils/storage";
 import { useEffect, useRef, useState } from "react";
 
+import { FilterSourcesModal } from "./FilterSourcesModal";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { Navigations } from "../types/navigation";
 import { RSSItem } from "../types/rss";
@@ -12,15 +13,20 @@ import { getLocallyStoredData } from "../utils/storage";
 
 type PubsListProps = {
   navigation: Navigations;
+  setNavigation: (value: Navigations) => void;
 };
 
 export const PubsList = (props: PubsListProps) => {
-  const { navigation } = props;
+  const { navigation, setNavigation } = props;
 
   const localData = getLocallyStoredData();
+
   const [loading, setLoading] = useState(true);
   const [rssItems, setRssItems] = useState<RSSItem[]>([]);
   const [localBookmarks, setLocalBookmarks] = useState(localData.bookmarks);
+  const [activeSources, setActiveSources] = useState<string[]>([
+    ...localData.sources.map((source) => source.id),
+  ]);
   const scrollPositionRef = useRef(0);
   const navigationRef = useRef(navigation);
 
@@ -46,8 +52,11 @@ export const PubsList = (props: PubsListProps) => {
     }
 
     const fetchRSSItems = async () => {
-      if (localData.sources.length < 1) return;
-      const sourcesURL = localData.sources.map((source) => {
+      const sourcesToFetch = localData.sources.filter((source) =>
+        activeSources.includes(source.id)
+      );
+      if (sourcesToFetch.length < 1) return;
+      const sourcesURL = sourcesToFetch.map((source) => {
         return {
           id: source.id,
           url: source.url,
@@ -66,7 +75,7 @@ export const PubsList = (props: PubsListProps) => {
         console.error(error);
         setLoading(false);
       });
-  }, [localBookmarks, navigation]);
+  }, [localBookmarks, navigation, activeSources]);
 
   const bookmarkItem = (item: RSSItem) => {
     const newBookmark = {
@@ -129,6 +138,10 @@ export const PubsList = (props: PubsListProps) => {
           );
 
           const link = extractLink(item);
+          let title = getRSSItemStrProp(item, "title");
+          if (typeof title === "object"){
+            title = title["_"];
+          }
 
           return (
             <div
@@ -141,7 +154,7 @@ export const PubsList = (props: PubsListProps) => {
                     onClick={() => window.open(link, "_blank")}
                     className="font-semibold text-lg text-left"
                   >
-                    {item.title}
+                    {title}
                   </button>
                 </div>
                 <div className="flex flex-row gap-2 w-full justify-end items-end mt-2">
@@ -184,6 +197,14 @@ export const PubsList = (props: PubsListProps) => {
         })}
       </div>
       {loading && <LoadingSpinner />}
+      {navigation === Navigations.FILTER_SOURCES && (
+        <FilterSourcesModal
+          setNavigation={setNavigation}
+          allSources={localData.sources}
+          activeSources={activeSources}
+          setActiveSources={setActiveSources}
+        />
+      )}
     </>
   );
 };
@@ -222,5 +243,7 @@ const extractLink = (item: RSSItem): string => {
   }
 
   if (typeof item.link === "string") return item.link;
-  return "";
+
+  return item.id || "";
+  
 };

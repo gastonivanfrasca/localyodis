@@ -40,9 +40,15 @@ export const AddSourceModal = (props: AddSourceModalProps) => {
       }
 
       const rssData = await fetchSingleRSS(url);
-      const title = rssData.title[0];
+      let title = rssData.title[0];
       const bgColor = generateRandomColor();
       const textColor = generateTextColorForBackground(bgColor);
+
+      if (typeof title !== "string") {
+        if (typeof title === "object") {
+          title = title["_"];
+        }
+      }
 
       sources.push({
         name: title,

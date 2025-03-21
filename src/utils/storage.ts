@@ -14,9 +14,19 @@ export const storeDataLocally = (data: LocallyStoredData) => {
 
 export const getLocallyStoredData = (): LocallyStoredData => {
   const storedData = localStorage.getItem("localyodis");
-  return storedData
-    ? JSON.parse(storedData)
+  const parsedStoredData = storedData
+    ? (JSON.parse(storedData) as LocallyStoredData)
     : (defaultLocallyStoredData as LocallyStoredData);
+
+    parsedStoredData.sources.forEach((source) => {
+      if (typeof source.name === "object" && source.name !== null) {
+        source.name = source.name["_"] ? source.name["_"] : source.name;
+        source.initial = source.name[0];
+        storeDataLocally(parsedStoredData);
+      }
+    });
+
+  return parsedStoredData;
 };
 
 export const removeSourceFromLocalData = (sourceId: string) => {
@@ -32,4 +42,4 @@ export const getSourceByID = (sourceID: string | null | undefined) => {
     (source) => source.id === sourceID
   );
   return source;
-}
+};
