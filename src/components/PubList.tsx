@@ -93,7 +93,7 @@ export const PubsList = (props: PubsListProps) => {
 
   const unbookmarkItem = (item: RSSItem) => {
     const updatedBookmarks = localBookmarks.filter(
-      (bookmark) => bookmark.link !== getRSSItemStrProp(item, "link")
+      (bookmark) => bookmark.link !== extractLink(item)
     );
     storeDataLocally({ ...localData, bookmarks: updatedBookmarks });
     setLocalBookmarks(updatedBookmarks);
@@ -134,8 +134,11 @@ export const PubsList = (props: PubsListProps) => {
           const sourceData = getSourceByID(item.source);
           if (!sourceData) return null;
           const bookmark = localBookmarks.find(
-            (bookmark) => bookmark.link === getRSSItemStrProp(item, "link")
-          );
+            (bookmark) => {
+              const bookmarkLink = bookmark.link;
+              const itemLink = extractLink(item);
+              return bookmarkLink === itemLink;
+            });
 
           const link = extractLink(item);
           let title = getRSSItemStrProp(item, "title");
@@ -162,6 +165,7 @@ export const PubsList = (props: PubsListProps) => {
                     color={sourceData.color}
                     textColor={sourceData.textColor}
                     initial={sourceData.initial}
+                    video={sourceData.type === "video"}
                   />
                   <p className="text-xs overflow-ellipsis whitespace-nowrap">
                     {sourceData.name}

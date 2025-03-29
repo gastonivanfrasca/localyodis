@@ -23,23 +23,21 @@ export const AddSourceModal = (props: AddSourceModalProps) => {
     e.preventDefault();
 
     try {
-      let url = (document.getElementById("rss-url") as HTMLInputElement)
-        .value;
-      if (!url) {
-        throw new Error("URL is required");
+      const identifier = (
+        document.getElementById("rss-url") as HTMLInputElement
+      ).value;
+      
+      if (!identifier) {
+        throw new Error("Identifier is required");
       }
 
-      if (video) {
-        url = `https://www.youtube.com/feeds/videos.xml?channel_id=${url}`;
-      }
-      
       const localData = getLocallyStoredData();
       const sources = localData.sources || [];
-      if (checkIfSourceExists(sources, url)) {
+      if (checkIfSourceExists(sources, identifier)) {
         throw new Error("Source already exists");
       }
 
-      const rssData = await fetchSingleRSS(url);
+      const rssData = await fetchSingleRSS(identifier, video);
       let title = rssData.title[0];
       const bgColor = generateRandomColor();
       const textColor = generateTextColorForBackground(bgColor);
@@ -50,16 +48,18 @@ export const AddSourceModal = (props: AddSourceModalProps) => {
         }
       }
 
+
       sources.push({
         name: title,
-        url,
+        url: video ? rssData.link[0]["$"].href : identifier,
+        type: video ? "video" : "rss",
         addedOn: new Date().toISOString(),
         id: uuidv4(),
         color: bgColor,
         textColor: textColor,
         initial: title[0],
       });
-      
+
       storeDataLocally({ ...localData, sources });
       setIsModalOpen(false);
       setSources([...sources]);
@@ -73,7 +73,7 @@ export const AddSourceModal = (props: AddSourceModalProps) => {
 
   if (!isOpen) return null;
   return (
-    <div className="fixed top-0 left-0 w-full h-screen flex justify-center items-center p-8 bg-black/70">
+    <div className="fixed top-0 left-0 w-full h-screen flex justify-center items-center p-8 bg-black/70 z-50">
       <div className="bg-white dark:bg-neutral-800 p-8 rounded-md flex flex-col gap-2 dark:text-white w-full md:max-w-[600px]">
         <button
           className="self-end cursor-pointer"
@@ -86,7 +86,7 @@ export const AddSourceModal = (props: AddSourceModalProps) => {
           <form className="flex flex-col gap-10" onSubmit={handleSubmit}>
             <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-2">
-                <label>{video ? 'ChannelID' : 'URL'}</label>
+                <label>{video ? "Channel Name" : "URL"}</label>
                 <textarea
                   name="rss-url"
                   id="rss-url"
@@ -102,7 +102,10 @@ export const AddSourceModal = (props: AddSourceModalProps) => {
                 onClick={() => setVideo(!video)}
               />
             </div>
-            <button className="font-bold dark:text-white cursor-pointer text-lg py-2 px-6 border-2 border-neutral-300 dark:border-neutral-500 rounded-md mt-8 max-w-[200px] self-end" type="submit">
+            <button
+              className="font-bold dark:text-white cursor-pointer text-lg py-2 px-6 border-2 border-neutral-300 dark:border-neutral-500 rounded-md mt-8 max-w-[200px] self-end"
+              type="submit"
+            >
               Add
             </button>
           </form>
@@ -112,13 +115,10 @@ export const AddSourceModal = (props: AddSourceModalProps) => {
   );
 };
 
-
-
-
 const generateRandomColor = () => {
   const randomColor = Math.floor(Math.random() * 16777215).toString(16);
-  return "#" + randomColor.padStart(6, '0');
-}
+  return "#" + randomColor.padStart(6, "0");
+};
 
 const generateTextColorForBackground = (bgColor: string) => {
   const color = bgColor.replace("#", "");
@@ -127,4 +127,4 @@ const generateTextColorForBackground = (bgColor: string) => {
   const b = parseInt(color.substr(4, 2), 16);
   const brightness = (r * 299 + g * 587 + b * 114) / 1000;
   return brightness >= 128 ? "#000000" : "#ffffff";
-}
+};

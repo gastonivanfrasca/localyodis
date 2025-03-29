@@ -8,6 +8,7 @@ export type Source = {
   color: string;
   textColor: string;
   initial: string;
+  type: string;
 };
 
 export type Bookmark = {
