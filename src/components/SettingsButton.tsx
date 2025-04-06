@@ -16,7 +16,10 @@ export const SettingsButton = (props: SettingsButtonProps) => {
 
   return (
     <Link to={"/menu"}>
-      <EllipsisVertical onClick={handleOnClick} className={`cursor-pointer text-gray-800 dark:text-gray-400`} />
+      <EllipsisVertical
+        onClick={handleOnClick}
+        className={`cursor-pointer text-gray-800 dark:text-gray-400`}
+      />
     </Link>
   );
 };

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 
-import { AddSourceButton } from "../../components/AddSourceButton";
 import { AddSourceModal } from "../../components/AddSourceModal";
 import { BottomNavBar } from "../../components/BottomNavBar";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
@@ -20,11 +19,10 @@ export const Sources = () => {
   }, []);
 
   return (
-    <div className="w-full h-screen dark:bg-neutral-800">
-      <div className="p-8 flex flex-col gap-8">
-        <AddSourceButton setIsModalOpen={setIsModalOpen} />
+    <div className="w-full h-screen dark:bg-slate-950">
+      <div className="p-8 flex flex-col gap-8 pb-20 dark:bg-slate-950">
         {sources.length > 0 && (
-          <SourcesList sources={sources} setSources={setSources} />
+          <SourcesList sources={sources} setSources={setSources} setIsModalOpen={setIsModalOpen} />
         )}
         {sources.length === 0 && (
           <p className="dark:text-gray-200 text-lg">No sources added yet</p>

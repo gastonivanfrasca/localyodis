@@ -6,7 +6,7 @@ import { FilterSourcesModal } from "./FilterSourcesModal";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { Navigations } from "../types/navigation";
 import { RSSItem } from "../types/rss";
-import { RoundedIdentifier } from "./RoundedIdentifier";
+import { RoundedIdentifier } from "./v2/RoundedIdentifier";
 import { fetchRSS } from "../utils/rss";
 import { formatPubDate } from "../utils/format";
 import { getLocallyStoredData } from "../utils/storage";
@@ -133,16 +133,15 @@ export const PubsList = (props: PubsListProps) => {
         {rssItems.map((item) => {
           const sourceData = getSourceByID(item.source);
           if (!sourceData) return null;
-          const bookmark = localBookmarks.find(
-            (bookmark) => {
-              const bookmarkLink = bookmark.link;
-              const itemLink = extractLink(item);
-              return bookmarkLink === itemLink;
-            });
+          const bookmark = localBookmarks.find((bookmark) => {
+            const bookmarkLink = bookmark.link;
+            const itemLink = extractLink(item);
+            return bookmarkLink === itemLink;
+          });
 
           const link = extractLink(item);
           let title = getRSSItemStrProp(item, "title");
-          if (typeof title === "object"){
+          if (typeof title === "object") {
             title = title["_"];
           }
 
@@ -160,21 +159,24 @@ export const PubsList = (props: PubsListProps) => {
                     {title}
                   </button>
                 </div>
-                <div className="flex flex-row gap-2 w-full justify-end items-end mt-2">
-                  <RoundedIdentifier
-                    color={sourceData.color}
-                    textColor={sourceData.textColor}
-                    initial={sourceData.initial}
-                    video={sourceData.type === "video"}
-                  />
-                  <p className="text-xs overflow-ellipsis whitespace-nowrap">
-                    {sourceData.name}
-                  </p>
-                  {item.pubDate && (
-                    <p className="text-xs self-end text-right whitespace-nowrap">
-                      {formatPubDate(item.pubDate)}
+                <div className="flex flex-row gap-2 w-full justify-between items-end mt-2">
+                  <div className="flex flex-row gap-2 items-center">
+                    <RoundedIdentifier
+                      color={sourceData.color}
+                      textColor={sourceData.textColor}
+                      initial={sourceData.initial}
+                      video={sourceData.type === "video"}
+                      small
+                    />
+                    <p className="text-xs truncate max-w-[100px]">
+                      {sourceData.name}
                     </p>
-                  )}
+                    {item.pubDate && (
+                      <p className="text-xs self-end text-right whitespace-nowrap">
+                        {formatPubDate(item.pubDate)}
+                      </p>
+                    )}
+                  </div>
 
                   {bookmark !== undefined ? (
                     <button
@@ -249,5 +251,4 @@ const extractLink = (item: RSSItem): string => {
   if (typeof item.link === "string") return item.link;
 
   return item.id || "";
-  
 };

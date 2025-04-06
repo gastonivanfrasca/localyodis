@@ -50,7 +50,7 @@ type EditSourceModalProps = {
     };
   
     return (
-      <div className="fixed top-0 left-0 w-full h-full bg-black/80 bg-opacity-50 flex items-center justify-center p-8">
+      <div className="fixed top-0 left-0 w-full h-full bg-zinc-950/80 bg-opacity-50 flex items-center justify-center p-8">
         <div className="bg-white dark:bg-neutral-700 p-8 rounded-md w-full md:w-[500px] flex flex-col">
           <button
             className="self-end cursor-pointer"

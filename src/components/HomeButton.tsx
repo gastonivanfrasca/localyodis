@@ -1,5 +1,4 @@
 import { HomeButtonModes, Navigations } from "../types/navigation";
-import { getLocallyStoredData, storeDataLocally } from "../utils/storage";
 
 import { Home } from "lucide-react";
 import { Link } from "react-router";
@@ -12,7 +11,6 @@ type HomeButtonProps = {
 
 export const HomeButton = (props: HomeButtonProps) => {
   const { navigation, setNavigation, mode } = props;
-  const localData = getLocallyStoredData();
 
   const isActive = navigation === Navigations.HOME;
   const activeClasses = isActive
@@ -21,7 +19,6 @@ export const HomeButton = (props: HomeButtonProps) => {
 
   const handleOnClick = () => {
     setNavigation(Navigations.HOME);
-    storeDataLocally({ ...localData, navigation: Navigations.HOME });
   };
 
   if (mode === HomeButtonModes.LINK) {

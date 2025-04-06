@@ -1,5 +1,3 @@
-import { getLocallyStoredData, storeDataLocally } from "../utils/storage";
-
 import { ListFilter } from "lucide-react";
 import { Navigations } from "../types/navigation";
 
@@ -10,7 +8,6 @@ type FilterSourcesButtonProps = {
 
 export const FilterSourcesButton = (props: FilterSourcesButtonProps) => {
   const { navigation, setNavigation } = props;
-  const localData = getLocallyStoredData();
 
   if (navigation === Navigations.FILTER_SOURCES) {
     return (
@@ -18,7 +15,6 @@ export const FilterSourcesButton = (props: FilterSourcesButtonProps) => {
         className="cursor-pointer"
         onClick={() => {
           setNavigation(Navigations.HOME);
-          storeDataLocally({ ...localData, navigation: Navigations.HOME });
         }}
       >
         <ListFilter style={{ color: "#1e7bc0" }} />
@@ -30,10 +26,6 @@ export const FilterSourcesButton = (props: FilterSourcesButtonProps) => {
     <button
       onClick={() => {
         setNavigation(Navigations.FILTER_SOURCES);
-        storeDataLocally({
-          ...localData,
-          navigation: Navigations.FILTER_SOURCES,
-        });
       }}
       className="cursor-pointer"
     >

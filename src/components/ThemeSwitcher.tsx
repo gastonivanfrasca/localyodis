@@ -7,7 +7,8 @@ export const ThemeSwitcher = () => {
   const localData = getLocallyStoredData();
   const localTheme = localData.theme;
   const [theme, setTheme] = useState(localTheme);
-  const icon = theme === "dark" ? <Sun /> : <Moon />;
+  const icon =
+    theme === "dark" ? <Moon className="w-5" /> : <Sun className="w-5" />;
 
   const setThemeAndSyncStorage = (theme: string) => {
     if (theme === "dark") {
@@ -24,10 +25,19 @@ export const ThemeSwitcher = () => {
 
   return (
     <button
-      className="p-2  border-gray-200 rounded-md dark:border-gray-300 dark:text-gray-200 flex gap-4 items-center"
-      onClick={() =>
-        setThemeAndSyncStorage(theme === "dark" ? "light" : "dark")
-      }
+      onClick={() => {
+        if (theme === "dark") {
+          setThemeAndSyncStorage("light");
+        } else {
+          setThemeAndSyncStorage("dark");
+        }
+      }}
+      type="button"
+      className="flex items-center justify-start py-2 border bg-zinc-100 dark:bg-slate-800 
+                   hover:bg-zinc-200 dark:hover:bg-zinc-700 
+                   rounded-xl transition-colors group font-semibold shadow-sm px-3
+                   border-slate-800 dark:border-zinc-400
+                   "
     >
       {icon}
     </button>

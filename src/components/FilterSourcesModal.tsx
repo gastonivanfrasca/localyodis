@@ -2,7 +2,7 @@ import { Check, Eraser } from "lucide-react";
 import { getLocallyStoredData, storeDataLocally } from "../utils/storage";
 
 import { Navigations } from "../types/navigation";
-import { RoundedIdentifier } from "./RoundedIdentifier";
+import { RoundedIdentifier } from "./v2/RoundedIdentifier";
 import { Source } from "../types/storage";
 
 type FilterSourcesModalProps = {
@@ -17,7 +17,7 @@ export const FilterSourcesModal = (props: FilterSourcesModalProps) => {
   const localData = getLocallyStoredData();
 
   return (
-    <div className="fixed top-0 left-0 w-full h-screen flex justify-center items-center p-8 bg-black/70 z-50">
+    <div className="fixed top-0 left-0 w-full h-screen flex justify-center items-center p-8 bg-slate-950/70 z-50">
       <div className="bg-white dark:bg-neutral-800 rounded-lg p-8 w-11/12 max-w-md dark:text-white">
         <h2 className="text-2xl font-semibold text-center">Filter Sources</h2>
         <div className="flex flex-col gap-4 mt-4">
@@ -26,7 +26,7 @@ export const FilterSourcesModal = (props: FilterSourcesModalProps) => {
               <div key={source.id} className="flex items-center gap-2">
                 <input
                   type="checkbox"
-                  className="cursor-pointer rounded-sm p-2"
+                  className="cursor-pointer rounded-sm p-4 dark:bg-neutral-700 accent-gray-800 dark:accent-gray-800 w-4 h-4"  
                   id={source.id}
                   checked={activeSources.includes(source.id)}
                   onChange={(e) => {
@@ -41,14 +41,16 @@ export const FilterSourcesModal = (props: FilterSourcesModalProps) => {
                 />
                 <label
                   htmlFor={source.id}
-                  className="flex flex-row items-center gap-2 text-"
+                  className="flex flex-row items-center gap-2"
                 >
                   <RoundedIdentifier
                     color={source.color}
                     textColor={source.textColor}
                     initial={source.initial}
+                    video={source.type === "video"}
+                    small
                   />
-                  {source.name}
+                  <p className="truncate max-w-[200px]">{source.name}</p>
                 </label>
               </div>
             );
