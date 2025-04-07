@@ -20,7 +20,7 @@ export const Sources = () => {
 
   return (
     <div className="w-full h-screen dark:bg-slate-950">
-      <div className="p-8 flex flex-col gap-8 pb-20 dark:bg-slate-950">
+      <div className="p-8 flex flex-col gap-8 pb-20 dark:bg-slate-950 w-full justify-center items-center">
         {sources.length > 0 && (
           <SourcesList sources={sources} setSources={setSources} setIsModalOpen={setIsModalOpen} />
         )}

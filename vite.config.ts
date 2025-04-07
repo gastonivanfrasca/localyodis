@@ -1,12 +1,10 @@
-import { defineConfig, loadEnv } from "vite";
-
 import { VitePWA } from "vite-plugin-pwa";
+import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 
 // https://vite.dev/config/
-export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd());
+export default defineConfig(() => {
 
   return {
     plugins: [
@@ -21,11 +19,11 @@ export default defineConfig(({ mode }) => {
         manifest: {
           name: 'Localyodis',
           short_name: 'Localyodis',
-          background_color: '#1e7bc0',
+          background_color: '#020618',
           categories: ["rss", "reader", "news"],
           display: 'standalone',
           description: 'A local RSS reader',
-          theme_color: '#1e7bc0',
+          theme_color: '#020618',
           icons: [
             {
               src: 'pwa-192x192.png',
@@ -44,7 +42,6 @@ export default defineConfig(({ mode }) => {
     server: {
       proxy: {
         "/api": {
-          target: env.VITE_API_BASE_URL || "http://localhost:4000",
           changeOrigin: true,
           secure: false,
         },
