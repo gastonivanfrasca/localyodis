@@ -22,36 +22,44 @@ export const SourcesList = (props: SourcesListProps) => {
     setSources([...localData.sources]);
   };
 
-  if (sources.length === 0) {
-    return <p className="dark:text-gray-200">No sources added yet</p>;
-  }
   return (
-    <div className="flex flex-col gap-10 md:items-center overflow-scroll">
+    <div className="flex flex-col gap-10 overflow-scroll w-full">
       <h1 className=" text-2xl font-bold dark:text-white self-start">
         Sources
       </h1>
       <AddSourceButton onClick={() => setIsModalOpen(true)} />
-      <div className="flex flex-col gap-4 w-full overflow-scroll">
-        {sources.map((source) => (
-          <SourceItem
-            color={source.color}
-            textColor={source.textColor}
-            initial={source.initial}
-            video={source.type === "video"}
-            name={source.name || source.url}
-            key={source.id}
-            trashCanCallback={() => handleRemoveSource(source.id)}
-          />
-        ))}
+      <div className="flex flex-col gap-10 w-full justify-center items-center">
+        {sources.length < 1 && (
+          <p className="dark:text-gray-200">
+            No sources added yet. Tap the + Add Source button to add a source.
+          </p>
+        )}
+        {sources.length > 0 && (
+          <>
+            <div className="flex flex-col gap-6 w-full overflow-scroll items-center">
+              {sources.map((source) => (
+                <SourceItem
+                  color={source.color}
+                  textColor={source.textColor}
+                  initial={source.initial}
+                  video={source.type === "video"}
+                  name={source.name || source.url}
+                  key={source.id}
+                  trashCanCallback={() => handleRemoveSource(source.id)}
+                />
+              ))}
+            </div>
+            {editingSource && (
+              <EditSourceModal
+                editingSourceId={editingSource}
+                sources={sources}
+                setSources={setSources}
+                setEditingSource={setEditingSource}
+              />
+            )}
+          </>
+        )}
       </div>
-      {editingSource && (
-        <EditSourceModal
-          editingSourceId={editingSource}
-          sources={sources}
-          setSources={setSources}
-          setEditingSource={setEditingSource}
-        />
-      )}
     </div>
   );
 };

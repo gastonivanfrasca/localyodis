@@ -33,11 +33,9 @@ export const ThemeSwitcher = () => {
         }
       }}
       type="button"
-      className="flex items-center justify-start py-2 border bg-zinc-100 dark:bg-slate-800 
-                   hover:bg-zinc-200 dark:hover:bg-zinc-700 
-                   rounded-xl transition-colors group font-semibold shadow-sm px-3
-                   border-slate-800 dark:border-zinc-400
-                   "
+      className="flex items-center justify-start py-2 bg-zinc-200 dark:bg-slate-800 
+                   hover:bg-zinc-300 dark:hover:bg-slate-700 
+                   rounded-xl transition-colors group font-semibold shadow-sm px-3 cursor-pointer"
     >
       {icon}
     </button>

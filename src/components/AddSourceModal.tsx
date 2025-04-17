@@ -81,9 +81,14 @@ export const AddSourceModal = (props: AddSourceModalProps) => {
 
   if (!isOpen) return null;
   return (
-    <div className="fixed inset-0 bg-slate-950/80 flex items-center justify-center z-50">
-      <div className="bg-slate-950 dark:bg-white text-white dark:text-black rounded-2xl p-6 w-11/12 max-w-md relative shadow-xl transition-colors">
-        {/* Close Button */}
+    <div
+      className="fixed inset-0 bg-slate-900/80 flex items-center justify-center z-50"
+      onClick={() => setIsModalOpen(false)}
+    >
+      <div
+        className="bg-white dark:bg-slate-950 text-black dark:text-white rounded-2xl p-6 w-11/12 max-w-md relative shadow-xl transition-colors z-10"
+        onClick={(e) => e.stopPropagation()}
+      >
         <button
           className="absolute top-4 right-4 text-inherit hover:opacity-80 cursor-pointer"
           onClick={() => setIsModalOpen(false)}
@@ -106,24 +111,20 @@ export const AddSourceModal = (props: AddSourceModalProps) => {
         </button>
 
         <h2 className="text-2xl font-bold mb-6">Add Source</h2>
-
-        {/* URL input */}
         <label className="block text-sm font-medium mb-2">{getTitle()}</label>
         <textarea
           placeholder={getPlaceholder()}
           value={identifier}
           onChange={(e) => setIdentifier(e.target.value)}
-          className="w-full h-24 bg-zinc-800 dark:bg-zinc-100 dark:text-black dark:placeholder-zinc-500 border border-zinc-500 rounded-lg p-3 text-white placeholder-zinc-400 resize-none focus:outline-none focus:ring-2 focus:ring-white dark:focus:ring-black focus:border-transparent mb-6 transition-all"
+          className="w-full h-24 bg-zinc-100 dark:bg-zinc-800 text-black dark:text-white dark:placeholder-zinc-400 border border-zinc-500 rounded-lg p-3 placeholder-zinc-500 resize-none focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white focus:border-transparent mb-6 transition-all"
         />
-
-        {/* Type selection */}
         <div className="flex justify-end gap-4 mb-6">
           <button
             onClick={() => setSourceType("rss")}
             className={`flex items-center gap-2 px-3 py-2 rounded-lg border border-zinc-500 transition ${
               sourceType === "rss"
-                ? "bg-zinc-800 text-white dark:bg-zinc-200 dark:text-black"
-                : "hover:bg-zinc-800 dark:hover:bg-zinc-200 text-white dark:text-black"
+                ? "bg-zinc-200 text-black dark:bg-zinc-800 dark:text-white"
+                : "hover:bg-zinc-200 dark:hover:bg-zinc-800 text-black dark:text-white"
             }`}
           >
             <svg
@@ -147,8 +148,8 @@ export const AddSourceModal = (props: AddSourceModalProps) => {
             onClick={() => setSourceType("youtube")}
             className={`flex items-center gap-2 px-3 py-2 rounded-lg border border-zinc-500 transition ${
               sourceType === "youtube"
-                ? "bg-zinc-800 text-white dark:bg-zinc-200 dark:text-black"
-                : "hover:bg-zinc-800 dark:hover:bg-zinc-200 text-white dark:text-black"
+                ? "bg-zinc-200 text-black dark:bg-zinc-800 dark:text-white"
+                : "hover:bg-zinc-200 dark:hover:bg-zinc-800 text-black dark:text-white"
             }`}
           >
             <svg
@@ -162,13 +163,11 @@ export const AddSourceModal = (props: AddSourceModalProps) => {
             <span className="text-sm font-medium">YT Channel</span>
           </button>
         </div>
-
-        {/* Add button */}
         <div className="flex justify-end">
           <button
             disabled={!identifier}
             onClick={handleSubmit}
-            className="bg-white text-black font-bold py-2 px-6 rounded-lg border border-zinc-500 hover:bg-zinc-200 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-black dark:bg-white text-white dark:text-black font-bold py-2 px-6 rounded-lg border border-zinc-500 hover:bg-zinc-800 dark:hover:bg-zinc-200 transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Add
           </button>

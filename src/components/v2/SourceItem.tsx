@@ -13,7 +13,7 @@ type SourceItemProps = {
 export const SourceItem = (props: SourceItemProps) => {
   const { color, textColor, initial, video, name, trashCanCallback } = props;
   return (
-    <div className="flex items-center justify-between border-2 border-zinc-100 dark:border-zinc-900 text-zinc-800 dark:text-white px-4 py-3 rounded-xl shadow-sm hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors md:w-[400px] w-full">
+    <div className="flex items-center justify-between text-white px-4 py-3 rounded-xl shadow-sm transition-colors md:w-[400px] w-full bg-linear-to-r from-sky-900 to-indigo-900">
       <div className="flex items-center space-x-3">
         <RoundedIdentifier
           color={color}
@@ -22,7 +22,7 @@ export const SourceItem = (props: SourceItemProps) => {
           video={video}
         />
         <div className="flex flex-col">
-          <span className="font-semibold text-sm">{name}</span>
+          <span className="font-semibold text-sm max-w-[200px] truncate">{name}</span>
         </div>
       </div>
       <TrashCan onClick={trashCanCallback} />

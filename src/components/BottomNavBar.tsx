@@ -1,55 +1,29 @@
-import { CornerDownLeft, EllipsisVertical, Home } from "lucide-react";
-
-import { Link } from "react-router";
-
 type BottomNavBarProps = {
-  home?: "link" | "scroll";
-  menu?: boolean;
-  backArrow?: boolean;
-  customButtons?: React.ReactNode;
+  items?: React.ReactNode;
+  desktop?: boolean;
 };
 
-export const BottomNavBar = (props: BottomNavBarProps) => {
-  const { home, menu, backArrow, customButtons } = props;
+export const NavBar = (props: BottomNavBarProps) => {
+  const { items, desktop } = props;
 
-  const HomeButton = () => {
-    if (home === "link") {
-      return (
-        <Link to={"/"}>
-          <Home className="dark:text-gray-400 cursor-pointer" />
-        </Link>
-      );
-    }
+  if (!items) {
+    return null;
+  }
+
+  if (desktop) {
     return (
-      <button
-        onClick={() => {
-          const scrollableContainers = document.querySelectorAll('.overflow-scroll');
-          scrollableContainers.forEach(container => {
-            if (container instanceof HTMLElement) {
-              container.scrollTop = 0;
-            }
-          });
-        }}
-      >
-        <Home className="dark:text-gray-400 cursor-pointer" />
-      </button>
+      <nav className="h-full w-[200px] shadow-md shadow-black dark:bg-slate-900 dark:shadow-lg border-gray-400 p-2 pt-16 flex flex-col gap-6 items-center bg-white z-1">
+        {items}
+      </nav>
     );
-  };
+  }
 
   return (
-    <nav className="w-full h-12 shadow-md shadow-black  dark:bg-slate-950 dark:shadow-lg dark:shadow-white border-gray-400 p-8 flex justify-between items-center bottom-0 fixed bg-white" style={{ zIndex: 10 }}>
-      {backArrow && (
-        <button onClick={() => window.history.back()}>
-          <CornerDownLeft className="dark:text-gray-400" />
-        </button>
-      )}
-      {home && <HomeButton />}
-      {customButtons}
-      {menu && (
-        <Link to={"/menu"}>
-          <EllipsisVertical className="dark:text-gray-400" />
-        </Link>
-      )}
+    <nav
+      className="w-full h-12 shadow-md shadow-black  dark:bg-slate-900 dark:shadow-lg dark:shadow-white border-gray-400 p-8 flex flex-row justify-between items-center bottom-0 fixed bg-white"
+      style={{ zIndex: 10 }}
+    >
+      {items}
     </nav>
   );
 };
