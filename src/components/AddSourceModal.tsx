@@ -4,7 +4,6 @@ import { Source } from "../types/storage";
 import { checkIfSourceExists } from "../utils/validations";
 import { fetchSingleFeed } from "../utils/api";
 import { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 
 type AddSourceModalProps = {
   isOpen: boolean;
@@ -50,7 +49,7 @@ export const AddSourceModal = (props: AddSourceModalProps) => {
         url: video ? rssData.link[0]["$"].href : identifier,
         type: video ? "video" : "rss",
         addedOn: new Date().toISOString(),
-        id: uuidv4(),
+        id: crypto.randomUUID(),
         color: bgColor,
         textColor: textColor,
         initial: title[0],

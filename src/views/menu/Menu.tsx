@@ -24,15 +24,32 @@ export const Menu = () => {
           <ThemeSwitcher />
         </div>
         <div className="flex flex-col gap-4 justify-center items-center w-full">
-          <Link to={"/sources"} className="cursor-pointer w-full justify-center items-center flex">
+          <Link
+            to={"/sources"}
+            className="cursor-pointer w-full justify-center items-center flex"
+          >
             <MenuItem icon={<Rss />} label="Sources" />
           </Link>
-          <MenuItem icon={<Upload />} label="Export Configuration" onClick={() => setExportOpen(true)} />
-          <MenuItem icon={<Download />} label="Import Configuration" onClick={() => setImportOpen(true)} />
+          <MenuItem
+            icon={<Upload />}
+            label="Export Configuration"
+            onClick={() => setExportOpen(true)}
+          />
+          <MenuItem
+            icon={<Download />}
+            label="Import Configuration"
+            onClick={() => setImportOpen(true)}
+          />
         </div>
       </div>
-      <ExportConfigModal isOpen={exportOpen} onClose={() => setExportOpen(false)} />
-      <ImportConfigModal isOpen={importOpen} onClose={() => setImportOpen(false)} />
+      <ExportConfigModal
+        isOpen={exportOpen}
+        onClose={() => setExportOpen(false)}
+      />
+      <ImportConfigModal
+        isOpen={importOpen}
+        onClose={() => setImportOpen(false)}
+      />
     </div>
   );
 };
