@@ -64,7 +64,7 @@ export const PubsList = (props: PubsListProps) => {
       });
       try {
         const rssItems = await fetchFeeds(sourcesURL);
-        setRssItems(rssItems);
+        setRssItems(rssItems.feed);
       } catch (error) {
         console.error(error);
       }
@@ -130,7 +130,7 @@ export const PubsList = (props: PubsListProps) => {
           }
         }}
       >
-        {rssItems.map((item) => {
+        {rssItems.length > 0 && rssItems.map((item) => {
           const sourceData = getSourceByID(item.source);
           if (!sourceData) return null;
           const bookmark = localBookmarks.find((bookmark) => {

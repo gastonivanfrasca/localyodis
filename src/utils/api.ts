@@ -4,7 +4,7 @@ import { LocallyStoredData as StoredData } from "../types/storage";
 export const API_BASE_URL = import.meta.env.VITE_SERVER_BASEPATH;
 
 export const getApiUrl = (path: string) => {
-  return `${API_BASE_URL}${path.startsWith('/') ? path : `/${path}`}`;
+  return `${API_BASE_URL}${path.startsWith("/") ? path : `/${path}`}`;
 };
 
 // --- RSS Feed Fetching ---
@@ -22,7 +22,7 @@ export const fetchFeeds = async (sources: SourceToFetch[]) => {
 };
 
 export const fetchSingleFeed = async (id: string, video: boolean) => {
-  const response = await fetch(getApiUrl('/rss'), {
+  const response = await fetch(getApiUrl("/rss"), {
     method: "POST",
     body: JSON.stringify({ id, video }),
     headers: { "Content-Type": "application/json" },
@@ -35,26 +35,28 @@ export const fetchSingleFeed = async (id: string, video: boolean) => {
 
 // --- Configuration Management ---
 
-export const uploadConfig = async (data: StoredData): Promise<{ id: string }> => {
-  const response = await fetch(getApiUrl('/config/upload'), {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+export const uploadConfig = async (
+  data: StoredData
+): Promise<{ id: string }> => {
+  const response = await fetch(getApiUrl("/config/upload"), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
   if (!response.ok) {
     throw new Error(`Upload failed: ${response.statusText}`);
   }
   const result = await response.json();
-   if (typeof result.id !== 'string') {
-       throw new Error('Invalid server response: ID not found or not a string');
-   }
+  if (typeof result.id !== "string") {
+    throw new Error("Invalid server response: ID not found or not a string");
+  }
   return result;
 };
 
 export const downloadConfig = async (id: string): Promise<StoredData> => {
-  const response = await fetch(getApiUrl('/config/download'), {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+  const response = await fetch(getApiUrl("/config/download"), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ id }),
   });
   if (!response.ok) {
