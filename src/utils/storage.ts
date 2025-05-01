@@ -18,14 +18,6 @@ export const getLocallyStoredData = (): LocallyStoredData => {
     ? (JSON.parse(storedData) as LocallyStoredData)
     : (defaultLocallyStoredData as LocallyStoredData);
 
-    parsedStoredData.sources.forEach((source) => {
-      if (typeof source.name === "object" && source.name !== null) {
-        source.name = source.name["_"] ? source.name["_"] : source.name;
-        source.initial = source.name[0];
-        storeDataLocally(parsedStoredData);
-      }
-    });
-
   return parsedStoredData;
 };
 

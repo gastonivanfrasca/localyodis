@@ -19,7 +19,7 @@ export const fetchRSS = async (sources: SourceToFetch[]) => {
     const rssFeed = await response.json();
     return rssFeed;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
@@ -38,6 +38,6 @@ export const fetchSingleRSS = async (id: string, video: boolean) => {
     const rssFeed = await response.json();
     return rssFeed;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };

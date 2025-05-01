@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router";
 
 import App from "./App.tsx";
+import { ExportData } from "./views/export/ExportData.tsx"; // Import the new view
 import { Menu } from "./views/menu/Menu.tsx";
 import { NavigationProvider } from "./context/NavigationContext";
 import { Sources } from "./views/sources/Sources.tsx";
@@ -17,6 +18,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/" element={<App />} />
             <Route path="/menu" element={<Menu />} />
             <Route path="/sources" element={<Sources />} />
+            <Route path="/export" element={<ExportData />} /> {/* Add route for ExportData */}
           </Route>
         </Routes>
       </BrowserRouter>

@@ -1,10 +1,4 @@
-import {
-  ArrowLeft,
-  Bookmark,
-  Home,
-  ListFilter,
-  Settings,
-} from "lucide-react";
+import { ArrowLeft, Bookmark, Home, ListFilter, Settings } from "lucide-react";
 import { getLocallyStoredData, storeDataLocally } from "../../utils/storage";
 
 import { Link } from "react-router";
@@ -15,9 +9,7 @@ import { useNavigate } from "react-router";
 import { useNavigation } from "../../context/hooks";
 
 export const DefaultNavigationItems = () => {
-  const { navigation, setNavigation } = useNavigation();
-
-  const isDesktop = window.innerWidth > 768;
+  const { navigation, setNavigation, isDesktop } = useNavigation();
 
   useEffect(() => {
     const localData = getLocallyStoredData();
