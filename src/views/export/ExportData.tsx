@@ -1,9 +1,9 @@
+import { downloadConfig, uploadConfig } from '../../utils/api';
 import { getLocallyStoredData, storeDataLocally } from '../../utils/storage';
 
 import { NavBar } from '../../components/BottomNavBar';
 import { NavigationWithBack } from '../../components/v2/NavigationItems';
 import QRCode from 'qrcode';
-import { getApiUrl } from '../../utils/api';
 import { useNavigation } from '../../context/hooks';
 import { useState } from 'react';
 
@@ -21,13 +21,8 @@ export const ExportData = () => {
     setQrCodeUrl(null);
     try {
       const localData = getLocallyStoredData();
-      const response = await fetch(getApiUrl('/config/upload'), {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(localData)
-      });
-      if (!response.ok) throw new Error(`Upload failed: ${response.statusText}`);
-      const { id } = await response.json();
+      const { id } = await uploadConfig(localData);
+
       if (typeof id !== 'string') throw new Error('Invalid server response');
 
       const qrData = await QRCode.toDataURL(id, { errorCorrectionLevel: 'L' });
@@ -51,13 +46,7 @@ export const ExportData = () => {
     setMessage(null);
     try {
       if (!importId) throw new Error('Please enter a Configuration ID to import.');
-      const response = await fetch(getApiUrl('/config/download'), {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: importId }),
-      });
-      if (!response.ok) throw new Error(`Download failed: ${response.statusText}`);
-      const downloadedData = await response.json();
+      const downloadedData = await downloadConfig(importId);
       // Store to localStorage
       storeDataLocally(downloadedData);
       setMessage('Configuration imported successfully! Please reload the app to apply.');

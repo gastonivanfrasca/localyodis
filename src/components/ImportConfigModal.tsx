@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { getApiUrl } from '../utils/api';
+import { downloadConfig } from '../utils/api';
 import { storeDataLocally } from '../utils/storage';
 
 type ImportConfigModalProps = {
@@ -26,13 +26,7 @@ export const ImportConfigModal = ({ isOpen, onClose }: ImportConfigModalProps) =
     setMessage(null);
     try {
       if (!importId) throw new Error('Enter a Configuration ID to import.');
-      const response = await fetch(getApiUrl('/config/download'), {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: importId }),
-      });
-      if (!response.ok) throw new Error(`Download failed: ${response.statusText}`);
-      const data = await response.json();
+      const data = await downloadConfig(importId);
       storeDataLocally(data);
       setMessage('Configuration imported successfully. Reload to apply.');
     } catch (err: any) {

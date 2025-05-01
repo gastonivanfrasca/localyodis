@@ -16,3 +16,9 @@ type YTLink = Array<{
   };
   [key: string]: string | number | boolean | object | null | undefined;
 }>;
+
+
+export type SourceToFetch = {
+  id: string;
+  url: string;
+};

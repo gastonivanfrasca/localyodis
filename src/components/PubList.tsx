@@ -7,7 +7,7 @@ import { LoadingSpinner } from "./LoadingSpinner";
 import { Navigations } from "../types/navigation";
 import { RSSItem } from "../types/rss";
 import { RoundedIdentifier } from "./v2/RoundedIdentifier";
-import { fetchRSS } from "../utils/rss";
+import { fetchFeeds } from "../utils/api";
 import { formatPubDate } from "../utils/format";
 import { getLocallyStoredData } from "../utils/storage";
 
@@ -63,7 +63,7 @@ export const PubsList = (props: PubsListProps) => {
         };
       });
       try {
-        const rssItems = await fetchRSS(sourcesURL);
+        const rssItems = await fetchFeeds(sourcesURL);
         setRssItems(rssItems);
       } catch (error) {
         console.error(error);

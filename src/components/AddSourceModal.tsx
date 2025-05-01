@@ -2,7 +2,7 @@ import { getLocallyStoredData, storeDataLocally } from "../utils/storage";
 
 import { Source } from "../types/storage";
 import { checkIfSourceExists } from "../utils/validations";
-import { fetchSingleRSS } from "../utils/rss";
+import { fetchSingleFeed } from "../utils/api";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
@@ -34,7 +34,7 @@ export const AddSourceModal = (props: AddSourceModalProps) => {
         throw new Error("Source already exists");
       }
 
-      const rssData = await fetchSingleRSS(identifier, video);
+      const rssData = await fetchSingleFeed(identifier, video);
       let title = rssData.title[0];
       const bgColor = generateRandomColor();
       const textColor = generateTextColorForBackground(bgColor);
