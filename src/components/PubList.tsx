@@ -61,22 +61,20 @@ const Row = ({ index, style, items, localBookmarks, onBookmark, onUnbookmark }: 
 
   return (
     <div
-      className="flex flex-row w-full gap-1 md:w-[800px] rounded-sm border-b-2 border-neutral-200 dark:border-neutral-600 text-left cursor-pointer mt-4"
+      className="flex w-full border-b border-neutral-200 dark:border-neutral-700 text-left px-4 py-4"
       key={link}
       style={style}
     >
-      <div className="flex flex-col gap-2 rounded-sm dark:text-gray-200  grow break-words max-w-full items-start justify-end pb-4 w-full">
-        <div className="flex flex-row gap-2 items-start">
-          <button
-            onClick={() => window.open(link, "_blank")}
-            className="font-semibold text-lg text-left hover:underline"
-            aria-label={`Read article: ${title}`}
-          >
-            {title}
-          </button>
-        </div>
-        <div className="flex flex-row gap-2 w-full justify-between items-end mt-2">
-          <div className="flex flex-row gap-2 items-center">
+      <div className="flex flex-col gap-2 dark:text-gray-200 grow break-words max-w-full items-start w-full">
+        <button
+          onClick={() => window.open(link, "_blank")}
+          className="font-semibold text-base sm:text-lg text-left hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-slate-900 rounded"
+          aria-label={`Read article: ${title}`}
+        >
+          {title}
+        </button>
+        <div className="flex flex-row gap-3 w-full justify-between items-center mt-1">
+          <div className="flex flex-row gap-2 items-center min-w-0">
             <RoundedIdentifier
               color={sourceData.color}
               textColor={sourceData.textColor}
@@ -84,11 +82,11 @@ const Row = ({ index, style, items, localBookmarks, onBookmark, onUnbookmark }: 
               video={sourceData.type === "video"}
               small
             />
-            <p className="text-xs truncate max-w-[100px]">
+            <p className="text-xs truncate max-w-[100px] sm:max-w-[150px] md:max-w-[200px]">
               {sourceData.name}
             </p>
             {item.pubDate && (
-              <p className="text-xs self-end text-right whitespace-nowrap">
+              <p className="text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap ml-1 sm:ml-2">
                 {formatPubDate(item.pubDate)}
               </p>
             )}
@@ -96,19 +94,19 @@ const Row = ({ index, style, items, localBookmarks, onBookmark, onUnbookmark }: 
 
           {bookmark !== undefined ? (
             <button
-              className="dark:text-gray-200 underline cursor-pointer p-1"
+              className="flex-shrink-0 p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-slate-900 transition-colors"
               onClick={() => onUnbookmark(item)}
               aria-label="Remove bookmark"
             >
-              <BookmarkCheck className="h-4" style={{ color: "#1e7bc0" }} />
+              <BookmarkCheck className="h-5 w-5" style={{ color: "#1e7bc0" }} />
             </button>
           ) : (
             <button
-              className="dark:text-gray-200 underline cursor-pointer p-1"
+              className="flex-shrink-0 p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-slate-900 transition-colors"
               onClick={() => onBookmark(item)}
               aria-label="Bookmark item"
             >
-              <BookmarkIcon className="h-4 text-gray-800 dark:text-gray-400 " /> {/* Use renamed component */}
+              <BookmarkIcon className="h-5 w-5 text-gray-600 dark:text-gray-400" />
             </button>
           )}
         </div>
@@ -252,9 +250,11 @@ export const PubsList = () => {
     };
 
     const title = getRSSItemStrPropLocal(item, "title");
-    const titleLines = Math.ceil(title.length / (isDesktop ? 60 : 40));
-    const baseHeight = 100;
-    const titleHeight = titleLines * 20;
+    const charsPerLine = isDesktop ? 70 : 35;
+    const titleLines = Math.ceil(title.length / charsPerLine);
+    const baseHeight = 75;
+    const titleLineHeight = 24;
+    const titleHeight = titleLines * titleLineHeight;
     return baseHeight + titleHeight;
   };
 
@@ -262,7 +262,7 @@ export const PubsList = () => {
     <>
       <div
         id="pubs-list"
-        className="p-8 pt-0 flex flex-col gap-8 max-h-full items-center h-full overflow-scroll"
+        className="flex flex-col w-full max-h-full h-full overflow-scroll"
         onScroll={(e) => {
           scrollPositionRef.current = (e.target as HTMLDivElement).scrollTop;
         }}
@@ -274,12 +274,12 @@ export const PubsList = () => {
                 ref={listRef}
                 itemSize={getItemSize}
                 itemCount={rssItems.length}
-                width={isDesktop ? 800 : 300}
+                width={'100%'}
                 height={height}
                 itemKey={(index) => {
                   const item = rssItems[index];
                   const link = item?.link || item?.id || index;
-                  return `${link}-${item?.pubDate || index}`;
+                  return `${item?.source || 'src'}-${link}-${item?.pubDate || index}`;
                 }}
               >
                 {(props) => (
@@ -311,7 +311,7 @@ export const PubsList = () => {
 
 export const PubListEmpty = () => {
   return (
-    <div className="p-8 flex flex-col gap-8 max-h-full overflow-scroll items-center">
+    <div className="p-8 flex flex-col gap-4 items-center justify-center text-center h-full">
       <p className="text-lg dark:text-gray-200">
         No rss sources added. Go to settings to add sources.
       </p>
@@ -321,7 +321,7 @@ export const PubListEmpty = () => {
 
 export const BookmarksEmpty = () => {
   return (
-    <div className="p-8 flex flex-col gap-8 max-h-full overflow-scroll items-center">
+    <div className="p-8 flex flex-col gap-4 items-center justify-center text-center h-full">
       <p className="text-lg dark:text-gray-200">
         No bookmarks added. Bookmark a publication to see it here.
       </p>
