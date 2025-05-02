@@ -33,8 +33,11 @@ export const AddSourceModal = (props: AddSourceModalProps) => {
         throw new Error("Source already exists");
       }
 
-      const rssData = await fetchSingleFeed(identifier, video);
-      let title = rssData.title[0];
+      let rssData = await fetchSingleFeed(identifier, video);
+      if (!rssData) {
+        throw new Error("Invalid source");
+      }
+      let title = rssData.metadata.title;
       const bgColor = generateRandomColor();
       const textColor = generateTextColorForBackground(bgColor);
 

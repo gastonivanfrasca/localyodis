@@ -213,6 +213,12 @@ export const PubsList = () => {
     });
   }, []);
 
+  useEffect(() => {
+    if (listRef.current) {
+      listRef.current.resetAfterIndex(0);
+    }
+  }, [rssItems]);
+
   if (
     rssItems.length < 1 &&
     navigation !== Navigations.BOOKMARKEDS &&
@@ -243,16 +249,10 @@ export const PubsList = () => {
 
     const title = getRSSItemStrPropLocal(item, "title");
     const titleLines = Math.ceil(title.length / (isDesktop ? 60 : 40));
-    const baseHeight = 80;
+    const baseHeight = 100;
     const titleHeight = titleLines * 20;
     return baseHeight + titleHeight;
   };
-
-  useEffect(() => {
-    if (listRef.current) {
-      listRef.current.resetAfterIndex(0);
-    }
-  }, [rssItems]);
 
   return (
     <>
@@ -270,7 +270,7 @@ export const PubsList = () => {
                 ref={listRef}
                 itemSize={getItemSize}
                 itemCount={rssItems.length}
-                width={isDesktop ? 800 : '100%'}
+                width={isDesktop ? 800 : 300}
                 height={height}
                 itemKey={(index) => {
                   const item = rssItems[index];

@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
-import { Navigations } from '../types/navigation';
-import { RSSItem } from '../types/rss';
-import { Source } from '../types/storage';
-import { fetchFeeds } from '../utils/api';
+import { useEffect, useState } from "react";
+import { Navigations } from "../types/navigation";
+import { RSSItem } from "../types/rss";
+import { Source } from "../types/storage";
+import { fetchFeeds } from "../utils/api";
 
 export const useFeedItems = (
   navigation: Navigations,
@@ -15,16 +15,16 @@ export const useFeedItems = (
 
   useEffect(() => {
     setLoading(true);
-    setRssItems([]); // Clear items on dependency change before fetching
+    setRssItems([]);
 
     if (navigation === Navigations.BOOKMARKEDS) {
-      // Directly use localBookmarks for the bookmarks view
-      setRssItems([...localBookmarks].sort((a, b) => {
-        // Sort bookmarks by date, newest first
-        const dateA = a.pubDate ? new Date(a.pubDate).getTime() : 0;
-        const dateB = b.pubDate ? new Date(b.pubDate).getTime() : 0;
-        return dateB - dateA;
-      }));
+      setRssItems(
+        [...localBookmarks].sort((a, b) => {
+          const dateA = a.pubDate ? new Date(a.pubDate).getTime() : 0;
+          const dateB = b.pubDate ? new Date(b.pubDate).getTime() : 0;
+          return dateB - dateA;
+        })
+      );
       setLoading(false);
       return;
     }
@@ -50,22 +50,20 @@ export const useFeedItems = (
         const fetchedData = await fetchFeeds(sourcesURL);
         // Sort fetched items by date, newest first
         const sortedFeed = fetchedData.feed.sort((a, b) => {
-            const dateA = a.pubDate ? new Date(a.pubDate).getTime() : 0;
-            const dateB = b.pubDate ? new Date(b.pubDate).getTime() : 0;
-            return dateB - dateA;
+          const dateA = a.pubDate ? new Date(a.pubDate).getTime() : 0;
+          const dateB = b.pubDate ? new Date(b.pubDate).getTime() : 0;
+          return dateB - dateA;
         });
         setRssItems(sortedFeed);
       } catch (error) {
-        console.error('Failed to fetch feeds:', error);
-        setRssItems([]); // Clear items on error
+        console.error("Failed to fetch feeds:", error);
+        setRssItems([]);
       } finally {
         setLoading(false);
       }
     };
 
     fetchRSSItems();
-
-    // Dependencies: Re-run when navigation, active sources, all sources list, or bookmarks change
   }, [navigation, activeSources, allSources, localBookmarks]);
 
   return { rssItems, loading };
