@@ -29,8 +29,10 @@ export const ImportConfigModal = ({ isOpen, onClose }: ImportConfigModalProps) =
       const data = await downloadConfig(importId);
       storeDataLocally(data);
       setMessage('Configuration imported successfully. Reload to apply.');
-    } catch (err: any) {
-      setMessage(err.message || 'Import failed.');
+    } catch (err: unknown) { // Change 'any' to 'unknown'
+      // Type check for error message
+      const errorMessage = err instanceof Error ? err.message : 'Import failed.';
+      setMessage(errorMessage);
     } finally {
       setLoading(false);
     }

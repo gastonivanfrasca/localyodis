@@ -34,8 +34,10 @@ export const ExportData = () => {
       } catch {
         setMessage(`QR code generated. Please copy ID manually: ${id}`);
       }
-    } catch (err: any) {
-      setMessage(err.message || 'Failed to export configuration');
+    } catch (err: unknown) { // Change 'any' to 'unknown'
+      // Type check for error message
+      const errorMessage = err instanceof Error ? err.message : 'Failed to export configuration';
+      setMessage(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -50,8 +52,10 @@ export const ExportData = () => {
       // Store to localStorage
       storeDataLocally(downloadedData);
       setMessage('Configuration imported successfully! Please reload the app to apply.');
-    } catch (err: any) {
-      setMessage(err.message || 'Failed to import configuration');
+    } catch (err: unknown) { // Change 'any' to 'unknown'
+      // Type check for error message
+      const errorMessage = err instanceof Error ? err.message : 'Failed to import configuration';
+      setMessage(errorMessage);
     } finally {
       setImporting(false);
     }

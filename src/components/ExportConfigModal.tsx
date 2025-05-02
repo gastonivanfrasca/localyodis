@@ -51,8 +51,9 @@ export const ExportConfigModal = ({ isOpen, onClose }: ExportConfigModalProps) =
       } catch {
         setMessage(`QR code generated. Please copy ID manually if needed.`);
       }
-    } catch (err: any) {
-      setMessage(err.message || 'Failed to export configuration');
+    } catch (err: unknown) { 
+      const errorMessage = err instanceof Error ? err.message : 'Failed to export configuration';
+      setMessage(errorMessage);
     } finally {
       setLoading(false);
     }
