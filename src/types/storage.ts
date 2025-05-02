@@ -1,4 +1,5 @@
 import { Navigations } from "./navigation";
+import { RSSItem } from "./rss"; // Import RSSItem
 
 export type Source = {
   name: string | null | undefined;
@@ -11,16 +12,12 @@ export type Source = {
   type: string;
 };
 
-export type Bookmark = {
-  title: string | null | undefined;
-  link: string | null | undefined;
-  source: string | null | undefined;
-  pubDate: string | null | undefined;
-};
+// Make Bookmark compatible with RSSItem by adding missing optional fields
+export type Bookmark = Pick<RSSItem, 'title' | 'link' | 'source' | 'pubDate' | 'id' | 'description' | 'guid' | 'rssName' | 'rssImage'>;
 
 export type LocallyStoredData = {
   theme: string;
   sources: Source[];
-  bookmarks: Bookmark[];
+  bookmarks: Bookmark[]; // Now uses the updated Bookmark type
   navigation: Navigations;
 };

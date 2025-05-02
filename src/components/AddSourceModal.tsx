@@ -37,7 +37,9 @@ export const AddSourceModal = (props: AddSourceModalProps) => {
       if (!rssData) {
         throw new Error("Invalid source");
       }
-      let title = rssData.metadata.title;
+
+      const metadata = rssData.metadata;
+      let title = metadata.title;
       const bgColor = generateRandomColor();
       const textColor = generateTextColorForBackground(bgColor);
 
@@ -49,7 +51,7 @@ export const AddSourceModal = (props: AddSourceModalProps) => {
 
       sources.push({
         name: title,
-        url: video ? rssData.link[0]["$"].href : identifier,
+        url: video ? metadata.link[0] : identifier,
         type: video ? "video" : "rss",
         addedOn: new Date().toISOString(),
         id: crypto.randomUUID(),

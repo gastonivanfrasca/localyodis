@@ -49,7 +49,7 @@ export const useFeedItems = (
       try {
         const fetchedData = await fetchFeeds(sourcesURL);
         // Sort fetched items by date, newest first
-        const sortedFeed = fetchedData.feed.sort((a, b) => {
+        const sortedFeed = fetchedData.feed.sort((a: { pubDate: string | number | Date; }, b: { pubDate: string | number | Date; }) => {
           const dateA = a.pubDate ? new Date(a.pubDate).getTime() : 0;
           const dateB = b.pubDate ? new Date(b.pubDate).getTime() : 0;
           return dateB - dateA;

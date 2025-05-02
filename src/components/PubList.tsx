@@ -1,4 +1,4 @@
-import { Bookmark, BookmarkCheck } from "lucide-react";
+import { Bookmark as BookmarkIcon, BookmarkCheck } from "lucide-react"; // Rename imported component
 import { getSourceByID, storeDataLocally } from "../utils/storage";
 import { useEffect, useRef, useState, useMemo, useCallback } from "react";
 
@@ -7,6 +7,7 @@ import { FilterSourcesModal } from "./FilterSourcesModal";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { Navigations } from "../types/navigation";
 import { RSSItem } from "../types/rss";
+import { Bookmark as BookmarkType } from "../types/storage"; // Import the type with a different name
 import { RoundedIdentifier } from "./v2/RoundedIdentifier";
 import { VariableSizeList } from "react-window";
 import { formatPubDate } from "../utils/format";
@@ -107,7 +108,7 @@ const Row = ({ index, style, items, localBookmarks, onBookmark, onUnbookmark }: 
               onClick={() => onBookmark(item)}
               aria-label="Bookmark item"
             >
-              <Bookmark className="h-4 text-gray-800 dark:text-gray-400 " />
+              <BookmarkIcon className="h-4 text-gray-800 dark:text-gray-400 " /> {/* Use renamed component */}
             </button>
           )}
         </div>
@@ -168,14 +169,17 @@ export const PubsList = () => {
       return String(value); 
     };
 
-    const newBookmark = {
+    const newBookmark: BookmarkType = { // Use the renamed type
       title: getRSSItemStrPropLocal(item, "title"),
       link: extractLinkLocal(item),
       source: item.source,
       pubDate: getRSSItemStrPropLocal(item, "pubDate"),
-      id: item.id, 
+      id: item.id,
       description: getRSSItemStrPropLocal(item, "description"),
-    } as RSSItem;
+      guid: item.guid,
+      rssName: item.rssName, // Add potentially missing fields
+      rssImage: item.rssImage,
+    };
 
     setLocalBookmarks(prevBookmarks => {
         const updatedBookmarks = [...prevBookmarks, newBookmark];
