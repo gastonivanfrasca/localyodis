@@ -8,6 +8,7 @@ import { LoadingSpinner } from "./LoadingSpinner";
 import { Navigations } from "../types/navigation";
 import { RSSItem } from "../types/rss";
 import { RoundedIdentifier } from "./v2/RoundedIdentifier";
+import UpdateToast from "./UpdateToast"; // Import the new toast component
 import { VariableSizeList } from "react-window";
 import { formatPubDate } from "../utils/format";
 import { getLocallyStoredData } from "../utils/storage";
@@ -127,13 +128,28 @@ export const PubsList = () => {
   const scrollPositionRef = useRef(0);
   const navigationRef = useRef(navigation);
   const listRef = useRef<VariableSizeList>(null);
+  const [isToastVisible, setIsToastVisible] = useState(false); // State for toast visibility
 
-  const { rssItems, loading } = useFeedItems(
+  const { rssItems, loading, newItemsCount, isFeedUpToDate, showToastSignal } = useFeedItems(
     navigation,
     activeSources,
     localBookmarks,
     initialLocalData.sources
   );
+
+  // Effect to show the toast when the signal changes
+  useEffect(() => {
+    if (showToastSignal > 0) { // Check if signal is greater than 0 (initial state)
+        // Only show if there are new items or if the feed is explicitly up to date
+        if (newItemsCount !== null || isFeedUpToDate) {
+             setIsToastVisible(true);
+        }
+    }
+  }, [showToastSignal, newItemsCount, isFeedUpToDate]); // Depend on the signal and the data it represents
+
+  const handleToastDismiss = useCallback(() => {
+    setIsToastVisible(false);
+  }, []);
 
   useEffect(() => {
     const element = document.getElementById("pubs-list") as HTMLDivElement;
@@ -146,6 +162,8 @@ export const PubsList = () => {
     } else {
       element.scrollTop = scrollPositionRef.current;
     }
+     // Reset toast visibility when navigation changes
+    setIsToastVisible(false);
   }, [navigation]);
 
   const bookmarkItem = useCallback((item: RSSItem) => {
@@ -256,13 +274,27 @@ export const PubsList = () => {
 
   return (
     <>
+      {/* Render the UpdateToast component */}
+      <UpdateToast
+        count={newItemsCount}
+        isUpToDate={isFeedUpToDate}
+        visible={isToastVisible}
+        onDismiss={handleToastDismiss}
+      />
       <div
         id="pubs-list"
-        className="flex flex-col w-full max-h-full h-full overflow-scroll md:w-[800px]"
+        className="flex flex-col w-full max-h-full h-full overflow-scroll md:w-[800px] relative" // Added relative positioning for overlay spinner
         onScroll={(e) => {
           scrollPositionRef.current = (e.target as HTMLDivElement).scrollTop;
         }}
       >
+        {/* Conditional rendering logic improved */}
+        {loading && rssItems.length === 0 && <LoadingSpinner />} {/* Show spinner only if loading initial items */}
+
+        {!loading && rssItems.length === 0 && navigation !== Navigations.BOOKMARKEDS && <PubListEmpty />}
+        {!loading && rssItems.length === 0 && navigation === Navigations.BOOKMARKEDS && localBookmarks.length === 0 && <BookmarksEmpty />}
+
+        {/* Render list only if there are items */}
         {rssItems.length > 0 && (
           <AutoSizer>
             {({ height, width }) => (
@@ -291,8 +323,9 @@ export const PubsList = () => {
             )}
           </AutoSizer>
         )}
+         {/* Show loading spinner overlay if loading *after* initial items are shown */}
+         {loading && rssItems.length > 0 && <LoadingSpinner overlay={true} />}
       </div>
-      {loading && <LoadingSpinner />}
       {navigation === Navigations.FILTER_SOURCES && (
         <FilterSourcesModal
           setNavigation={setNavigation}
