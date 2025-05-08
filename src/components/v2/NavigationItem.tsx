@@ -7,12 +7,14 @@ type NavigationItemProps = {
 };
 
 export const NavigationItem = (props: NavigationItemProps) => {
-  const { icon, label, onClick, showLabel } = props;
+  const { icon, label, onClick, showLabel, isActive } = props; // Destructure isActive
   return (
     <button
-      className={`flex items-center md:content-start justify-start space-x-2 text-black dark:text-white px-3 py-2 font-semibold 
-                   hover:bg-zinc-200 dark:hover:bg-slate-700 
-                   rounded-xl transition-colors group md:border-slate-800 md:dark:border-zinc-400  md:w-32 cursor-pointer`}
+      className={`flex items-center md:content-start justify-start space-x-2 text-black dark:text-white px-3 py-2 font-semibold
+                   hover:bg-zinc-200 dark:hover:bg-slate-700
+                   rounded-xl transition-colors group md:border-slate-800 md:dark:border-zinc-400  md:w-32 cursor-pointer
+                   ${isActive ? 'bg-zinc-200 dark:bg-slate-700' : ''} // Add conditional background
+                   `}
       onClick={onClick}
     >
       <div>{icon}</div>

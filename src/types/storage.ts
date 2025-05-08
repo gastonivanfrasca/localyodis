@@ -20,4 +20,5 @@ export type LocallyStoredData = {
   sources: Source[];
   bookmarks: Bookmark[]; // Now uses the updated Bookmark type
   navigation: Navigations;
+  activeSources?: string[]; // Add activeSources as optional
 };

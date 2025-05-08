@@ -1,16 +1,16 @@
 interface LoadingSpinnerProps {
-  overlay?: boolean; // Make overlay prop optional
+  overlay?: boolean;
 }
 
 export const LoadingSpinner = ({ overlay = false }: LoadingSpinnerProps) => {
-  const baseClasses = "flex flex-row gap-2 items-center p-2 rounded-lg animate-pulse";
-  const positionClasses = overlay
-    ? "absolute bottom-[120px] right-10 bg-transparent z-10" // Overlay styles (added z-index)
-    : "flex justify-center items-center h-full w-full"; // Centered styles for initial load
+  const baseClasses = "flex items-center justify-center";
+  const overlayClasses = overlay
+    ? "absolute inset-0 bg-white/50 dark:bg-neutral-900/50 z-10"
+    : "w-full h-full";
 
   return (
-    <div className={`${baseClasses} ${positionClasses}`}>
-      <img src="/logo.png" alt="logo" className="h-8 w-8 animate-pulse" />
+    <div className={`${baseClasses} ${overlayClasses}`}>
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white" />
     </div>
   );
 };
