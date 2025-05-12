@@ -1,4 +1,5 @@
 import { Navigations } from "./navigation";
+import { RSSItem } from "./rss";
 
 export type Source = {
   name: string | null | undefined;
@@ -11,7 +12,7 @@ export type Source = {
   type: string;
 };
 
-export type Bookmark = {
+export type Items = {
   title: string | null | undefined;
   link: string | null | undefined;
   source: string | null | undefined;
@@ -21,6 +22,8 @@ export type Bookmark = {
 export type LocallyStoredData = {
   theme: string;
   sources: Source[];
-  bookmarks: Bookmark[];
+  bookmarks: Items[];
   navigation: Navigations;
+  items: RSSItem[];
+  lastUpdated: string;
 };

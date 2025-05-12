@@ -6,6 +6,8 @@ const defaultLocallyStoredData = {
   sources: [],
   bookmarks: [],
   navigation: Navigations.HOME,
+  items: [],
+  lastUpdated: new Date().toISOString(),
 } as LocallyStoredData;
 
 export const storeDataLocally = (data: LocallyStoredData) => {

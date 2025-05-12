@@ -22,7 +22,7 @@ export const PubsList = (props: PubsListProps) => {
   const localData = getLocallyStoredData();
 
   const [loading, setLoading] = useState(true);
-  const [rssItems, setRssItems] = useState<RSSItem[]>([]);
+  const [rssItems, setRssItems] = useState<RSSItem[]>(localData.items || []);
   const [localBookmarks, setLocalBookmarks] = useState(localData.bookmarks);
   const [activeSources, setActiveSources] = useState<string[]>([
     ...localData.sources.map((source) => source.id),
@@ -64,7 +64,25 @@ export const PubsList = (props: PubsListProps) => {
       });
       try {
         const rssItems = await fetchRSS(sourcesURL);
+        const lastUpdated = localData.lastUpdated;
+        const newItems = rssItems.filter((item: RSSItem) => {
+          const itemPubDate = item.pubDate || "";
+          if (typeof itemPubDate === "object") {
+            return false;
+          }
+          if (lastUpdated) {
+            return checkIfIsANewItemFromLastUpdate(item, lastUpdated);
+          }
+          return true;
+        }
+        );
+        console.log(`Fetched ${newItems.length} new items`);
         setRssItems(rssItems);
+        storeDataLocally({
+          ...localData,
+          items: rssItems,
+          lastUpdated: new Date().toISOString(),
+        });
       } catch (error) {
         console.error(error);
       }
@@ -119,7 +137,7 @@ export const PubsList = (props: PubsListProps) => {
     <>
       <div
         id="pubs-list"
-        className="p-8 flex flex-col gap-8 max-h-full overflow-scroll items-center"
+        className="p-8 flex flex-col gap-8 max-h-full overflow-scroll items-center w-screen"
         onScroll={(e) => {
           const element = e.target as HTMLDivElement;
           const bottom =
@@ -130,7 +148,7 @@ export const PubsList = (props: PubsListProps) => {
           }
         }}
       >
-        {rssItems.map((item) => {
+        {rssItems.map((item, index) => {
           const sourceData = getSourceByID(item.source);
           if (!sourceData) return null;
           const bookmark = localBookmarks.find((bookmark) => {
@@ -148,7 +166,7 @@ export const PubsList = (props: PubsListProps) => {
           return (
             <div
               className="flex flex-row w-full gap-1 md:w-[800px] rounded-sm border-b-2 border-neutral-200 dark:border-neutral-600 text-left cursor-pointer"
-              key={link}
+              key={`${link}-${title}-${index}`}
             >
               <div className="flex flex-col gap-2 rounded-sm dark:text-gray-200  grow break-words max-w-full items-start pb-4">
                 <div className="flex flex-row gap-2 items-start">
@@ -252,3 +270,12 @@ const extractLink = (item: RSSItem): string => {
 
   return item.id || "";
 };
+
+const checkIfIsANewItemFromLastUpdate = (
+  item: RSSItem,
+  lastUpdated: string
+): boolean => {
+  const lastUpdatedDate = new Date(lastUpdated);
+  const itemPubDate = new Date(item.pubDate || "");
+  return itemPubDate > lastUpdatedDate;
+}
