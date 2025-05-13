@@ -1,14 +1,10 @@
 import { Bookmark, BookmarkCheck } from "lucide-react";
 
 import { Navigations } from "../types/navigation";
+import { useNavigation } from "../hooks/navigation";
 
-type BookmarkedsButtonProps = {
-  navigation: Navigations;
-  setNavigation: (value: Navigations) => void;
-};
-
-export const BookmarkedsButton = (props: BookmarkedsButtonProps) => {
-  const { navigation, setNavigation } = props;
+export const BookmarkedsButton = () => {
+  const { navigation, setNavigation } = useNavigation();
 
   if (navigation === Navigations.BOOKMARKEDS) {
     return (

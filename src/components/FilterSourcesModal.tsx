@@ -4,17 +4,18 @@ import { getLocallyStoredData, storeDataLocally } from "../utils/storage";
 import { Navigations } from "../types/navigation";
 import { RoundedIdentifier } from "./v2/RoundedIdentifier";
 import { Source } from "../types/storage";
+import { useNavigation } from "../hooks/navigation";
 
 type FilterSourcesModalProps = {
   allSources: Source[];
   activeSources: string[];
   setActiveSources: (value: string[]) => void;
-  setNavigation: (value: Navigations) => void;
 };
 
 export const FilterSourcesModal = (props: FilterSourcesModalProps) => {
-  const { activeSources, setActiveSources, allSources, setNavigation } = props;
+  const { activeSources, setActiveSources, allSources } = props;
   const localData = getLocallyStoredData();
+  const { setNavigation } = useNavigation();
 
   return (
     <div className="fixed top-0 left-0 w-full h-screen flex justify-center items-center p-8 bg-slate-950/70 z-50">

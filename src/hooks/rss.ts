@@ -8,7 +8,7 @@ export const useRssData = (url: string) => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `https://cors-anywhere.herokuapp.com/${url}`
+          `${url}`
         );
         const text = await response.text();
         const parser = new DOMParser();

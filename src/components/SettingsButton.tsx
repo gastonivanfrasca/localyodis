@@ -1,14 +1,10 @@
 import { EllipsisVertical } from "lucide-react";
 import { Link } from "react-router";
 import { Navigations } from "../types/navigation";
+import { useNavigation } from "../hooks/navigation";
 
-type SettingsButtonProps = {
-  navigation: Navigations;
-  setNavigation: (value: Navigations) => void;
-};
-
-export const SettingsButton = (props: SettingsButtonProps) => {
-  const { setNavigation } = props;
+export const SettingsButton = () => {
+  const { setNavigation } = useNavigation();
 
   const handleOnClick = () => {
     setNavigation(Navigations.SETTINGS);

@@ -10,14 +10,10 @@ import { RoundedIdentifier } from "./v2/RoundedIdentifier";
 import { fetchRSS } from "../utils/rss";
 import { formatPubDate } from "../utils/format";
 import { getLocallyStoredData } from "../utils/storage";
+import { useNavigation } from "../hooks/navigation";
 
-type PubsListProps = {
-  navigation: Navigations;
-  setNavigation: (value: Navigations) => void;
-};
-
-export const PubsList = (props: PubsListProps) => {
-  const { navigation, setNavigation } = props;
+export const PubsList = () => {
+  const { navigation, setNavigation } = useNavigation();
 
   const localData = getLocallyStoredData();
 
@@ -74,8 +70,7 @@ export const PubsList = (props: PubsListProps) => {
             return checkIfIsANewItemFromLastUpdate(item, lastUpdated);
           }
           return true;
-        }
-        );
+        });
         console.log(`Fetched ${newItems.length} new items`);
         setRssItems(rssItems);
         storeDataLocally({
@@ -93,7 +88,7 @@ export const PubsList = (props: PubsListProps) => {
         console.error(error);
         setLoading(false);
       });
-  }, [localBookmarks, navigation, activeSources]);
+  }, [localBookmarks, navigation, activeSources, setNavigation, localData]);
 
   const bookmarkItem = (item: RSSItem) => {
     const newBookmark = {
@@ -223,7 +218,6 @@ export const PubsList = (props: PubsListProps) => {
       {loading && <LoadingSpinner />}
       {navigation === Navigations.FILTER_SOURCES && (
         <FilterSourcesModal
-          setNavigation={setNavigation}
           allSources={localData.sources}
           activeSources={activeSources}
           setActiveSources={setActiveSources}
@@ -278,4 +272,4 @@ const checkIfIsANewItemFromLastUpdate = (
   const lastUpdatedDate = new Date(lastUpdated);
   const itemPubDate = new Date(item.pubDate || "");
   return itemPubDate > lastUpdatedDate;
-}
+};

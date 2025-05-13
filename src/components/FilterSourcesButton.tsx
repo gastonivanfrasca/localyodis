@@ -1,13 +1,9 @@
 import { ListFilter } from "lucide-react";
 import { Navigations } from "../types/navigation";
+import { useNavigation } from "../hooks/navigation";
 
-type FilterSourcesButtonProps = {
-  navigation: Navigations;
-  setNavigation: (value: Navigations) => void;
-};
-
-export const FilterSourcesButton = (props: FilterSourcesButtonProps) => {
-  const { navigation, setNavigation } = props;
+export const FilterSourcesButton = () => {
+  const { navigation, setNavigation } = useNavigation();
 
   if (navigation === Navigations.FILTER_SOURCES) {
     return (

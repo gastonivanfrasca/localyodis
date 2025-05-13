@@ -2,15 +2,15 @@ import { HomeButtonModes, Navigations } from "../types/navigation";
 
 import { Home } from "lucide-react";
 import { Link } from "react-router";
+import { useNavigation } from "../hooks/navigation";
 
 type HomeButtonProps = {
-  navigation: Navigations;
-  setNavigation: (value: Navigations) => void;
   mode: HomeButtonModes;
 };
 
 export const HomeButton = (props: HomeButtonProps) => {
-  const { navigation, setNavigation, mode } = props;
+  const { mode } = props;
+  const { navigation, setNavigation } = useNavigation();
 
   const isActive = navigation === Navigations.HOME;
   const activeClasses = isActive
