@@ -10,17 +10,14 @@ type AddSourceModalProps = {
   isOpen: boolean;
   setIsModalOpen: (isOpen: boolean) => void;
   setSources: (sources: Source[]) => void;
-  setLoading: (loading: boolean) => void;
 };
 
 export const AddSourceModal = (props: AddSourceModalProps) => {
-  const { isOpen, setIsModalOpen, setSources, setLoading } = props;
+  const { isOpen, setIsModalOpen, setSources } = props;
   const [sourceType, setSourceType] = useState("rss");
   const [identifier, setIdentifier] = useState("");
 
   const handleSubmit = async () => {
-    setLoading(true);
-
     const video = sourceType === "youtube";
 
     try {
@@ -59,14 +56,11 @@ export const AddSourceModal = (props: AddSourceModalProps) => {
       storeDataLocally({ ...localData, sources });
       setSources([...sources]);
     } catch (error) {
-      // TODO: Show error to user
       console.error(error);
-    } finally {
-      setLoading(false);
-      setIsModalOpen(false);
-      setIdentifier("");
-      setSourceType("rss");
     }
+    setIsModalOpen(false);
+    setIdentifier("");
+    setSourceType("rss");
   };
 
   const getPlaceholder = () => {

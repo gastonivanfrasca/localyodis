@@ -1,17 +1,21 @@
 import { Bookmark, BookmarkCheck } from "lucide-react";
 
 import { Navigations } from "../types/navigation";
-import { useNavigation } from "../hooks/navigation";
+import { useMainContext } from "../context/main";
 
 export const BookmarkedsButton = () => {
-  const { navigation, setNavigation } = useNavigation();
+  const { state, dispatch } = useMainContext();
+  const navigation = state.navigation;
 
   if (navigation === Navigations.BOOKMARKEDS) {
     return (
       <button
         className="cursor-pointer"
         onClick={() => {
-          setNavigation(Navigations.HOME);
+          dispatch({
+            type: "SET_NAVIGATION",
+            payload: Navigations.HOME,
+          });
         }}
       >
         <BookmarkCheck style={{ color: "#1e7bc0" }} />
@@ -22,7 +26,10 @@ export const BookmarkedsButton = () => {
   return (
     <button
       onClick={() => {
-        setNavigation(Navigations.BOOKMARKEDS);
+        dispatch({
+          type: "SET_NAVIGATION",
+          payload: Navigations.BOOKMARKEDS,
+        });
       }}
       className="cursor-pointer"
     >

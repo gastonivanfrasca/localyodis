@@ -1,55 +1,53 @@
-import { Bookmark, BookmarkCheck } from "lucide-react";
-import { getSourceByID, storeDataLocally } from "../utils/storage";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 import { FilterSourcesModal } from "./FilterSourcesModal";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { Navigations } from "../types/navigation";
+import { PubListItem } from "./v2/PubListItem";
 import { RSSItem } from "../types/rss";
-import { RoundedIdentifier } from "./v2/RoundedIdentifier";
+import { Virtuoso } from "react-virtuoso";
 import { fetchRSS } from "../utils/rss";
-import { formatPubDate } from "../utils/format";
-import { getLocallyStoredData } from "../utils/storage";
-import { useNavigation } from "../hooks/navigation";
+import { useMainContext } from "../context/main";
 
 export const PubsList = () => {
-  const { navigation, setNavigation } = useNavigation();
+  const { state, dispatch } = useMainContext();
 
-  const localData = getLocallyStoredData();
-
-  const [loading, setLoading] = useState(true);
-  const [rssItems, setRssItems] = useState<RSSItem[]>(localData.items || []);
-  const [localBookmarks, setLocalBookmarks] = useState(localData.bookmarks);
-  const [activeSources, setActiveSources] = useState<string[]>([
-    ...localData.sources.map((source) => source.id),
-  ]);
   const scrollPositionRef = useRef(0);
-  const navigationRef = useRef(navigation);
+  const navigationRef = useRef(state.navigation);
 
   useEffect(() => {
     const element = document.getElementById("pubs-list") as HTMLDivElement;
     if (!element) return;
 
-    if (navigationRef.current !== navigation) {
+    if (navigationRef.current !== state.navigation) {
       element.scrollTop = 0;
-      navigationRef.current = navigation;
+      navigationRef.current = state.navigation;
     } else {
       element.scrollTop = scrollPositionRef.current;
     }
-  }, [navigation]);
+  }, [state.navigation]);
 
   useEffect(() => {
-    setLoading(true);
+    dispatch({
+      type: "SET_LOADING",
+      payload: true,
+    });
 
-    if (navigation === Navigations.BOOKMARKEDS) {
-      setRssItems([...(localBookmarks as RSSItem[])]);
-      setLoading(false);
+    if (state.navigation === Navigations.BOOKMARKEDS) {
+      dispatch({
+        type: "SET_ITEMS",
+        payload: state.bookmarks,
+      });
+      dispatch({
+        type: "SET_LOADING",
+        payload: false,
+      });
       return;
     }
 
     const fetchRSSItems = async () => {
-      const sourcesToFetch = localData.sources.filter((source) =>
-        activeSources.includes(source.id)
+      const sourcesToFetch = state.sources.filter((source) =>
+        state.activeSources.includes(source.id)
       );
       if (sourcesToFetch.length < 1) return;
       const sourcesURL = sourcesToFetch.map((source) => {
@@ -59,36 +57,33 @@ export const PubsList = () => {
         };
       });
       try {
-        const rssItems = await fetchRSS(sourcesURL);
-        const lastUpdated = localData.lastUpdated;
-        const newItems = rssItems.filter((item: RSSItem) => {
-          const itemPubDate = item.pubDate || "";
-          if (typeof itemPubDate === "object") {
-            return false;
-          }
-          if (lastUpdated) {
-            return checkIfIsANewItemFromLastUpdate(item, lastUpdated);
-          }
-          return true;
+        const newItems = await fetchRSS(sourcesURL);
+        dispatch({
+          type: "SET_ITEMS",
+          payload: newItems,
         });
-        console.log(`Fetched ${newItems.length} new items`);
-        setRssItems(rssItems);
-        storeDataLocally({
-          ...localData,
-          items: rssItems,
-          lastUpdated: new Date().toISOString(),
+        dispatch({
+          type: "SET_LAST_UPDATED",
+          payload: new Date().toISOString(),
         });
       } catch (error) {
         console.error(error);
       }
     };
-    fetchRSSItems()
-      .then(() => setLoading(false))
-      .catch((error) => {
+
+    (async () => {
+      try {
+        await fetchRSSItems();
+      } catch (error) {
         console.error(error);
-        setLoading(false);
-      });
-  }, [localBookmarks, navigation, activeSources, setNavigation, localData]);
+      } finally {
+        dispatch({
+          type: "SET_LOADING",
+          payload: false,
+        });
+      }
+    })();
+  }, [state.navigation, dispatch, state.sources, state.activeSources, state.bookmarks]);
 
   const bookmarkItem = (item: RSSItem) => {
     const newBookmark = {
@@ -97,130 +92,85 @@ export const PubsList = () => {
       source: item.source,
       pubDate: getRSSItemStrProp(item, "pubDate"),
     };
-    storeDataLocally({
-      ...localData,
-      bookmarks: [...localBookmarks, newBookmark],
+    dispatch({
+      type: "SET_BOOKMARKS",
+      payload: [...state.bookmarks, newBookmark],
     });
-    setLocalBookmarks([...localBookmarks, newBookmark]);
   };
 
   const unbookmarkItem = (item: RSSItem) => {
-    const updatedBookmarks = localBookmarks.filter(
+    const updatedBookmarks = state.bookmarks.filter(
       (bookmark) => bookmark.link !== extractLink(item)
     );
-    storeDataLocally({ ...localData, bookmarks: updatedBookmarks });
-    setLocalBookmarks(updatedBookmarks);
+    dispatch({
+      type: "SET_BOOKMARKS",
+      payload: updatedBookmarks,
+    });
   };
 
   if (
-    rssItems.length < 1 &&
-    navigation !== Navigations.BOOKMARKEDS &&
-    !loading
+    state.items.length < 1 &&
+    state.navigation !== Navigations.BOOKMARKEDS &&
+    !state.loading
   ) {
     return <PubListEmpty />;
   }
 
   if (
-    navigation === Navigations.BOOKMARKEDS &&
-    localBookmarks.length < 1 &&
-    !loading
+    state.navigation === Navigations.BOOKMARKEDS &&
+    state.bookmarks.length < 1 &&
+    !state.loading
   ) {
     return <BookmarksEmpty />;
   }
 
   return (
     <>
-      <div
-        id="pubs-list"
-        className="p-8 flex flex-col gap-8 max-h-full overflow-scroll items-center w-screen"
-        onScroll={(e) => {
-          const element = e.target as HTMLDivElement;
-          const bottom =
-            element.scrollHeight - element.scrollTop === element.clientHeight;
-          if (bottom && !loading) {
-            scrollPositionRef.current = element.scrollTop;
-            setLoading(true);
-          }
-        }}
-      >
-        {rssItems.map((item, index) => {
-          const sourceData = getSourceByID(item.source);
-          if (!sourceData) return null;
-          const bookmark = localBookmarks.find((bookmark) => {
-            const bookmarkLink = bookmark.link;
-            const itemLink = extractLink(item);
-            return bookmarkLink === itemLink;
-          });
+      <div id="pubs-list" className="p-8 flex flex-col gap-8 h-full w-screen">
+        <Virtuoso
+          style={{
+            height: "100vh",
+            scrollBehavior: "smooth",
+            WebkitOverflowScrolling: "touch",
+          }}
+          totalCount={state.items.length}
+          components={{ ScrollSeekPlaceholder: PubListShapeSkeleton }}
+          scrollSeekConfiguration={{
+            enter: (velocity) => Math.abs(velocity) > 500,
+            exit: (velocity) => Math.abs(velocity) < 500,
+          }}
+          itemContent={(index) => {
+            const item = state.items[index];
+            const bookmark = state.bookmarks.find((bookmark) => {
+              const bookmarkLink = bookmark.link;
+              const itemLink = extractLink(item);
+              return bookmarkLink === itemLink;
+            }) as RSSItem | undefined;
 
-          const link = extractLink(item);
-          let title = getRSSItemStrProp(item, "title");
-          if (typeof title === "object") {
-            title = title["_"];
-          }
-
-          return (
-            <div
-              className="flex flex-row w-full gap-1 md:w-[800px] rounded-sm border-b-2 border-neutral-200 dark:border-neutral-600 text-left cursor-pointer"
-              key={`${link}-${title}-${index}`}
-            >
-              <div className="flex flex-col gap-2 rounded-sm dark:text-gray-200  grow break-words max-w-full items-start pb-4">
-                <div className="flex flex-row gap-2 items-start">
-                  <button
-                    onClick={() => window.open(link, "_blank")}
-                    className="font-semibold text-lg text-left"
-                  >
-                    {title}
-                  </button>
-                </div>
-                <div className="flex flex-row gap-2 w-full justify-between items-end mt-2">
-                  <div className="flex flex-row gap-2 items-center">
-                    <RoundedIdentifier
-                      color={sourceData.color}
-                      textColor={sourceData.textColor}
-                      initial={sourceData.initial}
-                      video={sourceData.type === "video"}
-                      small
-                    />
-                    <p className="text-xs truncate max-w-[100px]">
-                      {sourceData.name}
-                    </p>
-                    {item.pubDate && (
-                      <p className="text-xs self-end text-right whitespace-nowrap">
-                        {formatPubDate(item.pubDate)}
-                      </p>
-                    )}
-                  </div>
-
-                  {bookmark !== undefined ? (
-                    <button
-                      className="dark:text-gray-200 underline cursor-pointer"
-                      onClick={() => unbookmarkItem(item)}
-                    >
-                      <BookmarkCheck
-                        className="h-4"
-                        style={{ color: "#1e7bc0" }}
-                      />
-                    </button>
-                  ) : (
-                    <button
-                      className="dark:text-gray-200 underline cursor-pointer"
-                      onClick={() => bookmarkItem(item)}
-                    >
-                      <Bookmark className="h-4 text-gray-800 dark:text-gray-400 " />
-                    </button>
-                  )}
-                </div>
-              </div>
-            </div>
-          );
-        })}
+            return (
+              <PubListItem
+                key={`${item.link}-${index}`}
+                item={item}
+                index={index}
+                bookmark={bookmark}
+                onBookmark={bookmarkItem}
+                onUnbookmark={unbookmarkItem}
+              />
+            );
+          }}
+        />
       </div>
-      {loading && <LoadingSpinner />}
-      {navigation === Navigations.FILTER_SOURCES && (
+      {state.loading && <LoadingSpinner />}
+      {state.navigation === Navigations.FILTER_SOURCES && (
         <FilterSourcesModal
-          allSources={localData.sources}
-          activeSources={activeSources}
-          setActiveSources={setActiveSources}
+          allSources={state.sources}
+          activeSources={state.activeSources}
+          setActiveSources={(sources) => {
+            dispatch({
+              type: "SET_ACTIVE_SOURCES",
+              payload: sources,
+            });
+          }}
         />
       )}
     </>
@@ -265,11 +215,14 @@ const extractLink = (item: RSSItem): string => {
   return item.id || "";
 };
 
-const checkIfIsANewItemFromLastUpdate = (
-  item: RSSItem,
-  lastUpdated: string
-): boolean => {
-  const lastUpdatedDate = new Date(lastUpdated);
-  const itemPubDate = new Date(item.pubDate || "");
-  return itemPubDate > lastUpdatedDate;
+const PubListShapeSkeleton = () => {
+  return (
+    <div className="p-8 flex flex-col gap-8 max-h-full overflow-scroll items-center">
+      <div className="w-full h-12 bg-gray-200 dark:bg-gray-800 rounded-md"></div>
+      <div className="w-full h-12 bg-gray-200 dark:bg-gray-800 rounded-md"></div>
+      <div className="w-full h-12 bg-gray-200 dark:bg-gray-800 rounded-md"></div>
+      <div className="w-full h-12 bg-gray-200 dark:bg-gray-800 rounded-md"></div>
+      <div className="w-full h-12 bg-gray-200 dark:bg-gray-800 rounded-md"></div>
+    </div>
+  );
 };

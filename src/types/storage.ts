@@ -25,5 +25,8 @@ export type LocallyStoredData = {
   bookmarks: Items[];
   navigation: Navigations;
   items: RSSItem[];
+  activeSources: string[];
+  scrollPosition: number;
+  loading: boolean;
   lastUpdated: string;
 };

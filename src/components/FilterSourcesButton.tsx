@@ -1,16 +1,19 @@
 import { ListFilter } from "lucide-react";
 import { Navigations } from "../types/navigation";
-import { useNavigation } from "../hooks/navigation";
+import { useMainContext } from "../context/main";
 
 export const FilterSourcesButton = () => {
-  const { navigation, setNavigation } = useNavigation();
+  const { state, dispatch } = useMainContext();
 
-  if (navigation === Navigations.FILTER_SOURCES) {
+  if (state.navigation === Navigations.FILTER_SOURCES) {
     return (
       <button
         className="cursor-pointer"
         onClick={() => {
-          setNavigation(Navigations.HOME);
+          dispatch({
+            type: "SET_NAVIGATION",
+            payload: Navigations.HOME,
+          });
         }}
       >
         <ListFilter style={{ color: "#1e7bc0" }} />
@@ -21,7 +24,10 @@ export const FilterSourcesButton = () => {
   return (
     <button
       onClick={() => {
-        setNavigation(Navigations.FILTER_SOURCES);
+        dispatch({
+          type: "SET_NAVIGATION",
+          payload: Navigations.FILTER_SOURCES,
+        });
       }}
       className="cursor-pointer"
     >

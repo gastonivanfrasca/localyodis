@@ -1,10 +1,9 @@
 import { Check, Eraser } from "lucide-react";
-import { getLocallyStoredData, storeDataLocally } from "../utils/storage";
 
 import { Navigations } from "../types/navigation";
 import { RoundedIdentifier } from "./v2/RoundedIdentifier";
 import { Source } from "../types/storage";
-import { useNavigation } from "../hooks/navigation";
+import { useMainContext } from "../context/main";
 
 type FilterSourcesModalProps = {
   allSources: Source[];
@@ -14,8 +13,7 @@ type FilterSourcesModalProps = {
 
 export const FilterSourcesModal = (props: FilterSourcesModalProps) => {
   const { activeSources, setActiveSources, allSources } = props;
-  const localData = getLocallyStoredData();
-  const { setNavigation } = useNavigation();
+  const { dispatch } = useMainContext();
 
   return (
     <div className="fixed top-0 left-0 w-full h-screen flex justify-center items-center p-8 bg-slate-950/70 z-50">
@@ -27,7 +25,7 @@ export const FilterSourcesModal = (props: FilterSourcesModalProps) => {
               <div key={source.id} className="flex items-center gap-2">
                 <input
                   type="checkbox"
-                  className="cursor-pointer rounded-sm p-4 dark:bg-neutral-700 accent-gray-800 dark:accent-gray-800 w-4 h-4"  
+                  className="cursor-pointer rounded-sm p-4 dark:bg-neutral-700 accent-gray-800 dark:accent-gray-800 w-4 h-4"
                   id={source.id}
                   checked={activeSources.includes(source.id)}
                   onChange={(e) => {
@@ -69,10 +67,9 @@ export const FilterSourcesModal = (props: FilterSourcesModalProps) => {
           <button
             className="cursor-pointer"
             onClick={() => {
-              setNavigation(Navigations.HOME);
-              storeDataLocally({
-                ...localData,
-                navigation: Navigations.HOME,
+              dispatch({
+                type: "SET_NAVIGATION",
+                payload: Navigations.HOME,
               });
             }}
           >

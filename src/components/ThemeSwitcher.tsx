@@ -1,35 +1,39 @@
 import { Moon, Sun } from "lucide-react";
-import { getLocallyStoredData, storeDataLocally } from "../utils/storage";
 
-import { useState } from "react";
+import { useMainContext } from "../context/main";
+
+enum Themes {
+  DARK = "dark",
+  LIGHT = "light",
+}
+
+const getThemeIcon = (theme: Themes) => {
+  return theme === Themes.DARK ? <Moon className="w-5" /> : <Sun className="w-5" />;
+};
 
 export const ThemeSwitcher = () => {
-  const localData = getLocallyStoredData();
-  const localTheme = localData.theme;
-  const [theme, setTheme] = useState(localTheme);
-  const icon =
-    theme === "dark" ? <Moon className="w-5" /> : <Sun className="w-5" />;
+  const { state, dispatch } = useMainContext();
+  const localTheme = state.theme as Themes;
+  const icon = getThemeIcon(localTheme);
 
-  const setThemeAndSyncStorage = (theme: string) => {
-    if (theme === "dark") {
+  const setThemeAndSyncStorage = (theme: Themes) => {
+    if (theme === Themes.DARK) {
       document.body.classList.remove("light");
     }
-    if (theme === "light") {
+    if (theme === Themes.LIGHT) {
       document.body.classList.remove("dark");
     }
     document.body.classList.add(theme);
-    const localData = getLocallyStoredData();
-    storeDataLocally({ ...localData, theme });
-    setTheme(theme);
+    dispatch({ type: "SET_THEME", payload: theme });
   };
 
   return (
     <button
       onClick={() => {
-        if (theme === "dark") {
-          setThemeAndSyncStorage("light");
+        if (localTheme === Themes.DARK) {
+          setThemeAndSyncStorage(Themes.LIGHT);
         } else {
-          setThemeAndSyncStorage("dark");
+          setThemeAndSyncStorage(Themes.DARK);
         }
       }}
       type="button"
