@@ -1,7 +1,7 @@
 import "./App.css";
 
 import { BottomNavBar } from "./components/BottomNavBar";
-import { HomeButtons } from "./components/v2/HomeButtons";
+import { HomeButtons } from "./components/v2/ViewButtons";
 import { PubsList } from "./components/PubList";
 
 function App() {

@@ -76,7 +76,7 @@ export const AddSourceModal = (props: AddSourceModalProps) => {
   if (!isOpen) return null;
   return (
     <div className="fixed inset-0 bg-slate-950/80 flex items-center justify-center z-50">
-      <div className="bg-slate-950 dark:bg-white text-white dark:text-black rounded-2xl p-6 w-11/12 max-w-md relative shadow-xl transition-colors">
+      <div className="bg-slate-950 dark:bg-white text-white dark:text-black rounded-2xl p-6 w-11/12 max-w-md relative shadow-xl">
         {/* Close Button */}
         <button
           className="absolute top-4 right-4 text-inherit hover:opacity-80 cursor-pointer"

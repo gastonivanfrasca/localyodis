@@ -1,11 +1,14 @@
 type TrashCanProps = {
-    onClick: () => void;
+  onClick: () => void;
 };
 
 export const TrashCan = (props: TrashCanProps) => {
   const { onClick } = props;
   return (
-    <button className="text-zinc-400 hover:text-red-500 transition-colors cursor-pointer" onClick={onClick}>
+    <button
+      className="text-zinc-400 hover:text-red-500 cursor-pointer"
+      onClick={onClick}
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"

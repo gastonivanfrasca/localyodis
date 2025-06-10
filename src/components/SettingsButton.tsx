@@ -1,6 +1,6 @@
-import { EllipsisVertical } from "lucide-react";
 import { Link } from "react-router";
 import { Navigations } from "../types/navigation";
+import { Settings } from "lucide-react";
 import { useMainContext } from "../context/main";
 
 export const SettingsButton = () => {
@@ -15,7 +15,7 @@ export const SettingsButton = () => {
 
   return (
     <Link to={"/menu"}>
-      <EllipsisVertical
+      <Settings
         onClick={handleOnClick}
         className={`cursor-pointer text-gray-800 dark:text-gray-400`}
       />

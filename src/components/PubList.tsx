@@ -1,13 +1,16 @@
 import { useEffect, useRef } from "react";
 
+import { BackgroundedButtonWithIcon } from "./v2/AddSourceButton";
 import { FilterSourcesModal } from "./FilterSourcesModal";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { Navigations } from "../types/navigation";
 import { PubListItem } from "./v2/PubListItem";
 import { RSSItem } from "../types/rss";
+import { Settings } from "lucide-react";
 import { Virtuoso } from "react-virtuoso";
 import { fetchRSS } from "../utils/rss";
 import { useMainContext } from "../context/main";
+import { useNavigate } from "react-router";
 
 export const PubsList = () => {
   const { state, dispatch } = useMainContext();
@@ -83,7 +86,13 @@ export const PubsList = () => {
         });
       }
     })();
-  }, [state.navigation, dispatch, state.sources, state.activeSources, state.bookmarks]);
+  }, [
+    state.navigation,
+    dispatch,
+    state.sources,
+    state.activeSources,
+    state.bookmarks,
+  ]);
 
   const bookmarkItem = (item: RSSItem) => {
     const newBookmark = {
@@ -178,11 +187,18 @@ export const PubsList = () => {
 };
 
 export const PubListEmpty = () => {
+  const navigate = useNavigate();
   return (
-    <div className="p-8 flex flex-col gap-8 max-h-full overflow-scroll items-center">
-      <p className="text-lg dark:text-gray-200">
-        No rss sources added. Go to settings to add sources.
-      </p>
+    <div className="p-16 flex flex-col gap-8 max-h-full overflow-scroll items-center">
+      <p className="text-xl dark:text-gray-200">No rss sources added</p>
+      <p className="text-sm dark:text-gray-400">Go to sources to add one.</p>
+      <BackgroundedButtonWithIcon
+        onClick={() => {
+          navigate("/sources");
+        }}
+        icon={<Settings className="w-5 h-5 text-zinc-800 dark:text-zinc-200" />}
+        label="Go to sources"
+      />
     </div>
   );
 };

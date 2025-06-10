@@ -1,5 +1,6 @@
 import { Moon, Sun } from "lucide-react";
 
+import { MenuItem } from "./v2/MenuItem";
 import { useMainContext } from "../context/main";
 
 enum Themes {
@@ -8,7 +9,11 @@ enum Themes {
 }
 
 const getThemeIcon = (theme: Themes) => {
-  return theme === Themes.DARK ? <Moon className="w-5" /> : <Sun className="w-5" />;
+  return theme === Themes.DARK ? (
+    <Moon className="w-5" />
+  ) : (
+    <Sun className="w-5" />
+  );
 };
 
 export const ThemeSwitcher = () => {
@@ -28,7 +33,10 @@ export const ThemeSwitcher = () => {
   };
 
   return (
-    <button
+    <MenuItem
+      label="Switch theme"
+      icon={icon}
+      chevron={false}
       onClick={() => {
         if (localTheme === Themes.DARK) {
           setThemeAndSyncStorage(Themes.LIGHT);
@@ -36,14 +44,6 @@ export const ThemeSwitcher = () => {
           setThemeAndSyncStorage(Themes.DARK);
         }
       }}
-      type="button"
-      className="flex items-center justify-start py-2 border bg-zinc-100 dark:bg-slate-800 
-                   hover:bg-zinc-200 dark:hover:bg-zinc-700 
-                   rounded-xl transition-colors group font-semibold shadow-sm px-3
-                   border-slate-800 dark:border-zinc-400
-                   "
-    >
-      {icon}
-    </button>
+    />
   );
 };
