@@ -1,14 +1,16 @@
+import { AddRSSSourceModals, AddYTChannelModal } from "../../components/AddSourceModals";
+import { Rss, Youtube } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { AddSourceModal } from "../../components/AddSourceModal";
 import { BackgroundedButtonWithIcon } from "../../components/v2/AddSourceButton";
 import { NavigationTitleWithBack } from "../../components/v2/NavigationTitleWithBack";
-import { Plus } from "lucide-react";
+import { Source } from "../../types/storage";
 import { SourcesList } from "../../components/SourcesList";
 import { useMainContext } from "../../context/main";
 
 export const Sources = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isRSSModalOpen, setIsRSSModalOpen] = useState(false);
+  const [isYTModalOpen, setIsYTModalOpen] = useState(false);
   const { state, dispatch } = useMainContext();
   const sourcesList = state.sources;
 
@@ -19,6 +21,13 @@ export const Sources = () => {
     });
   }, [dispatch, sourcesList]);
 
+  const setSources = (sources: Source[]) => {
+    dispatch({
+      type: "SET_SOURCES",
+      payload: sources,
+    });
+  };
+
   return (
     <div className="w-full h-screen dark:bg-slate-950">
       <div className="flex flex-col gap-10 w-full md:items-center overflow-scroll">
@@ -27,32 +36,39 @@ export const Sources = () => {
           {sourcesList.length === 0 && (
             <p className="text-sm dark:text-gray-400">No sources added yet.</p>
           )}
-          <BackgroundedButtonWithIcon
-            onClick={() => setIsModalOpen(true)}
-            icon={<Plus className="w-5 h-5 text-zinc-800 dark:text-zinc-200" />}
-            label="Add source"
-          />
+          
+          {/* Add Source Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md">
+            <BackgroundedButtonWithIcon
+              onClick={() => setIsRSSModalOpen(true)}
+              icon={<Rss className="w-5 h-5 text-zinc-800 dark:text-zinc-200" />}
+              label="Add RSS source"
+            />
+            <BackgroundedButtonWithIcon
+              onClick={() => setIsYTModalOpen(true)}
+              icon={<Youtube className="w-5 h-5 text-zinc-800 dark:text-zinc-200" />}
+              label="Add YT channel"
+            />
+          </div>
+
           {sourcesList.length > 0 && (
             <SourcesList
               sources={sourcesList}
-              setSources={(sources) => {
-                dispatch({
-                  type: "SET_SOURCES",
-                  payload: sources,
-                });
-              }}
+              setSources={setSources}
             />
           )}
         </div>
-        <AddSourceModal
-          isOpen={isModalOpen}
-          setIsModalOpen={setIsModalOpen}
-          setSources={(sources) => {
-            dispatch({
-              type: "SET_SOURCES",
-              payload: sources,
-            });
-          }}
+        
+        {/* RSS Modal */}
+        <AddRSSSourceModals
+          isOpen={isRSSModalOpen}
+          setIsModalOpen={setIsRSSModalOpen}
+        />
+        
+        {/* YouTube Modal */}
+        <AddYTChannelModal
+          isOpen={isYTModalOpen}
+          setIsModalOpen={setIsYTModalOpen}
         />
       </div>
     </div>
