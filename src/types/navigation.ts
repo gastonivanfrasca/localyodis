@@ -3,6 +3,7 @@ export enum Navigations {
     BOOKMARKEDS = "bookmarkeds",
     SETTINGS = "settings",
     FILTER_SOURCES = "filter_sources",
+    SEARCH = "search",
 }
 
 export enum HomeButtonModes {

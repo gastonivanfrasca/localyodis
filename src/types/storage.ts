@@ -29,4 +29,6 @@ export type LocallyStoredData = {
   scrollPosition: number;
   loading: boolean;
   lastUpdated: string;
+  searchQuery: string | null;
+  activeItems: RSSItem[];
 };

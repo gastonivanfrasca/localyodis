@@ -1,3 +1,5 @@
+import { ActionTypes, useMainContext } from "../context/main";
+import { fetchRSS, getRSSItemStrProp } from "../utils/rss";
 import { useEffect, useRef } from "react";
 
 import { BackgroundedButtonWithIcon } from "./v2/AddSourceButton";
@@ -6,10 +8,9 @@ import { LoadingSpinner } from "./LoadingSpinner";
 import { Navigations } from "../types/navigation";
 import { PubListItem } from "./v2/PubListItem";
 import { RSSItem } from "../types/rss";
+import { SearchInput } from "./v2/SearchInput";
 import { Settings } from "lucide-react";
 import { Virtuoso } from "react-virtuoso";
-import { fetchRSS } from "../utils/rss";
-import { useMainContext } from "../context/main";
 import { useNavigate } from "react-router";
 
 export const PubsList = () => {
@@ -32,17 +33,17 @@ export const PubsList = () => {
 
   useEffect(() => {
     dispatch({
-      type: "SET_LOADING",
+      type: ActionTypes.SET_LOADING,
       payload: true,
     });
 
     if (state.navigation === Navigations.BOOKMARKEDS) {
       dispatch({
-        type: "SET_ITEMS",
+        type: ActionTypes.SET_ITEMS,
         payload: state.bookmarks,
       });
       dispatch({
-        type: "SET_LOADING",
+        type: ActionTypes.SET_LOADING,
         payload: false,
       });
       return;
@@ -62,11 +63,11 @@ export const PubsList = () => {
       try {
         const newItems = await fetchRSS(sourcesURL);
         dispatch({
-          type: "SET_ITEMS",
+          type: ActionTypes.SET_ITEMS,
           payload: newItems,
         });
         dispatch({
-          type: "SET_LAST_UPDATED",
+          type: ActionTypes.SET_LAST_UPDATED,
           payload: new Date().toISOString(),
         });
       } catch (error) {
@@ -81,7 +82,7 @@ export const PubsList = () => {
         console.error(error);
       } finally {
         dispatch({
-          type: "SET_LOADING",
+          type: ActionTypes.SET_LOADING,
           payload: false,
         });
       }
@@ -102,7 +103,7 @@ export const PubsList = () => {
       pubDate: getRSSItemStrProp(item, "pubDate"),
     };
     dispatch({
-      type: "SET_BOOKMARKS",
+      type: ActionTypes.SET_BOOKMARKS,
       payload: [...state.bookmarks, newBookmark],
     });
   };
@@ -112,14 +113,14 @@ export const PubsList = () => {
       (bookmark) => bookmark.link !== extractLink(item)
     );
     dispatch({
-      type: "SET_BOOKMARKS",
+      type: ActionTypes.SET_BOOKMARKS,
       payload: updatedBookmarks,
     });
   };
 
   if (
-    state.items.length < 1 &&
-    state.navigation !== Navigations.BOOKMARKEDS &&
+    state.activeItems.length < 1 &&
+    state.navigation === Navigations.HOME &&
     !state.loading
   ) {
     return <PubListEmpty />;
@@ -133,6 +134,10 @@ export const PubsList = () => {
     return <BookmarksEmpty />;
   }
 
+  if (state.navigation === Navigations.SEARCH && state.activeItems.length < 1 && !state.loading) {
+    return <SearchEmpty />;
+  }
+
   return (
     <>
       <div id="pubs-list" className="p-8 flex flex-col gap-8 h-full w-screen">
@@ -142,14 +147,14 @@ export const PubsList = () => {
             scrollBehavior: "smooth",
             WebkitOverflowScrolling: "touch",
           }}
-          totalCount={state.items.length}
+          totalCount={state.activeItems.length}
           components={{ ScrollSeekPlaceholder: PubListShapeSkeleton }}
           scrollSeekConfiguration={{
             enter: (velocity) => Math.abs(velocity) > 500,
             exit: (velocity) => Math.abs(velocity) < 500,
           }}
           itemContent={(index) => {
-            const item = state.items[index];
+            const item = state.activeItems[index];
             const bookmark = state.bookmarks.find((bookmark) => {
               const bookmarkLink = bookmark.link;
               const itemLink = extractLink(item);
@@ -176,7 +181,7 @@ export const PubsList = () => {
           activeSources={state.activeSources}
           setActiveSources={(sources) => {
             dispatch({
-              type: "SET_ACTIVE_SOURCES",
+              type: ActionTypes.SET_ACTIVE_SOURCES,
               payload: sources,
             });
           }}
@@ -213,9 +218,12 @@ export const BookmarksEmpty = () => {
   );
 };
 
-const getRSSItemStrProp = (item: RSSItem, prop: keyof RSSItem): string => {
-  if (!item[prop]) return "";
-  return Array.isArray(item[prop]) ? item[prop][0] : item[prop];
+export const SearchEmpty = () => {
+  return (
+    <div className="p-8 flex flex-col gap-8 max-h-full overflow-scroll items-center">
+      <p className="text-lg dark:text-gray-200">No results found.</p>
+    </div>
+  );
 };
 
 const extractLink = (item: RSSItem): string => {

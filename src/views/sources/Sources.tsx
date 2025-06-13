@@ -1,3 +1,4 @@
+import { ActionTypes, useMainContext } from "../../context/main";
 import { AddRSSSourceModals, AddYTChannelModal } from "../../components/AddSourceModals";
 import { Rss, Youtube } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -6,7 +7,6 @@ import { BackgroundedButtonWithIcon } from "../../components/v2/AddSourceButton"
 import { NavigationTitleWithBack } from "../../components/v2/NavigationTitleWithBack";
 import { Source } from "../../types/storage";
 import { SourcesList } from "../../components/SourcesList";
-import { useMainContext } from "../../context/main";
 
 export const Sources = () => {
   const [isRSSModalOpen, setIsRSSModalOpen] = useState(false);
@@ -16,14 +16,14 @@ export const Sources = () => {
 
   useEffect(() => {
     dispatch({
-      type: "SET_SOURCES",
+      type: ActionTypes.SET_SOURCES,
       payload: sourcesList,
     });
   }, [dispatch, sourcesList]);
 
   const setSources = (sources: Source[]) => {
     dispatch({
-      type: "SET_SOURCES",
+      type: ActionTypes.SET_SOURCES,
       payload: sources,
     });
   };

@@ -1,3 +1,4 @@
+import { RSSItem } from "../types/rss";
 import { getApiUrl } from "./api";
 
 type SourceToFetch = {
@@ -40,4 +41,9 @@ export const fetchSingleRSS = async (id: string, video: boolean) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const getRSSItemStrProp = (item: RSSItem, prop: keyof RSSItem): string => {
+  if (!item[prop]) return "";
+  return Array.isArray(item[prop]) ? item[prop][0] : item[prop];
 };

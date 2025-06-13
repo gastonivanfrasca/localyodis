@@ -1,7 +1,8 @@
+import { ActionTypes, useMainContext } from "../context/main";
+
 import { checkIfSourceExists } from "../utils/validations";
 import { fetchSingleRSS } from "../utils/rss";
 import { getLocallyStoredData } from "../utils/storage";
-import { useMainContext } from "../context/main";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
@@ -52,12 +53,12 @@ export const AddRSSSourceModals = (props: AddRSSSourceModalsProps) => {
       sources.push(newSource);
 
       dispatch({
-        type: "SET_SOURCES",
+        type: ActionTypes.SET_SOURCES,
         payload: sources,
       });
 
       dispatch({
-        type: "SET_ACTIVE_SOURCES",
+        type: ActionTypes.SET_ACTIVE_SOURCES,
         payload: [newSource.id],
       });
     } catch (error) {
@@ -170,12 +171,12 @@ export const AddYTChannelModal = (props: AddYTChannelModalProps) => {
       activeSources.push(newSource.id);
 
       dispatch({
-        type: "SET_SOURCES",
+        type: ActionTypes.SET_SOURCES,
         payload: sources,
       });
 
       dispatch({
-        type: "SET_ACTIVE_SOURCES",
+        type: ActionTypes.SET_ACTIVE_SOURCES,
         payload: activeSources,
       });
     } catch (error) {
