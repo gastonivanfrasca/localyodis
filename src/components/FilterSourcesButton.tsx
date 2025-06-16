@@ -1,3 +1,4 @@
+import { ActionTypes } from "../context/main";
 import { ListFilter } from "lucide-react";
 import { Navigations } from "../types/navigation";
 import { useMainContext } from "../context/main";
@@ -11,7 +12,7 @@ export const FilterSourcesButton = () => {
         className="cursor-pointer"
         onClick={() => {
           dispatch({
-            type: "SET_NAVIGATION",
+            type: ActionTypes.SET_NAVIGATION,
             payload: Navigations.HOME,
           });
         }}
@@ -25,7 +26,7 @@ export const FilterSourcesButton = () => {
     <button
       onClick={() => {
         dispatch({
-          type: "SET_NAVIGATION",
+          type: ActionTypes.SET_NAVIGATION,
           payload: Navigations.FILTER_SOURCES,
         });
       }}

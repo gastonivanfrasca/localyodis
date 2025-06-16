@@ -8,7 +8,6 @@ import { LoadingSpinner } from "./LoadingSpinner";
 import { Navigations } from "../types/navigation";
 import { PubListItem } from "./v2/PubListItem";
 import { RSSItem } from "../types/rss";
-import { SearchInput } from "./v2/SearchInput";
 import { Settings } from "lucide-react";
 import { Virtuoso } from "react-virtuoso";
 import { useNavigate } from "react-router";
@@ -29,7 +28,7 @@ export const PubsList = () => {
     } else {
       element.scrollTop = scrollPositionRef.current;
     }
-  }, [state.navigation]);
+  }, [state.navigation, state.activeItems]);
 
   useEffect(() => {
     dispatch({
@@ -119,7 +118,7 @@ export const PubsList = () => {
   };
 
   if (
-    state.activeItems.length < 1 &&
+    state.activeItems?.length < 1 &&
     state.navigation === Navigations.HOME &&
     !state.loading
   ) {
@@ -128,13 +127,17 @@ export const PubsList = () => {
 
   if (
     state.navigation === Navigations.BOOKMARKEDS &&
-    state.bookmarks.length < 1 &&
+    state.bookmarks?.length < 1 &&
     !state.loading
   ) {
     return <BookmarksEmpty />;
   }
 
-  if (state.navigation === Navigations.SEARCH && state.activeItems.length < 1 && !state.loading) {
+  if (
+    state.navigation === Navigations.SEARCH &&
+    state.activeItems?.length < 1 &&
+    !state.loading
+  ) {
     return <SearchEmpty />;
   }
 
@@ -147,15 +150,15 @@ export const PubsList = () => {
             scrollBehavior: "smooth",
             WebkitOverflowScrolling: "touch",
           }}
-          totalCount={state.activeItems.length}
+          totalCount={state.activeItems?.length || 0}
           components={{ ScrollSeekPlaceholder: PubListShapeSkeleton }}
           scrollSeekConfiguration={{
             enter: (velocity) => Math.abs(velocity) > 500,
             exit: (velocity) => Math.abs(velocity) < 500,
           }}
           itemContent={(index) => {
-            const item = state.activeItems[index];
-            const bookmark = state.bookmarks.find((bookmark) => {
+            const item = state.activeItems?.[index];
+            const bookmark = state.bookmarks?.find((bookmark) => {
               const bookmarkLink = bookmark.link;
               const itemLink = extractLink(item);
               return bookmarkLink === itemLink;

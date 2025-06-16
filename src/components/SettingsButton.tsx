@@ -1,3 +1,4 @@
+import { ActionTypes } from "../context/main";
 import { Link } from "react-router";
 import { Navigations } from "../types/navigation";
 import { Settings } from "lucide-react";
@@ -8,7 +9,7 @@ export const SettingsButton = () => {
 
   const handleOnClick = () => {
     dispatch({
-      type: "SET_NAVIGATION",
+      type: ActionTypes.SET_NAVIGATION,
       payload: Navigations.SETTINGS,
     });
   };

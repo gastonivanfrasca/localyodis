@@ -11,6 +11,8 @@ const defaultLocallyStoredData = {
   navigation: Navigations.HOME,
   items: [],
   lastUpdated: new Date().toISOString(),
+  searchQuery: null,
+  activeItems: [],
 } as LocallyStoredData;
 
 export const storeDataLocally = (data: LocallyStoredData) => {

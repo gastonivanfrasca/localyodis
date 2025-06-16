@@ -1,5 +1,6 @@
 import { HomeButtonModes, Navigations } from "../types/navigation";
 
+import { ActionTypes } from "../context/main";
 import { Home } from "lucide-react";
 import { Link } from "react-router";
 import { useMainContext } from "../context/main";
@@ -20,7 +21,7 @@ export const HomeButton = (props: HomeButtonProps) => {
 
   const handleOnClick = () => {
     dispatch({
-      type: "SET_NAVIGATION",
+      type: ActionTypes.SET_NAVIGATION,
       payload: Navigations.HOME,
     });
   };

@@ -17,7 +17,7 @@ export const SearchInput = () => {
             });
             return;
         }
-      const filteredItems = state.items.filter((item) => {
+      const filteredItems = state.items?.filter((item) => {
         const title = getRSSItemStrProp(item, "title");
         
         return title?.toLowerCase().includes(state.searchQuery?.toLowerCase() ?? "");
@@ -45,16 +45,16 @@ export const SearchInput = () => {
   };
 
   return (
-    <div className="w-full fixed bottom-10 left-0 right-0 z-10 bg-white dark:bg-zinc-900 p-8 flex justify-between items-center gap-4">
+    <div className="w-full sticky bottom-16 left-0 right-0 z-10 bg-white dark:bg-slate-900 p-2 flex justify-between items-center gap-4 shadow-lg">
       <input
         type="text"
         placeholder="Search"
-        className="w-full"
+        className="w-full text-lg focus:outline-none dark:text-white px-4 py-2"
         onChange={handleSearch}
         value={state.searchQuery ?? ""}
       />
       <button onClick={handleClearSearch}>
-        <ChevronDown className="w-6 h-6" />
+        <ChevronDown className="w-6 h-6 dark:text-white" />
       </button>
     </div>
   );

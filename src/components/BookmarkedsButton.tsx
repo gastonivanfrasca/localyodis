@@ -1,5 +1,6 @@
 import { Bookmark, BookmarkCheck } from "lucide-react";
 
+import { ActionTypes } from "../context/main";
 import { Navigations } from "../types/navigation";
 import { useMainContext } from "../context/main";
 
@@ -13,7 +14,7 @@ export const BookmarkedsButton = () => {
         className="cursor-pointer"
         onClick={() => {
           dispatch({
-            type: "SET_NAVIGATION",
+            type: ActionTypes.SET_NAVIGATION,
             payload: Navigations.HOME,
           });
         }}
@@ -27,7 +28,7 @@ export const BookmarkedsButton = () => {
     <button
       onClick={() => {
         dispatch({
-          type: "SET_NAVIGATION",
+          type: ActionTypes.SET_NAVIGATION,
           payload: Navigations.BOOKMARKEDS,
         });
       }}

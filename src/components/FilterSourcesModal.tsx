@@ -1,5 +1,6 @@
 import { Check, Eraser } from "lucide-react";
 
+import { ActionTypes } from "../context/main";
 import { Navigations } from "../types/navigation";
 import { RoundedIdentifier } from "./v2/RoundedIdentifier";
 import { Source } from "../types/storage";
@@ -68,7 +69,7 @@ export const FilterSourcesModal = (props: FilterSourcesModalProps) => {
             className="cursor-pointer"
             onClick={() => {
               dispatch({
-                type: "SET_NAVIGATION",
+                type: ActionTypes.SET_NAVIGATION,
                 payload: Navigations.HOME,
               });
             }}
