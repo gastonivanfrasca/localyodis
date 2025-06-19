@@ -38,7 +38,7 @@ export const PubsList = () => {
 
     if (state.navigation === Navigations.BOOKMARKEDS) {
       dispatch({
-        type: ActionTypes.SET_ITEMS,
+        type: ActionTypes.SET_ACTIVE_ITEMS,
         payload: state.bookmarks,
       });
       dispatch({
@@ -62,7 +62,7 @@ export const PubsList = () => {
       try {
         const newItems = await fetchRSS(sourcesURL);
         dispatch({
-          type: ActionTypes.SET_ITEMS,
+          type: ActionTypes.SET_ACTIVE_ITEMS,
           payload: newItems,
         });
         dispatch({

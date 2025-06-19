@@ -38,7 +38,7 @@ export const Sources = () => {
           )}
           
           {/* Add Source Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md">
+          <div className="flex flex-row sm:flex-row gap-4 w-full max-w-md">
             <BackgroundedButtonWithIcon
               onClick={() => setIsRSSModalOpen(true)}
               icon={<Rss className="w-5 h-5 text-zinc-800 dark:text-zinc-200" />}

@@ -12,10 +12,11 @@ function App() {
 
   return (
     <div className="w-full h-screen dark:bg-slate-950 max-h-screen">
+      {state.navigation === Navigations.SEARCH && <SearchInput />}
       <div className="px-0 pb-24 pt-2 flex flex-col gap-8 max-h-full overflow-scroll items-center">
         <PubsList />
       </div>
-      {state.navigation === Navigations.SEARCH && <SearchInput />}
+
       <BottomNavBar customButtons={<HomeButtons />} />
     </div>
   );

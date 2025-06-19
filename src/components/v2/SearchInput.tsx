@@ -1,7 +1,7 @@
 import { ActionTypes, useMainContext } from "../../context/main";
 
-import { ChevronDown } from "lucide-react";
 import { Navigations } from "../../types/navigation";
+import { X } from "lucide-react";
 import { getRSSItemStrProp } from "../../utils/rss";
 import { useEffect } from "react";
 
@@ -10,22 +10,24 @@ export const SearchInput = () => {
 
   useEffect(() => {
     if (state.searchQuery) {
-        if (state.searchQuery.length < 1) {
-            dispatch({
-                type: ActionTypes.SET_ACTIVE_ITEMS,
-                payload: state.items,
-            });
-            return;
-        }
+      if (state.searchQuery.length < 1) {
+        dispatch({
+          type: ActionTypes.SET_ACTIVE_ITEMS,
+          payload: state.items,
+        });
+        return;
+      }
       const filteredItems = state.items?.filter((item) => {
         const title = getRSSItemStrProp(item, "title");
-        
-        return title?.toLowerCase().includes(state.searchQuery?.toLowerCase() ?? "");
+
+        return title
+          ?.toLowerCase()
+          .includes(state.searchQuery?.toLowerCase().trim() ?? "");
       });
 
       dispatch({
         type: ActionTypes.SET_ACTIVE_ITEMS,
-        payload: filteredItems, 
+        payload: filteredItems,
       });
     }
   }, [state.searchQuery, state.items]);
@@ -40,12 +42,22 @@ export const SearchInput = () => {
   const handleClearSearch = () => {
     dispatch({
       type: ActionTypes.SET_NAVIGATION,
-      payload: Navigations.HOME,    
+      payload: Navigations.HOME,
+    });
+
+    dispatch({
+      type: ActionTypes.SET_SEARCH_QUERY,
+      payload: null,
+    });
+
+    dispatch({
+      type: ActionTypes.SET_ACTIVE_ITEMS,
+      payload: state.items,
     });
   };
 
   return (
-    <div className="w-full sticky bottom-16 left-0 right-0 z-10 bg-white dark:bg-slate-900 p-2 flex justify-between items-center gap-4 shadow-lg">
+    <div className="w-full sticky top-0 left-0 right-0 z-10 bg-white dark:bg-slate-900 p-2 flex justify-between items-center gap-4 shadow-lg">
       <input
         type="text"
         placeholder="Search"
@@ -53,9 +65,11 @@ export const SearchInput = () => {
         onChange={handleSearch}
         value={state.searchQuery ?? ""}
       />
-      <button onClick={handleClearSearch}>
-        <ChevronDown className="w-6 h-6 dark:text-white" />
-      </button>
+      <div className="flex items-center gap-4 mr-4">
+        <button onClick={handleClearSearch} className="cursor-pointer">
+          <X className="w-6 h-6 dark:text-white" />
+        </button>
+      </div>
     </div>
   );
 };

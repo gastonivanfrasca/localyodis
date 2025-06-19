@@ -17,7 +17,7 @@ export const BackgroundedButtonWithIcon = (props: AddSourceButtonProps) => {
         <div className="bg-zinc-200 dark:bg-slate-800 p-2 rounded-lg group-hover:bg-zinc-300 dark:group-hover:bg-zinc-700 border ">
           {icon}
         </div>
-        <span className="font-medium text-base tracking-tight text-black dark:text-white">
+        <span className="font-medium tracking-tight text-black dark:text-white text-sm">
           {label}
         </span>
       </div>
