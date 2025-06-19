@@ -14,7 +14,7 @@ type AddRSSSourceModalsProps = {
 export const AddRSSSourceModals = (props: AddRSSSourceModalsProps) => {
   const { isOpen, setIsModalOpen } = props;
   const [rssUrl, setRssUrl] = useState("");
-  const { dispatch } = useMainContext();
+  const { dispatch, state } = useMainContext();
 
   const handleSubmit = async () => {
     try {
@@ -57,9 +57,13 @@ export const AddRSSSourceModals = (props: AddRSSSourceModalsProps) => {
         payload: sources,
       });
 
+      // Only add to activeSources if no filters were applied (all sources were active)
+      // or if user wants new sources to be active by default
+      const hadNoFilters = state.activeSources.length === state.sources.length;
+      
       dispatch({
         type: ActionTypes.SET_ACTIVE_SOURCES,
-        payload: [newSource.id],
+        payload: hadNoFilters ? [...state.activeSources, newSource.id] : state.activeSources,
       });
     } catch (error) {
       console.error(error);
@@ -129,7 +133,7 @@ type AddYTChannelModalProps = {
 export const AddYTChannelModal = (props: AddYTChannelModalProps) => {
   const { isOpen, setIsModalOpen } = props;
   const [channelName, setChannelName] = useState("");
-  const { dispatch } = useMainContext();
+  const { dispatch, state } = useMainContext();
 
   const handleSubmit = async () => {
     try {
@@ -139,7 +143,6 @@ export const AddYTChannelModal = (props: AddYTChannelModalProps) => {
 
       const localData = getLocallyStoredData();
       const sources = localData.sources || [];
-      const activeSources = localData.activeSources || [];
 
       if (checkIfSourceExists(sources, channelName)) {
         throw new Error("Source already exists");
@@ -168,16 +171,19 @@ export const AddYTChannelModal = (props: AddYTChannelModalProps) => {
       };
 
       sources.push(newSource);
-      activeSources.push(newSource.id);
 
       dispatch({
         type: ActionTypes.SET_SOURCES,
         payload: sources,
       });
 
+      // Only add to activeSources if no filters were applied (all sources were active)
+      // or if user wants new sources to be active by default
+      const hadNoFilters = state.activeSources.length === state.sources.length;
+      
       dispatch({
         type: ActionTypes.SET_ACTIVE_SOURCES,
-        payload: activeSources,
+        payload: hadNoFilters ? [...state.activeSources, newSource.id] : state.activeSources,
       });
     } catch (error) {
       console.error(error);
