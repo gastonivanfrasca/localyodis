@@ -6,23 +6,57 @@ import { HomeButtonModes } from "../../types/navigation";
 import { SearchButton } from "../SearchButton";
 import { SettingsButton } from "../SettingsButton";
 
-export const HomeButtons = () => {
+type ButtonsProps = {
+  orientation?: 'horizontal' | 'vertical';
+};
+
+export const HomeButtons = ({ orientation = 'horizontal' }: ButtonsProps = {}) => {
+  const containerClasses = orientation === 'vertical' 
+    ? "flex flex-col gap-4 w-full" 
+    : "w-full p-8 flex justify-between items-center";
+
+  const buttonClasses = orientation === 'vertical' 
+    ? "flex items-center justify-center p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800/50 transition-colors duration-200" 
+    : "";
+
   return (
-    <div className="w-full p-8 flex justify-between items-center">
-      <HomeButton mode={HomeButtonModes.ACTION} />
-      <BookmarkedsButton />
-      <SearchButton />
-      <FilterSourcesButton />
-      <SettingsButton />
+    <div className={containerClasses}>
+      <div className={buttonClasses}>
+        <HomeButton mode={HomeButtonModes.ACTION} />
+      </div>
+      <div className={buttonClasses}>
+        <BookmarkedsButton />
+      </div>
+      <div className={buttonClasses}>
+        <SearchButton />
+      </div>
+      <div className={buttonClasses}>
+        <FilterSourcesButton />
+      </div>
+      <div className={buttonClasses}>
+        <SettingsButton />
+      </div>
     </div>
   );
 };
 
-export const SettingsButtons = () => {
+export const SettingsButtons = ({ orientation = 'horizontal' }: ButtonsProps = {}) => {
+  const containerClasses = orientation === 'vertical' 
+    ? "flex flex-col gap-4 w-full" 
+    : "w-full p-8 flex justify-between items-center";
+
+  const buttonClasses = orientation === 'vertical' 
+    ? "flex items-center justify-center p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800/50 transition-colors duration-200" 
+    : "";
+
   return (
-    <div className="w-full p-8 flex justify-between items-center">
-      <BackArrowButton />
-      <HomeButton mode={HomeButtonModes.LINK} />
+    <div className={containerClasses}>
+      <div className={buttonClasses}>
+        <BackArrowButton />
+      </div>
+      <div className={buttonClasses}>
+        <HomeButton mode={HomeButtonModes.LINK} />
+      </div>
     </div>
   );
 };

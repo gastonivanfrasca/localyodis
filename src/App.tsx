@@ -1,7 +1,6 @@
 import "./App.css";
 
-import { BottomNavBar } from "./components/BottomNavBar";
-import { HomeButtons } from "./components/v2/ViewButtons";
+import { AdaptiveNavigation } from "./components/AdaptiveNavigation";
 import { Navigations } from "./types/navigation";
 import { PubsList } from "./components/PubList";
 import { SearchInput } from "./components/v2/SearchInput";
@@ -12,12 +11,12 @@ function App() {
 
   return (
     <div className="w-full h-screen dark:bg-slate-950 max-h-screen">
-      {state.navigation === Navigations.SEARCH && <SearchInput />}
-      <div className="px-0 pb-24 pt-2 flex flex-col gap-8 max-h-full overflow-scroll items-center">
-        <PubsList />
-      </div>
-
-      <BottomNavBar customButtons={<HomeButtons />} />
+      <AdaptiveNavigation>
+        {state.navigation === Navigations.SEARCH && <SearchInput />}
+        <div className="px-4 md:px-6 pt-2 flex flex-col gap-8 max-h-full overflow-scroll items-center">
+          <PubsList />
+        </div>
+      </AdaptiveNavigation>
     </div>
   );
 }

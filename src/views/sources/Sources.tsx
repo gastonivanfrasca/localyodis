@@ -30,33 +30,39 @@ export const Sources = () => {
 
   return (
     <div className="w-full h-screen dark:bg-slate-950">
-      <div className="flex flex-col gap-10 w-full md:items-center overflow-scroll">
+      <div className="flex flex-col gap-10 w-full overflow-scroll">
         <NavigationTitleWithBack label="Sources" />
-        <div className="p-8 mt-16 flex flex-col gap-8 pb-20 dark:bg-slate-950 w-full justify-center items-center">
-          {sourcesList.length === 0 && (
-            <p className="text-sm dark:text-gray-400">No sources added yet.</p>
-          )}
-          
-          {/* Add Source Buttons */}
-          <div className="flex flex-row sm:flex-row gap-4 w-full max-w-md">
-            <BackgroundedButtonWithIcon
-              onClick={() => setIsRSSModalOpen(true)}
-              icon={<Rss className="w-5 h-5 text-zinc-800 dark:text-zinc-200" />}
-              label="Add RSS source"
-            />
-            <BackgroundedButtonWithIcon
-              onClick={() => setIsYTModalOpen(true)}
-              icon={<Youtube className="w-5 h-5 text-zinc-800 dark:text-zinc-200" />}
-              label="Add YT channel"
-            />
-          </div>
+        
+        {/* Main Content Container - Centered on Desktop */}
+        <div className="flex-1 flex justify-center">
+          <div className="w-full max-w-2xl px-8 mt-16 flex flex-col gap-8 pb-20">
+            {sourcesList.length === 0 && (
+              <p className="text-sm dark:text-gray-400 text-center">No sources added yet.</p>
+            )}
+            
+            {/* Add Source Buttons */}
+            <div className="flex flex-row sm:flex-row gap-4 w-full justify-center">
+              <BackgroundedButtonWithIcon
+                onClick={() => setIsRSSModalOpen(true)}
+                icon={<Rss className="w-5 h-5 text-zinc-800 dark:text-zinc-200" />}
+                label="Add RSS source"
+              />
+              <BackgroundedButtonWithIcon
+                onClick={() => setIsYTModalOpen(true)}
+                icon={<Youtube className="w-5 h-5 text-zinc-800 dark:text-zinc-200" />}
+                label="Add YT channel"
+              />
+            </div>
 
-          {sourcesList.length > 0 && (
-            <SourcesList
-              sources={sourcesList}
-              setSources={setSources}
-            />
-          )}
+            {sourcesList.length > 0 && (
+              <div className="w-full">
+                <SourcesList
+                  sources={sourcesList}
+                  setSources={setSources}
+                />
+              </div>
+            )}
+          </div>
         </div>
         
         {/* RSS Modal */}
