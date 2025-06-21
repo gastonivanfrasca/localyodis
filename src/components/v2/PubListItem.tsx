@@ -32,7 +32,7 @@ export const PubListItem = ({ item, index, bookmark, onBookmark, onUnbookmark }:
         <div className="flex flex-row gap-2 items-start">
           <button
             onClick={() => window.open(link, "_blank")}
-            className="font-semibold text-lg text-left"
+            className="font-semibold text-lg text-left cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
           >
             {title}
           </button>

@@ -75,11 +75,11 @@ export const AddRSSSourceModals = (props: AddRSSSourceModalsProps) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-slate-950/80 flex items-center justify-center z-50">
-      <div className="bg-slate-950 dark:bg-white text-white dark:text-black rounded-2xl p-6 w-11/12 max-w-md relative shadow-xl">
+    <div className="fixed inset-0 bg-black/50 dark:bg-black/70 flex items-center justify-center z-50">
+      <div className="bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-slate-600 rounded-2xl p-6 w-11/12 max-w-md relative shadow-xl">
         {/* Close Button */}
         <button
-          className="absolute top-4 right-4 text-inherit hover:opacity-80 cursor-pointer"
+          className="absolute top-4 right-4 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 cursor-pointer transition-colors"
           onClick={() => setIsModalOpen(false)}
           aria-label="Close modal"
         >
@@ -107,7 +107,7 @@ export const AddRSSSourceModals = (props: AddRSSSourceModalsProps) => {
           placeholder="e.g. https://example.com/feed.xml"
           value={rssUrl}
           onChange={(e) => setRssUrl(e.target.value)}
-          className="w-full h-24 bg-zinc-800 dark:bg-zinc-100 dark:text-black dark:placeholder-zinc-500 border border-zinc-500 rounded-lg p-3 text-white placeholder-zinc-400 resize-none focus:outline-none focus:ring-2 focus:ring-white dark:focus:ring-black focus:border-transparent mb-6 transition-all"
+          className="w-full h-24 bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 border border-gray-300 dark:border-slate-600 rounded-lg p-3 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent mb-6 transition-all"
         />
 
         {/* Add button */}
@@ -115,7 +115,7 @@ export const AddRSSSourceModals = (props: AddRSSSourceModalsProps) => {
           <button
             disabled={!rssUrl}
             onClick={handleSubmit}
-            className="bg-white text-black font-bold py-2 px-6 rounded-lg border border-zinc-500 hover:bg-zinc-200 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-blue-600 dark:bg-blue-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-700 dark:hover:bg-blue-400 transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Add RSS Source
           </button>
@@ -195,11 +195,11 @@ export const AddYTChannelModal = (props: AddYTChannelModalProps) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-slate-950/80 flex items-center justify-center z-50">
-      <div className="bg-slate-950 dark:bg-white text-white dark:text-black rounded-2xl p-6 w-11/12 max-w-md relative shadow-xl">
+    <div className="fixed inset-0 bg-black/50 dark:bg-black/70 flex items-center justify-center z-50">
+      <div className="bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-slate-600 rounded-2xl p-6 w-11/12 max-w-md relative shadow-xl">
         {/* Close Button */}
         <button
-          className="absolute top-4 right-4 text-inherit hover:opacity-80 cursor-pointer"
+          className="absolute top-4 right-4 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 cursor-pointer transition-colors"
           onClick={() => setIsModalOpen(false)}
           aria-label="Close modal"
         >
@@ -227,7 +227,7 @@ export const AddYTChannelModal = (props: AddYTChannelModalProps) => {
           placeholder="e.g. Example Channel Name"
           value={channelName}
           onChange={(e) => setChannelName(e.target.value)}
-          className="w-full h-24 bg-zinc-800 dark:bg-zinc-100 dark:text-black dark:placeholder-zinc-500 border border-zinc-500 rounded-lg p-3 text-white placeholder-zinc-400 resize-none focus:outline-none focus:ring-2 focus:ring-white dark:focus:ring-black focus:border-transparent mb-6 transition-all"
+          className="w-full h-24 bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 border border-gray-300 dark:border-slate-600 rounded-lg p-3 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent mb-6 transition-all"
         />
 
         {/* Add button */}
@@ -235,7 +235,7 @@ export const AddYTChannelModal = (props: AddYTChannelModalProps) => {
           <button
             disabled={!channelName}
             onClick={handleSubmit}
-            className="bg-white text-black font-bold py-2 px-6 rounded-lg border border-zinc-500 hover:bg-zinc-200 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-blue-600 dark:bg-blue-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-700 dark:hover:bg-blue-400 transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Add YT Channel
           </button>
