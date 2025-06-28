@@ -7,12 +7,15 @@ import { Navigations } from "../../types/navigation";
 
 const localData = getLocallyStoredData();
 
+// Determine if this is a first-time user (no sources configured)
+const isFirstTimeUser = localData.sources.length === 0;
+
 const initialState: LocallyStoredData = {
   items: localData.items,
   sources: localData.sources,
   theme: localData.theme,
   bookmarks: localData.bookmarks,
-  navigation: localData.navigation || Navigations.HOME,
+  navigation: isFirstTimeUser ? Navigations.FTU : (localData.navigation || Navigations.HOME),
   lastUpdated: localData.lastUpdated,
   activeSources: localData.activeSources || localData.sources.map((source) => source.id),
   scrollPosition: localData.scrollPosition,
