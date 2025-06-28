@@ -26,6 +26,8 @@ export enum ActionTypes {
   SET_ACTIVE_SOURCES = "SET_ACTIVE_SOURCES",
   SET_SCROLL_POSITION = "SET_SCROLL_POSITION",
   SET_LOADING = "SET_LOADING",
+  SET_ERROR = "SET_ERROR",
+  CLEAR_ERROR = "CLEAR_ERROR",
 }
 
 export const MainContext = createContext<MainContextType | null>(null);

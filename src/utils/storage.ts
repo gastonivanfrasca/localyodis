@@ -13,6 +13,7 @@ const defaultLocallyStoredData = {
   lastUpdated: new Date().toISOString(),
   searchQuery: null,
   activeItems: [],
+  error: null,
 } as LocallyStoredData;
 
 export const storeDataLocally = (data: LocallyStoredData) => {

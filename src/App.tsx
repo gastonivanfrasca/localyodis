@@ -4,6 +4,7 @@ import { AdaptiveNavigation } from "./components/AdaptiveNavigation";
 import { Navigations } from "./types/navigation";
 import { PubsList } from "./components/PubList";
 import { SearchInput } from "./components/v2/SearchInput";
+import Snackbar from "./components/Snackbar";
 import { useMainContext } from "./context/main";
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
           <PubsList />
         </div>
       </AdaptiveNavigation>
+      <Snackbar />
     </div>
   );
 }

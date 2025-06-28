@@ -7,7 +7,6 @@ type SourceToFetch = {
 };
 
 export const fetchRSS = async (sources: SourceToFetch[]) => {
-  try {
     const response = await fetch(getApiUrl("/rss/fetch-feeds"), {
       method: "POST",
       body: JSON.stringify({
@@ -17,11 +16,8 @@ export const fetchRSS = async (sources: SourceToFetch[]) => {
         "Content-Type": "application/json",
       },
     });
-    const rssFeed = await response.json();
-    return rssFeed;
-  } catch (error) {
-    console.log(error);
-  }
+  const rssFeed = await response.json();
+  return rssFeed;
 };
 
 export const fetchSingleRSS = async (id: string, video: boolean) => {

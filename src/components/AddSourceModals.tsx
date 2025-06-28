@@ -1,8 +1,10 @@
 import { ActionTypes, useMainContext } from "../context/main";
 
 import { checkIfSourceExists } from "../utils/validations";
+import { errorMap } from "../utils/errors";
 import { fetchSingleRSS } from "../utils/rss";
 import { getLocallyStoredData } from "../utils/storage";
+import { useError } from "../utils/useError";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
@@ -15,7 +17,7 @@ export const AddRSSSourceModals = (props: AddRSSSourceModalsProps) => {
   const { isOpen, setIsModalOpen } = props;
   const [rssUrl, setRssUrl] = useState("");
   const { dispatch, state } = useMainContext();
-
+  const { showError } = useError();
   const handleSubmit = async () => {
     try {
       if (!rssUrl) {
@@ -65,8 +67,8 @@ export const AddRSSSourceModals = (props: AddRSSSourceModalsProps) => {
         type: ActionTypes.SET_ACTIVE_SOURCES,
         payload: hadNoFilters ? [...state.activeSources, newSource.id] : state.activeSources,
       });
-    } catch (error) {
-      console.error(error);
+    } catch {
+      showError(errorMap.sourceModalHandleSubmit);  
     }
     setIsModalOpen(false);
     setRssUrl("");
@@ -134,7 +136,7 @@ export const AddYTChannelModal = (props: AddYTChannelModalProps) => {
   const { isOpen, setIsModalOpen } = props;
   const [channelName, setChannelName] = useState("");
   const { dispatch, state } = useMainContext();
-
+  const { showError } = useError();
   const handleSubmit = async () => {
     try {
       if (!channelName) {
@@ -185,8 +187,8 @@ export const AddYTChannelModal = (props: AddYTChannelModalProps) => {
         type: ActionTypes.SET_ACTIVE_SOURCES,
         payload: hadNoFilters ? [...state.activeSources, newSource.id] : state.activeSources,
       });
-    } catch (error) {
-      console.error(error);
+    } catch {
+      showError(errorMap.sourceModalHandleSubmit);  
     }
     setIsModalOpen(false);
     setChannelName("");

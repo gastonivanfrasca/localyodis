@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import { MenuItem } from "../../components/v2/MenuItem";
 import { NavigationTitleWithBack } from "../../components/v2/NavigationTitleWithBack";
 import { Rss } from "lucide-react";
+import Snackbar from "../../components/Snackbar";
 import { ThemeSwitcher } from "../../components/ThemeSwitcher";
 
 export const Menu = () => {
@@ -16,6 +17,7 @@ export const Menu = () => {
             <MenuItem icon={<Rss />} label="Sources" />
           </Link>
           <ThemeSwitcher />
+          <Snackbar />
         </div>
       </div>
     </div>

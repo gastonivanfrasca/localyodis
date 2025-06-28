@@ -19,6 +19,7 @@ const initialState: LocallyStoredData = {
   loading: localData.loading,
   searchQuery: localData.searchQuery || null,
   activeItems: localData.items,
+  error: null,
 };
 
 
@@ -48,6 +49,10 @@ const reducer = (state: LocallyStoredData, action: Action) => {
       return { ...state, searchQuery: null };
     case ActionTypes.SET_ACTIVE_ITEMS:
       return { ...state, activeItems: action.payload };
+    case ActionTypes.SET_ERROR:
+      return { ...state, error: action.payload };
+    case ActionTypes.CLEAR_ERROR:
+      return { ...state, error: null };
     default:    
       return state;
   }

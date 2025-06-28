@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 
 import { BackgroundedButtonWithIcon } from "../../components/v2/AddSourceButton";
 import { NavigationTitleWithBack } from "../../components/v2/NavigationTitleWithBack";
+import Snackbar from "../../components/Snackbar";
 import { Source } from "../../types/storage";
 import { SourcesList } from "../../components/SourcesList";
 
@@ -77,6 +78,7 @@ export const Sources = () => {
           setIsModalOpen={setIsYTModalOpen}
         />
       </div>
+      <Snackbar />
     </div>
   );
 };

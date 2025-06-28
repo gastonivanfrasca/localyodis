@@ -19,6 +19,11 @@ export type Items = {
   pubDate: string | null | undefined;
 };
 
+export type ErrorState = {
+  message: string;
+  type: 'error' | 'warning' | 'success' | 'info';
+} | null;
+
 export type LocallyStoredData = {
   theme: string;
   sources: Source[];
@@ -31,4 +36,5 @@ export type LocallyStoredData = {
   lastUpdated: string;
   searchQuery: string | null;
   activeItems: RSSItem[];
+  error: ErrorState;
 };

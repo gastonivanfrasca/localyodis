@@ -10,10 +10,13 @@ import { PubListItem } from "./v2/PubListItem";
 import { RSSItem } from "../types/rss";
 import { Settings } from "lucide-react";
 import { Virtuoso } from "react-virtuoso";
+import { errorMap } from "../utils/errors";
+import { useError } from "../utils/useError";
 import { useNavigate } from "react-router";
 
 export const PubsList = () => {
   const { state, dispatch } = useMainContext();
+  const { showError } = useError();
 
   const scrollPositionRef = useRef(0);
   const navigationRef = useRef(state.navigation);
@@ -69,8 +72,12 @@ export const PubsList = () => {
           type: ActionTypes.SET_LAST_UPDATED,
           payload: new Date().toISOString(),
         });
-      } catch (error) {
-        console.error(error);
+      } catch {
+        showError(errorMap.fetchRSSItems);
+        dispatch({
+          type: ActionTypes.SET_LOADING,
+          payload: false,
+        });
       }
     };
 
