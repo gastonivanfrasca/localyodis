@@ -3,7 +3,7 @@
     {
       "id": "tech",
       "name": "Technology",
-      "icon": "💻",
+              "icon": "monitor",
       "sources": [
         {
           "name": "TechCrunch",
@@ -30,7 +30,7 @@
     {
       "id": "news",
               "name": "News",
-        "icon": "📰",
+        "icon": "newspaper",
         "sources": [
           {
             "name": "BBC News",
@@ -52,7 +52,7 @@
     {
       "id": "science",
               "name": "Science",
-        "icon": "🔬",
+        "icon": "microscope",
         "sources": [
           {
             "name": "NASA",
@@ -74,7 +74,7 @@
     {
       "id": "design",
               "name": "Design",
-        "icon": "🎨",
+        "icon": "palette",
         "sources": [
           {
             "name": "Smashing Magazine",
@@ -96,7 +96,7 @@
     {
       "id": "programming",
               "name": "Programming",
-        "icon": "⚡",
+        "icon": "code",
         "sources": [
           {
             "name": "Dev.to",
@@ -123,7 +123,7 @@
     {
       "id": "business",
               "name": "Business",
-        "icon": "📈",
+        "icon": "trending-up",
         "sources": [
           {
             "name": "Harvard Business Review",

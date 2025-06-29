@@ -6,7 +6,7 @@ export const getPredefinedSources = (): PredefinedSourcesData => {
       {
         "id": "tech",
         "name": "Technology",
-        "icon": "💻",
+        "icon": "monitor",
         "sources": [
           {
             "name": "TechCrunch",
@@ -33,7 +33,7 @@ export const getPredefinedSources = (): PredefinedSourcesData => {
       {
         "id": "news",
         "name": "News",
-        "icon": "📰",
+        "icon": "newspaper",
         "sources": [
           {
             "name": "BBC News",
@@ -55,7 +55,7 @@ export const getPredefinedSources = (): PredefinedSourcesData => {
       {
         "id": "science",
         "name": "Science",
-        "icon": "🔬",
+        "icon": "microscope",
         "sources": [
           {
             "name": "NASA",
@@ -77,7 +77,7 @@ export const getPredefinedSources = (): PredefinedSourcesData => {
       {
         "id": "design",
         "name": "Design",
-        "icon": "🎨",
+        "icon": "palette",
         "sources": [
           {
             "name": "Smashing Magazine",
@@ -99,7 +99,7 @@ export const getPredefinedSources = (): PredefinedSourcesData => {
       {
         "id": "programming",
         "name": "Programming",
-        "icon": "⚡",
+        "icon": "code",
         "sources": [
           {
             "name": "Dev.to",
@@ -126,7 +126,7 @@ export const getPredefinedSources = (): PredefinedSourcesData => {
       {
         "id": "business",
         "name": "Business",
-        "icon": "📈",
+        "icon": "trending-up",
         "sources": [
           {
             "name": "Harvard Business Review",

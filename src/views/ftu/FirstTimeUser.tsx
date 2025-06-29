@@ -5,8 +5,10 @@ import { CategoryPill } from "../../components/CategoryPill";
 import { Navigations } from "../../types/navigation";
 import { SourceCard } from "../../components/SourceCard";
 import { getPredefinedSources } from "../../utils/predefined-sources";
+import { AddRSSSourceModals } from "../../components/AddSourceModals";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { Plus, Settings } from "lucide-react";
 
 const generateRandomColor = () => {
   const randomColor = Math.floor(Math.random() * 16777215).toString(16);
@@ -27,6 +29,7 @@ export const FirstTimeUser = () => {
   const predefinedSourcesData = getPredefinedSources();
   const [selectedCategory, setSelectedCategory] = useState<string>(predefinedSourcesData.categories[0]?.id || "");
   const [selectedSources, setSelectedSources] = useState<Set<string>>(new Set());
+  const [isRSSModalOpen, setIsRSSModalOpen] = useState(false);
 
   const handleCategorySelect = (categoryId: string) => {
     setSelectedCategory(categoryId);
@@ -92,23 +95,18 @@ export const FirstTimeUser = () => {
     });
   };
 
-  const handleSkip = () => {
-    dispatch({
-      type: ActionTypes.SET_NAVIGATION,
-      payload: Navigations.HOME,
-    });
-  };
+
 
   const selectedCategoryData = predefinedSourcesData.categories.find(
     cat => cat.id === selectedCategory
   );
 
   return (
-    <div className="w-full h-screen bg-gray-50 dark:bg-slate-950 flex flex-col">
+    <div className="w-full h-screen dark:bg-slate-950 flex flex-col">
       {/* Header */}
-      <div className="flex-shrink-0 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-700 px-6 py-6">
+      <div className="flex-shrink-0 px-6 py-8">
         <div className="max-w-4xl mx-auto">
-          <p className="text-gray-600 dark:text-gray-400 text-lg">
+          <p className="text-zinc-600 dark:text-zinc-400 text-base">
             Get started by selecting some popular RSS sources to begin reading interesting content
           </p>
         </div>
@@ -117,12 +115,23 @@ export const FirstTimeUser = () => {
       {/* Content */}
       <div className="flex-1 overflow-hidden flex flex-col">
         {/* Categories */}
-        <div className="flex-shrink-0 px-6 py-4 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-700">
+        <div className="flex-shrink-0 px-6 py-6">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">
-              Categories
-            </h2>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold text-zinc-800 dark:text-white tracking-tight">
+                Categories
+              </h2>
+              <button
+                onClick={() => setIsRSSModalOpen(true)}
+                className="flex items-center gap-2 px-3 py-2 rounded-xl font-medium text-sm transition-all duration-200 border-2 bg-zinc-100 dark:bg-slate-900 text-zinc-700 dark:text-zinc-300 border-zinc-300 dark:border-zinc-900 hover:bg-zinc-200 dark:hover:bg-slate-800"
+              >
+                <div className="bg-zinc-200 dark:bg-slate-800 p-1 rounded-lg">
+                  <Plus className="w-3 h-3" />
+                </div>
+                <span className="tracking-tight">Add your own source</span>
+              </button>
+            </div>
+            <div className="flex flex-wrap gap-3">
               {predefinedSourcesData.categories.map((category: SourceCategory) => (
                 <CategoryPill
                   key={category.id}
@@ -140,10 +149,6 @@ export const FirstTimeUser = () => {
           <div className="max-w-4xl mx-auto">
             {selectedCategoryData && (
               <>
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
-                  <span>{selectedCategoryData.icon}</span>
-                  {selectedCategoryData.name}
-                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {selectedCategoryData.sources.map((source: PredefinedSource) => (
                     <SourceCard
@@ -161,28 +166,34 @@ export const FirstTimeUser = () => {
       </div>
 
       {/* Footer */}
-      <div className="flex-shrink-0 bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-slate-700 px-6 py-4">
+      <div className="flex-shrink-0 px-6 py-6 border-t border-zinc-300 dark:border-zinc-800">
         <div className="max-w-4xl mx-auto flex justify-between items-center">
           <button
-            onClick={handleSkip}
-            className="text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 font-medium transition-colors"
+            onClick={() => dispatch({ type: ActionTypes.SET_NAVIGATION, payload: Navigations.SETTINGS })}
+            className="bg-zinc-200 dark:bg-slate-800 p-2.5 rounded-xl hover:bg-zinc-300 dark:hover:bg-slate-700 transition-all duration-200"
           >
-            Skip for now
+            <Settings className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
           </button>
           <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-600 dark:text-gray-400">
+            <span className="text-sm text-zinc-600 dark:text-zinc-400">
               {selectedSources.size} sources selected
             </span>
             <button
               onClick={handleFinishSetup}
               disabled={selectedSources.size === 0}
-              className="bg-blue-600 dark:bg-blue-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-700 dark:hover:bg-blue-400 transition disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900 font-medium py-2.5 px-6 rounded-xl hover:bg-zinc-700 dark:hover:bg-zinc-300 transition disabled:opacity-50 disabled:cursor-not-allowed text-sm tracking-tight"
             >
               Continue {selectedSources.size > 0 && `(${selectedSources.size})`}
             </button>
           </div>
         </div>
       </div>
+      
+      {/* RSS Modal */}
+      <AddRSSSourceModals
+        isOpen={isRSSModalOpen}
+        setIsModalOpen={setIsRSSModalOpen}
+      />
     </div>
   );
 }; 

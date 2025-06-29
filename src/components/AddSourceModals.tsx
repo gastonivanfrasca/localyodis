@@ -109,7 +109,7 @@ export const AddRSSSourceModals = (props: AddRSSSourceModalsProps) => {
           placeholder="e.g. https://example.com/feed.xml"
           value={rssUrl}
           onChange={(e) => setRssUrl(e.target.value)}
-          className="w-full h-24 bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 border border-gray-300 dark:border-slate-600 rounded-lg p-3 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent mb-6 transition-all"
+          className="w-full h-24 bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 border border-gray-300 dark:border-slate-600 rounded-lg p-3 resize-none focus:outline-none focus:ring-2 focus:ring-zinc-500 dark:focus:ring-zinc-400 focus:border-transparent mb-6 transition-all"
         />
 
         {/* Add button */}
@@ -117,7 +117,7 @@ export const AddRSSSourceModals = (props: AddRSSSourceModalsProps) => {
           <button
             disabled={!rssUrl}
             onClick={handleSubmit}
-            className="bg-blue-600 dark:bg-blue-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-700 dark:hover:bg-blue-400 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900 font-medium py-2.5 px-6 rounded-xl hover:bg-zinc-700 dark:hover:bg-zinc-300 transition disabled:opacity-50 disabled:cursor-not-allowed text-sm tracking-tight"
           >
             Add RSS Source
           </button>
@@ -229,7 +229,7 @@ export const AddYTChannelModal = (props: AddYTChannelModalProps) => {
           placeholder="e.g. Example Channel Name"
           value={channelName}
           onChange={(e) => setChannelName(e.target.value)}
-          className="w-full h-24 bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 border border-gray-300 dark:border-slate-600 rounded-lg p-3 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent mb-6 transition-all"
+          className="w-full h-24 bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 border border-gray-300 dark:border-slate-600 rounded-lg p-3 resize-none focus:outline-none focus:ring-2 focus:ring-zinc-500 dark:focus:ring-zinc-400 focus:border-transparent mb-6 transition-all"
         />
 
         {/* Add button */}
@@ -237,7 +237,7 @@ export const AddYTChannelModal = (props: AddYTChannelModalProps) => {
           <button
             disabled={!channelName}
             onClick={handleSubmit}
-            className="bg-blue-600 dark:bg-blue-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-700 dark:hover:bg-blue-400 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900 font-medium py-2.5 px-6 rounded-xl hover:bg-zinc-700 dark:hover:bg-zinc-300 transition disabled:opacity-50 disabled:cursor-not-allowed text-sm tracking-tight"
           >
             Add YT Channel
           </button>
