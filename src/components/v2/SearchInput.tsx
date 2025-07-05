@@ -9,7 +9,7 @@ export const SearchInput = () => {
   const { state, dispatch } = useMainContext();
 
   useEffect(() => {
-    if (state.searchQuery) {
+    if (state.searchQuery !== null) {
       if (state.searchQuery.length < 1) {
         dispatch({
           type: ActionTypes.SET_ACTIVE_ITEMS,
@@ -28,6 +28,12 @@ export const SearchInput = () => {
       dispatch({
         type: ActionTypes.SET_ACTIVE_ITEMS,
         payload: filteredItems,
+      });
+    } else {
+      // If no search query, show all items
+      dispatch({
+        type: ActionTypes.SET_ACTIVE_ITEMS,
+        payload: state.items,
       });
     }
   }, [state.searchQuery, state.items]);

@@ -50,6 +50,21 @@ export const PubsList = () => {
       return;
     }
 
+    if (state.navigation === Navigations.SEARCH) {
+      // For search mode, ensure items are available for filtering
+      if (state.items.length === 0 && state.activeItems.length > 0) {
+        dispatch({
+          type: ActionTypes.SET_ITEMS,
+          payload: state.activeItems,
+        });
+      }
+      dispatch({
+        type: ActionTypes.SET_LOADING,
+        payload: false,
+      });
+      return;
+    }
+
     const fetchRSSItems = async () => {
       const sourcesToFetch = state.sources.filter((source) =>
         state.activeSources.includes(source.id)
@@ -63,6 +78,10 @@ export const PubsList = () => {
       });
       try {
         const newItems = await fetchRSS(sourcesURL);
+        dispatch({
+          type: ActionTypes.SET_ITEMS,
+          payload: newItems,
+        });
         dispatch({
           type: ActionTypes.SET_ACTIVE_ITEMS,
           payload: newItems,
