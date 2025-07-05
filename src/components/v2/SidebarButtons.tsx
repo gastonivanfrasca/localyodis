@@ -1,4 +1,4 @@
-import { ArrowLeft, Bookmark, Home, ListFilter, Search, Settings } from 'lucide-react';
+import { ArrowLeft, Bookmark, Compass, Home, ListFilter, Search, Settings } from 'lucide-react';
 import { HomeButtonModes, Navigations } from '../../types/navigation';
 
 import { ActionTypes } from '../../context/main';
@@ -158,6 +158,28 @@ export const SidebarBackButton = () => {
     <SidebarButton
       icon={<ArrowLeft size={20} />}
       label="Back"
+    />
+  );
+};
+
+// Discover Button for Sidebar
+export const SidebarDiscoverButton = () => {
+  const { state, dispatch } = useMainContext();
+  const isActive = state.navigation === Navigations.DISCOVER;
+
+  const handleClick = () => {
+    dispatch({
+      type: ActionTypes.SET_NAVIGATION,
+      payload: Navigations.DISCOVER,
+    });
+  };
+
+  return (
+    <SidebarButton
+      icon={<Compass size={20} />}
+      label="Discover"
+      isActive={isActive}
+      onClick={handleClick}
     />
   );
 }; 

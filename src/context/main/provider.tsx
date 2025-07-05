@@ -68,16 +68,6 @@ export const MainProvider = ({ children }: { children: React.ReactNode }) => {
     storeDataLocally(state);
   }, [state]);
 
-  // Auto-navigate to FTU when no sources are available and currently on HOME
-  useEffect(() => {
-    if (state.sources.length === 0 && state.navigation === Navigations.HOME) {
-      dispatch({
-        type: ActionTypes.SET_NAVIGATION,
-        payload: Navigations.FTU,
-      });
-    }
-  }, [state.sources.length, state.navigation]);
-
   return (
     <MainContext.Provider value={{ state, dispatch }}>
       {children}

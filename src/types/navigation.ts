@@ -5,6 +5,7 @@ export enum Navigations {
     FILTER_SOURCES = "filter_sources",
     SEARCH = "search",
     FTU = "ftu",
+    DISCOVER = "discover",
 }
 
 export enum HomeButtonModes {

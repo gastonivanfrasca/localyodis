@@ -1,6 +1,7 @@
 import "./App.css";
 
 import { AdaptiveNavigation } from "./components/AdaptiveNavigation";
+import { Discover } from "./views/discover/Discover";
 import { FirstTimeUser } from "./views/ftu/FirstTimeUser";
 import { Navigations } from "./types/navigation";
 import { PubsList } from "./components/PubList";
@@ -11,8 +12,8 @@ import { useMainContext } from "./context/main";
 function App() {
   const { state } = useMainContext();
 
-  // Show FTU view if navigation is set to FTU
-  if (state.navigation === Navigations.FTU) {
+  // Show FTU if no sources are configured (simple, clean logic)
+  if (state.sources.length === 0) {
     return (
       <div className="w-full h-screen">
         <FirstTimeUser />
@@ -21,6 +22,17 @@ function App() {
     );
   }
 
+  // Show Discover view
+  if (state.navigation === Navigations.DISCOVER) {
+    return (
+      <div className="w-full h-screen">
+        <Discover />
+        <Snackbar />
+      </div>
+    );
+  }
+
+  // Show normal app if sources exist
   return (
     <div className="w-full h-screen dark:bg-slate-950 max-h-screen">
       <AdaptiveNavigation>

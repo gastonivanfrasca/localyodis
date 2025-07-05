@@ -1,5 +1,6 @@
 import {
   SidebarBookmarksButton,
+  SidebarDiscoverButton,
   SidebarFilterButton,
   SidebarHomeButton,
   SidebarSearchButton,
@@ -14,6 +15,7 @@ export const SidebarHomeButtons = () => {
       <SidebarHomeButton mode={HomeButtonModes.ACTION} />
       <SidebarBookmarksButton />
       <SidebarSearchButton />
+      <SidebarDiscoverButton />
       <SidebarFilterButton />
       <SidebarSettingsButton />
     </div>
