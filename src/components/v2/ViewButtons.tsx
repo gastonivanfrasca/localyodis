@@ -1,7 +1,6 @@
 import { BackArrowButton } from "./BackArrowButton";
 import { BookmarkedsButton } from "../BookmarkedsButton";
 import { DiscoverButton } from "../DiscoverButton";
-import { FilterSourcesButton } from "../FilterSourcesButton";
 import { HomeButton } from "../HomeButton";
 import { HomeButtonModes } from "../../types/navigation";
 import { SearchButton } from "../SearchButton";
@@ -33,9 +32,6 @@ export const HomeButtons = ({ orientation = 'horizontal' }: ButtonsProps = {}) =
       </div>
       <div className={buttonClasses}>
         <DiscoverButton />
-      </div>
-      <div className={buttonClasses}>
-        <FilterSourcesButton />
       </div>
       <div className={buttonClasses}>
         <SettingsButton />

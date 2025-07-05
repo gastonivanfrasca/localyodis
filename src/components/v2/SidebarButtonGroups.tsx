@@ -1,7 +1,6 @@
 import {
   SidebarBookmarksButton,
   SidebarDiscoverButton,
-  SidebarFilterButton,
   SidebarHomeButton,
   SidebarSearchButton,
   SidebarSettingsButton
@@ -16,7 +15,6 @@ export const SidebarHomeButtons = () => {
       <SidebarBookmarksButton />
       <SidebarSearchButton />
       <SidebarDiscoverButton />
-      <SidebarFilterButton />
       <SidebarSettingsButton />
     </div>
   );

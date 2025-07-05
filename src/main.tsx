@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import App from "./App.tsx";
 import { MainProvider } from "./context/main/provider.tsx";
 import { Menu } from "./views/menu/Menu.tsx";
+import { SourceProfile } from "./views/sources/SourceProfile.tsx";
 import { Sources } from "./views/sources/Sources.tsx";
 import { StrictMode } from "react";
 import { ThemeLayout } from "./layouts/ThemeLayout.tsx";
@@ -17,6 +18,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/" element={<App />} />
             <Route path="/menu" element={<Menu />} />
             <Route path="/sources" element={<Sources />} />
+            <Route path="/sources/:id" element={<SourceProfile />} />
           </Route>
         </Routes>
       </BrowserRouter>

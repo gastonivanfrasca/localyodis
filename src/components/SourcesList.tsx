@@ -55,6 +55,7 @@ export const SourcesList = (props: SourcesListProps) => {
               initial={source.initial}
               video={source.type === "video"}
               name={source.name || source.url}
+              sourceId={source.id}
               key={source.id}
               trashCanCallback={() => handleRemoveSource(source.id)}
             />

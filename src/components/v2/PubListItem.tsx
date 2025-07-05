@@ -2,19 +2,22 @@ import { Bookmark, BookmarkCheck } from "lucide-react";
 
 import { RSSItem } from "../../types/rss";
 import { RoundedIdentifier } from "./RoundedIdentifier";
+import { Source } from "../../types/storage";
 import { formatPubDate } from "../../utils/format";
-import { getSourceByID } from "../../utils/storage";
+import { useNavigate } from "react-router";
 
 interface PubListItemProps {
   item: RSSItem;
   index: number;
+  sourceData?: Source;
   bookmark: RSSItem | undefined;
   onBookmark: (item: RSSItem) => void;
   onUnbookmark: (item: RSSItem) => void;
 }
 
-export const PubListItem = ({ item, index, bookmark, onBookmark, onUnbookmark }: PubListItemProps) => {
-  const sourceData = getSourceByID(item.source);
+export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onUnbookmark }: PubListItemProps) => {
+  const navigate = useNavigate();
+  
   if (!sourceData) return null;
 
   const link = extractLink(item);
@@ -22,6 +25,10 @@ export const PubListItem = ({ item, index, bookmark, onBookmark, onUnbookmark }:
   if (typeof title === "object") {
     title = title["_"];
   }
+
+  const handleSourceClick = () => {
+    navigate(`/sources/${sourceData.id}`);
+  };
 
   return (
     <div
@@ -46,9 +53,12 @@ export const PubListItem = ({ item, index, bookmark, onBookmark, onUnbookmark }:
               video={sourceData.type === "video"}
               small
             />
-            <p className="text-xs truncate max-w-[100px]">
+            <button
+              onClick={handleSourceClick}
+              className="text-xs truncate max-w-[100px] hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-left"
+            >
               {sourceData.name}
-            </p>
+            </button>
             {item.pubDate && (
               <p className="text-xs self-end text-right whitespace-nowrap">
                 {formatPubDate(item.pubDate)}

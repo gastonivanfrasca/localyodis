@@ -1,4 +1,4 @@
-import { ArrowLeft, Bookmark, Compass, Home, ListFilter, Search, Settings } from 'lucide-react';
+import { ArrowLeft, Bookmark, Compass, Home, Search, Settings } from 'lucide-react';
 import { HomeButtonModes, Navigations } from '../../types/navigation';
 
 import { ActionTypes } from '../../context/main';
@@ -78,37 +78,7 @@ export const SidebarSearchButton = () => {
   );
 };
 
-// Filter Button for Sidebar
-export const SidebarFilterButton = () => {
-  const { state, dispatch } = useMainContext();
-  const hasActiveFilters = state.activeSources.length !== state.sources.length;
-  const isActive = state.navigation === Navigations.FILTER_SOURCES;
 
-  const handleClick = () => {
-    if (isActive) {
-      dispatch({
-        type: ActionTypes.SET_NAVIGATION,
-        payload: Navigations.HOME,
-      });
-    } else {
-      dispatch({
-        type: ActionTypes.SET_NAVIGATION,
-        payload: Navigations.FILTER_SOURCES,
-      });
-    }
-  };
-
-  return (
-    <SidebarButton
-      icon={<ListFilter size={20} />}
-      label="Filter Sources"
-      isActive={isActive}
-      onClick={handleClick}
-    >
-      <ActiveIndicator isActive={hasActiveFilters} color="bg-green-500" />
-    </SidebarButton>
-  );
-};
 
 // Bookmarks Button for Sidebar
 export const SidebarBookmarksButton = () => {

@@ -3,7 +3,6 @@ import { fetchRSS, getRSSItemStrProp } from "../utils/rss";
 import { useEffect, useRef } from "react";
 
 import { BackgroundedButtonWithIcon } from "./v2/AddSourceButton";
-import { FilterSourcesModal } from "./FilterSourcesModal";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { Navigations } from "../types/navigation";
 import { PubListItem } from "./v2/PubListItem";
@@ -176,6 +175,7 @@ export const PubsList = () => {
                 key={`${item.link}-${index}`}
                 item={item}
                 index={index}
+                sourceData={state.sources.find(s => s.id === item.source)}
                 bookmark={bookmark}
                 onBookmark={bookmarkItem}
                 onUnbookmark={unbookmarkItem}
@@ -185,18 +185,6 @@ export const PubsList = () => {
         />
       </div>
       {state.loading && <LoadingSpinner />}
-      {state.navigation === Navigations.FILTER_SOURCES && (
-        <FilterSourcesModal
-          allSources={state.sources}
-          activeSources={state.activeSources}
-          setActiveSources={(sources) => {
-            dispatch({
-              type: ActionTypes.SET_ACTIVE_SOURCES,
-              payload: sources,
-            });
-          }}
-        />
-      )}
     </>
   );
 };

@@ -59,13 +59,10 @@ export const AddRSSSourceModals = (props: AddRSSSourceModalsProps) => {
         payload: sources,
       });
 
-      // Only add to activeSources if no filters were applied (all sources were active)
-      // or if user wants new sources to be active by default
-      const hadNoFilters = state.activeSources.length === state.sources.length;
-      
+      // Add new source to active sources automatically
       dispatch({
         type: ActionTypes.SET_ACTIVE_SOURCES,
-        payload: hadNoFilters ? [...state.activeSources, newSource.id] : state.activeSources,
+        payload: [...state.activeSources, newSource.id],
       });
     } catch {
       showError(errorMap.sourceModalHandleSubmit);  
@@ -179,13 +176,10 @@ export const AddYTChannelModal = (props: AddYTChannelModalProps) => {
         payload: sources,
       });
 
-      // Only add to activeSources if no filters were applied (all sources were active)
-      // or if user wants new sources to be active by default
-      const hadNoFilters = state.activeSources.length === state.sources.length;
-      
+      // Add new source to active sources automatically
       dispatch({
         type: ActionTypes.SET_ACTIVE_SOURCES,
-        payload: hadNoFilters ? [...state.activeSources, newSource.id] : state.activeSources,
+        payload: [...state.activeSources, newSource.id],
       });
     } catch {
       showError(errorMap.sourceModalHandleSubmit);  
