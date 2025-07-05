@@ -168,7 +168,7 @@ export const PubsList = () => {
 
   return (
     <>
-      <div id="pubs-list" className="p-8 flex flex-col gap-8 h-full w-full">
+      <div id="pubs-list" className="p-8 flex flex-col gap-8 h-full w-full items-center">
         <Virtuoso
           style={{
             height: "100vh",
@@ -211,7 +211,7 @@ export const PubsList = () => {
 export const PubListEmpty = () => {
   const navigate = useNavigate();
   return (
-    <div className="p-16 flex flex-col gap-8 max-h-full overflow-scroll items-center">
+    <div className="p-16 flex flex-col gap-8 max-h-full overflow-scroll items-center justify-center">
       <p className="text-xl dark:text-gray-200">No rss sources added</p>
       <p className="text-sm dark:text-gray-400">Go to sources to add one.</p>
       <BackgroundedButtonWithIcon
@@ -227,7 +227,7 @@ export const PubListEmpty = () => {
 
 export const BookmarksEmpty = () => {
   return (
-    <div className="p-8 flex flex-col gap-8 max-h-full overflow-scroll items-center">
+    <div className="p-8 flex flex-col gap-8 max-h-full overflow-scroll items-center justify-center">
       <p className="text-lg dark:text-gray-200">
         No bookmarks added. Bookmark a publication to see it here.
       </p>
@@ -237,7 +237,7 @@ export const BookmarksEmpty = () => {
 
 export const SearchEmpty = () => {
   return (
-    <div className="p-8 flex flex-col gap-8 max-h-full overflow-scroll items-center">
+    <div className="p-8 flex flex-col gap-8 max-h-full overflow-scroll items-center justify-center">
       <p className="text-lg dark:text-gray-200">No results found.</p>
     </div>
   );
@@ -258,12 +258,12 @@ const extractLink = (item: RSSItem): string => {
 
 const PubListShapeSkeleton = () => {
   return (
-    <div className="p-8 flex flex-col gap-8 max-h-full overflow-scroll items-center">
-      <div className="w-full h-12 bg-gray-200 dark:bg-gray-800 rounded-md"></div>
-      <div className="w-full h-12 bg-gray-200 dark:bg-gray-800 rounded-md"></div>
-      <div className="w-full h-12 bg-gray-200 dark:bg-gray-800 rounded-md"></div>
-      <div className="w-full h-12 bg-gray-200 dark:bg-gray-800 rounded-md"></div>
-      <div className="w-full h-12 bg-gray-200 dark:bg-gray-800 rounded-md"></div>
+    <div className="p-8 flex flex-col gap-8 max-h-full overflow-scroll items-center justify-center">
+      <div className="w-full max-w-[800px] h-12 bg-gray-200 dark:bg-gray-800 rounded-md"></div>
+      <div className="w-full max-w-[800px] h-12 bg-gray-200 dark:bg-gray-800 rounded-md"></div>
+      <div className="w-full max-w-[800px] h-12 bg-gray-200 dark:bg-gray-800 rounded-md"></div>
+      <div className="w-full max-w-[800px] h-12 bg-gray-200 dark:bg-gray-800 rounded-md"></div>
+      <div className="w-full max-w-[800px] h-12 bg-gray-200 dark:bg-gray-800 rounded-md"></div>
     </div>
   );
 };

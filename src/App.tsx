@@ -36,9 +36,14 @@ function App() {
   return (
     <div className="w-full h-screen dark:bg-slate-950 max-h-screen">
       <AdaptiveNavigation>
-        {state.navigation === Navigations.SEARCH && <SearchInput />}
-        <div className="px-4 md:px-6 pt-2 flex flex-col gap-8 max-h-full overflow-scroll items-center">
-          <PubsList />
+        {/* Main Content Container - Centered on Desktop */}
+        <div className="flex-1 flex justify-center">
+          <div className="w-full max-w-4xl">
+            {state.navigation === Navigations.SEARCH && <SearchInput />}
+            <div className="px-4 md:px-6 pt-2 flex flex-col gap-8 max-h-full overflow-scroll items-center">
+              <PubsList />
+            </div>
+          </div>
         </div>
       </AdaptiveNavigation>
       <Snackbar />
