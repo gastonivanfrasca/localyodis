@@ -1,4 +1,5 @@
 import { ActionTypes, useMainContext } from "../context/main";
+import { Bookmark, Search, Settings } from "lucide-react";
 import { fetchRSS, getRSSItemStrProp } from "../utils/rss";
 import { useEffect, useRef } from "react";
 
@@ -7,7 +8,6 @@ import { LoadingSpinner } from "./LoadingSpinner";
 import { Navigations } from "../types/navigation";
 import { PubListItem } from "./v2/PubListItem";
 import { RSSItem } from "../types/rss";
-import { Settings } from "lucide-react";
 import { Virtuoso } from "react-virtuoso";
 import { errorMap } from "../utils/errors";
 import { useError } from "../utils/useError";
@@ -227,18 +227,59 @@ export const PubListEmpty = () => {
 
 export const BookmarksEmpty = () => {
   return (
-    <div className="p-8 flex flex-col gap-8 max-h-full overflow-scroll items-center">
-      <p className="text-lg dark:text-gray-200">
-        No bookmarks added. Bookmark a publication to see it here.
-      </p>
+    <div className="p-16 flex flex-col gap-6 max-h-full overflow-scroll items-center justify-center min-h-[400px]">
+      <div className="flex flex-col items-center gap-4">
+        <div className="w-16 h-16 bg-blue-50 dark:bg-blue-900/20 rounded-full flex items-center justify-center">
+          <Bookmark className="w-8 h-8 text-blue-500 dark:text-blue-400" />
+        </div>
+        <div className="text-center space-y-2">
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+            No bookmarks yet
+          </h3>
+          <p className="text-gray-600 dark:text-gray-400 max-w-sm">
+            Start bookmarking your favorite publications to read them later. 
+            They'll appear here for easy access.
+          </p>
+        </div>
+      </div>
+      <div className="text-center">
+        <p className="text-sm text-gray-500 dark:text-gray-500 flex items-center gap-1">
+          <span>Tap the</span>
+          <Bookmark className="w-4 h-4" />
+          <span>icon on any publication to bookmark it</span>
+        </p>
+      </div>
     </div>
   );
 };
 
 export const SearchEmpty = () => {
   return (
-    <div className="p-8 flex flex-col gap-8 max-h-full overflow-scroll items-center">
-      <p className="text-lg dark:text-gray-200">No results found.</p>
+    <div className="p-16 flex flex-col gap-6 max-h-full overflow-scroll items-center justify-center min-h-[400px]">
+      <div className="flex flex-col items-center gap-4">
+        <div className="w-16 h-16 bg-gray-50 dark:bg-gray-800/50 rounded-full flex items-center justify-center">
+          <Search className="w-8 h-8 text-gray-500 dark:text-gray-400" />
+        </div>
+        <div className="text-center space-y-2">
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+            No results found
+          </h3>
+          <p className="text-gray-600 dark:text-gray-400 max-w-sm">
+            We couldn't find any publications matching your search. 
+            Try adjusting your search terms or checking the spelling.
+          </p>
+        </div>
+      </div>
+      <div className="text-center space-y-2">
+        <p className="text-sm text-gray-500 dark:text-gray-500 font-medium">
+          Search tips:
+        </p>
+        <ul className="text-sm text-gray-500 dark:text-gray-500 space-y-1">
+          <li>• Try different keywords</li>
+          <li>• Use fewer words</li>
+          <li>• Check your spelling</li>
+        </ul>
+      </div>
     </div>
   );
 };
