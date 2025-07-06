@@ -13,10 +13,10 @@ export const AdaptiveNavigation = ({ children }: AdaptiveNavigationProps) => {
 
   return (
     <div className="flex h-screen w-full">
-      {/* Desktop Sidebar */}
-      <aside className="hidden md:flex md:flex-col md:w-72 md:bg-white md:dark:bg-slate-950 md:shadow-lg md:shadow-gray-300 md:dark:shadow-white/10 md:border-r md:border-gray-200 md:dark:border-gray-700 md:sticky md:top-0 md:h-screen">
-        <div className="flex-1 flex flex-col justify-center p-6">
-          <nav className="flex flex-col gap-3">{sidebarButtons}</nav>
+      {/* Desktop Sidebar - Optimized for space */}
+      <aside className="hidden md:flex md:flex-col md:w-20 md:bg-white md:dark:bg-slate-950 md:shadow-lg md:shadow-gray-300 md:dark:shadow-white/10 md:border-r md:border-gray-200 md:dark:border-gray-700 md:sticky md:top-0 md:h-screen">
+        <div className="flex-1 flex flex-col justify-center p-3">
+          <nav className="flex flex-col gap-2">{sidebarButtons}</nav>
         </div>
       </aside>
 
