@@ -1,4 +1,4 @@
-import { ArrowLeft, Bookmark, Compass, Home, Search, Settings } from 'lucide-react';
+import { ArrowLeft, Bookmark, Compass, Home, Search, Menu } from 'lucide-react';
 import { HomeButtonModes, Navigations } from '../../types/navigation';
 import { Link, useLocation } from 'react-router';
 
@@ -100,8 +100,8 @@ export const SidebarBookmarksButton = () => {
   );
 };
 
-// Settings Button for Sidebar
-export const SidebarSettingsButton = () => {
+// Menu Button for Sidebar
+export const SidebarMenuButton = () => {
   const { dispatch } = useMainContext();
 
   const handleClick = () => {
@@ -114,8 +114,8 @@ export const SidebarSettingsButton = () => {
   return (
     <Link to="/menu">
       <SidebarButton
-        icon={<Settings size={20} />}
-        label="Settings"
+        icon={<Menu size={20} />}
+        label="Menu"
         onClick={handleClick}
       />
     </Link>

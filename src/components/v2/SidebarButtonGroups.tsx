@@ -3,7 +3,7 @@ import {
   SidebarDiscoverButton,
   SidebarHomeButton,
   SidebarSearchButton,
-  SidebarSettingsButton
+  SidebarMenuButton
 } from './SidebarButtons';
 
 import { HomeButtonModes } from '../../types/navigation';
@@ -15,7 +15,7 @@ export const SidebarHomeButtons = () => {
       <SidebarBookmarksButton />
       <SidebarSearchButton />
       <SidebarDiscoverButton />
-      <SidebarSettingsButton />
+      <SidebarMenuButton />
     </div>
   );
 };

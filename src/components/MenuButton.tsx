@@ -1,10 +1,10 @@
 import { ActionTypes } from "../context/main";
 import { Link } from "react-router";
 import { Navigations } from "../types/navigation";
-import { Settings } from "lucide-react";
+import { Menu } from "lucide-react";
 import { useMainContext } from "../context/main";
 
-export const SettingsButton = () => {
+export const MenuButton = () => {
   const { dispatch } = useMainContext();
 
   const handleOnClick = () => {
@@ -16,10 +16,10 @@ export const SettingsButton = () => {
 
   return (
     <Link to={"/menu"}>
-      <Settings
+      <Menu
         onClick={handleOnClick}
         className={`cursor-pointer text-gray-800 dark:text-gray-400`}
       />
     </Link>
   );
-};
+}; 

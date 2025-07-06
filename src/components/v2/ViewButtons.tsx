@@ -4,7 +4,7 @@ import { DiscoverButton } from "../DiscoverButton";
 import { HomeButton } from "../HomeButton";
 import { HomeButtonModes } from "../../types/navigation";
 import { SearchButton } from "../SearchButton";
-import { SettingsButton } from "../SettingsButton";
+import { MenuButton } from "../MenuButton";
 
 type ButtonsProps = {
   orientation?: 'horizontal' | 'vertical';
@@ -34,7 +34,7 @@ export const HomeButtons = ({ orientation = 'horizontal' }: ButtonsProps = {}) =
         <DiscoverButton />
       </div>
       <div className={buttonClasses}>
-        <SettingsButton />
+        <MenuButton />
       </div>
     </div>
   );
