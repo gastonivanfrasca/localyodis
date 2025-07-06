@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router";
 
 import App from "./App.tsx";
+import { Discover } from "./views/discover/Discover.tsx";
 import { MainProvider } from "./context/main/provider.tsx";
 import { Menu } from "./views/menu/Menu.tsx";
 import { SourceProfile } from "./views/sources/SourceProfile.tsx";
@@ -19,6 +20,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/menu" element={<Menu />} />
             <Route path="/sources" element={<Sources />} />
             <Route path="/sources/:id" element={<SourceProfile />} />
+            <Route path="/discover" element={<Discover />} />
           </Route>
         </Routes>
       </BrowserRouter>

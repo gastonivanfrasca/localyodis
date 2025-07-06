@@ -1,18 +1,19 @@
+import { Link, useLocation } from "react-router";
+
 import { ActionTypes } from "../context/main";
-import { Navigations } from "../types/navigation";
 import { Compass } from "lucide-react";
+import { Navigations } from "../types/navigation";
 import { useMainContext } from "../context/main";
 
 export const DiscoverButton = () => {
-  const { state, dispatch } = useMainContext();
-  const navigation = state.navigation;
-
-  const isActive = navigation === Navigations.DISCOVER;
+  const location = useLocation();
+  const { dispatch } = useMainContext();
+  const isActive = location.pathname === "/discover";
   const activeClasses = isActive
     ? "text-[#1e7bc0]"
     : "text-gray-800 dark:text-gray-400";
 
-  const handleOnClick = () => {
+  const handleClick = () => {
     dispatch({
       type: ActionTypes.SET_NAVIGATION,
       payload: Navigations.DISCOVER,
@@ -20,8 +21,8 @@ export const DiscoverButton = () => {
   };
 
   return (
-    <button onClick={handleOnClick}>
+    <Link to="/discover" onClick={handleClick}>
       <Compass className={`cursor-pointer ${activeClasses}`} />
-    </button>
+    </Link>
   );
 }; 

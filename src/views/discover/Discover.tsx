@@ -1,15 +1,17 @@
 import { ActionTypes, useMainContext } from "../../context/main";
+import { ArrowLeft, Compass, Plus } from "lucide-react";
 import { PredefinedSource, SourceCategory } from "../../types/predefined-sources";
+import { useEffect, useState } from "react";
 
+import { AddRSSSourceModals } from "../../components/AddSourceModals";
 import { CategoryPill } from "../../components/CategoryPill";
 import { DiscoverSourceCard } from "../../components/DiscoverSourceCard";
+import { Link } from "react-router";
 import { Navigations } from "../../types/navigation";
+import Snackbar from "../../components/Snackbar";
 import { getPredefinedSources } from "../../utils/predefined-sources";
-import { AddRSSSourceModals } from "../../components/AddSourceModals";
-import { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
-import { Plus, ArrowLeft, Compass } from "lucide-react";
 import { useError } from "../../utils/useError";
+import { v4 as uuidv4 } from "uuid";
 
 const generateRandomColor = () => {
   const randomColor = Math.floor(Math.random() * 16777215).toString(16);
@@ -31,6 +33,14 @@ export const Discover = () => {
   const predefinedSourcesData = getPredefinedSources();
   const [selectedCategory, setSelectedCategory] = useState<string>(predefinedSourcesData.categories[0]?.id || "");
   const [isRSSModalOpen, setIsRSSModalOpen] = useState(false);
+
+  // Set navigation state when component mounts
+  useEffect(() => {
+    dispatch({
+      type: ActionTypes.SET_NAVIGATION,
+      payload: Navigations.DISCOVER,
+    });
+  }, [dispatch]);
 
   const handleCategorySelect = (categoryId: string) => {
     setSelectedCategory(categoryId);
@@ -81,13 +91,6 @@ export const Discover = () => {
     }
   };
 
-  const handleGoBack = () => {
-    dispatch({
-      type: ActionTypes.SET_NAVIGATION,
-      payload: Navigations.HOME,
-    });
-  };
-
   const selectedCategoryData = predefinedSourcesData.categories.find(
     cat => cat.id === selectedCategory
   );
@@ -106,12 +109,11 @@ export const Discover = () => {
       <div className="flex-shrink-0 px-6 py-8">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center gap-4 mb-4">
-            <button
-              onClick={handleGoBack}
-              className="bg-zinc-200 dark:bg-slate-800 p-2.5 rounded-xl hover:bg-zinc-300 dark:hover:bg-slate-700 transition-all duration-200"
-            >
-              <ArrowLeft className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
-            </button>
+            <Link to="/">
+              <button className="bg-zinc-200 dark:bg-slate-800 p-2.5 rounded-xl hover:bg-zinc-300 dark:hover:bg-slate-700 transition-all duration-200">
+                <ArrowLeft className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
+              </button>
+            </Link>
             <div className="flex items-center gap-2">
               <Compass className="w-6 h-6 text-zinc-700 dark:text-zinc-300" />
               <h1 className="text-2xl font-bold text-zinc-800 dark:text-white tracking-tight">
@@ -190,6 +192,9 @@ export const Discover = () => {
         isOpen={isRSSModalOpen}
         setIsModalOpen={setIsRSSModalOpen}
       />
+      
+      {/* Snackbar */}
+      <Snackbar />
     </div>
   );
 }; 

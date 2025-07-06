@@ -1,7 +1,6 @@
 import "./App.css";
 
 import { AdaptiveNavigation } from "./components/AdaptiveNavigation";
-import { Discover } from "./views/discover/Discover";
 import { FirstTimeUser } from "./views/ftu/FirstTimeUser";
 import { Navigations } from "./types/navigation";
 import { PubsList } from "./components/PubList";
@@ -17,16 +16,6 @@ function App() {
     return (
       <div className="w-full h-screen">
         <FirstTimeUser />
-        <Snackbar />
-      </div>
-    );
-  }
-
-  // Show Discover view
-  if (state.navigation === Navigations.DISCOVER) {
-    return (
-      <div className="w-full h-screen">
-        <Discover />
         <Snackbar />
       </div>
     );

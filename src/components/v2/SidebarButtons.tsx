@@ -1,9 +1,9 @@
 import { ArrowLeft, Bookmark, Compass, Home, Search, Settings } from 'lucide-react';
 import { HomeButtonModes, Navigations } from '../../types/navigation';
+import { Link, useLocation } from 'react-router';
 
 import { ActionTypes } from '../../context/main';
 import { ActiveIndicator } from '../ActiveIndicator';
-import { Link } from 'react-router';
 import { SidebarButton } from './SidebarButton';
 import { useMainContext } from '../../context/main';
 
@@ -134,8 +134,9 @@ export const SidebarBackButton = () => {
 
 // Discover Button for Sidebar
 export const SidebarDiscoverButton = () => {
-  const { state, dispatch } = useMainContext();
-  const isActive = state.navigation === Navigations.DISCOVER;
+  const location = useLocation();
+  const { dispatch } = useMainContext();
+  const isActive = location.pathname === "/discover";
 
   const handleClick = () => {
     dispatch({
@@ -145,11 +146,12 @@ export const SidebarDiscoverButton = () => {
   };
 
   return (
-    <SidebarButton
-      icon={<Compass size={20} />}
-      label="Discover"
-      isActive={isActive}
-      onClick={handleClick}
-    />
+    <Link to="/discover" onClick={handleClick}>
+      <SidebarButton
+        icon={<Compass size={20} />}
+        label="Discover"
+        isActive={isActive}
+      />
+    </Link>
   );
 }; 
