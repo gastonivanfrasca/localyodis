@@ -26,7 +26,7 @@ export const SourcesList = (props: SourcesListProps) => {
   }
 
   return (
-    <div className="flex flex-col gap-4 w-full">
+    <div className="flex flex-col gap-4 w-full bg-white dark:bg-slate-950">
       <div className="relative w-full max-w-md mx-auto">
         <input
           type="text"
@@ -42,7 +42,7 @@ export const SourcesList = (props: SourcesListProps) => {
       </div>
 
       {/* Sources List */}
-      <div className="flex flex-col gap-4 w-full overflow-scroll">
+      <div className="flex flex-col gap-4 w-full overflow-scroll bg-white dark:bg-slate-950">
         {filteredSources.length === 0 && searchQuery ? (
           <p className="dark:text-gray-400 text-center py-4">
             No sources found matching "{searchQuery}"

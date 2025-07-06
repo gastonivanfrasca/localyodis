@@ -21,7 +21,7 @@ export const SourceItem = (props: SourceItemProps) => {
   };
 
   return (
-    <div className="flex items-center justify-between border-2 border-zinc-300 dark:border-zinc-900 text-zinc-800 dark:text-white px-4 py-3 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800 w-full">
+    <div className="flex items-center justify-between border-2 border-zinc-300 dark:border-zinc-900 text-zinc-800 dark:text-white px-4 py-3 rounded-xl bg-white dark:bg-slate-950 hover:bg-zinc-100 dark:hover:bg-slate-800 w-full">
       <div className="flex items-center space-x-3">
         <RoundedIdentifier
           color={color}

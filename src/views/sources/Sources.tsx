@@ -30,13 +30,13 @@ export const Sources = () => {
   };
 
   return (
-    <div className="w-full h-screen dark:bg-slate-950">
-      <div className="flex flex-col gap-10 w-full overflow-scroll">
+    <div className="w-full h-screen dark:bg-slate-950 bg-white">
+      <div className="flex flex-col h-full w-full">
         <NavigationTitleWithBack label="Sources" />
         
         {/* Main Content Container - Centered on Desktop */}
-        <div className="flex-1 flex justify-center">
-          <div className="w-full max-w-2xl px-8 mt-16 flex flex-col gap-8 pb-20">
+        <div className="flex-1 flex justify-center bg-white dark:bg-slate-950">
+          <div className="w-full max-w-2xl px-8 mt-16 flex flex-col gap-8 pb-20 bg-white dark:bg-slate-950">
             {sourcesList.length === 0 && (
               <p className="text-sm dark:text-gray-400 text-center">No sources added yet.</p>
             )}
