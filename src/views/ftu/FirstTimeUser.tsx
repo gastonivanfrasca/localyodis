@@ -1,14 +1,14 @@
 import { ActionTypes, useMainContext } from "../../context/main";
+import { Plus, Settings } from "lucide-react";
 import { PredefinedSource, SourceCategory } from "../../types/predefined-sources";
 
+import { AddRSSSourceModals } from "../../components/AddSourceModals";
 import { CategoryPill } from "../../components/CategoryPill";
 import { Navigations } from "../../types/navigation";
 import { SourceCard } from "../../components/SourceCard";
 import { getPredefinedSources } from "../../utils/predefined-sources";
-import { AddRSSSourceModals } from "../../components/AddSourceModals";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { Plus, Settings } from "lucide-react";
 
 const generateRandomColor = () => {
   const randomColor = Math.floor(Math.random() * 16777215).toString(16);
@@ -107,7 +107,7 @@ export const FirstTimeUser = () => {
       <div className="flex-shrink-0 px-6 py-8">
         <div className="max-w-4xl mx-auto">
           <p className="text-zinc-600 dark:text-zinc-400 text-base">
-            Get started by selecting some popular RSS sources to begin reading interesting content
+            Get started by selecting from these community-suggested RSS sources to begin reading interesting content
           </p>
         </div>
       </div>
