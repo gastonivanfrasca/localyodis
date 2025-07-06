@@ -211,9 +211,11 @@ export const PubsList = () => {
 export const PubListEmpty = () => {
   const navigate = useNavigate();
   return (
-    <div className="p-16 flex flex-col gap-8 max-h-full overflow-scroll items-center bg-white dark:bg-slate-950">
-      <p className="text-xl dark:text-gray-200">No rss sources added</p>
-      <p className="text-sm dark:text-gray-400">Go to sources to add one.</p>
+    <div className="p-4 md:p-16 flex flex-col gap-8 max-h-full overflow-scroll items-center bg-white dark:bg-slate-950">
+      <div className="text-center max-w-md mx-auto px-4 md:px-0">
+        <p className="text-xl dark:text-gray-200">No rss sources added</p>
+        <p className="text-sm dark:text-gray-400 mt-2">Go to sources to add one.</p>
+      </div>
       <BackgroundedButtonWithIcon
         onClick={() => {
           navigate("/sources");
@@ -227,8 +229,8 @@ export const PubListEmpty = () => {
 
 export const BookmarksEmpty = () => {
   return (
-    <div className="p-16 flex flex-col gap-6 max-h-full overflow-scroll items-center justify-center min-h-[400px] bg-white dark:bg-slate-950">
-      <div className="flex flex-col items-center gap-4">
+    <div className="p-4 md:p-16 flex flex-col gap-6 max-h-full overflow-scroll items-center justify-center min-h-[400px] bg-white dark:bg-slate-950">
+      <div className="flex flex-col items-center gap-4 max-w-md mx-auto">
         <div className="w-16 h-16 bg-blue-50 dark:bg-blue-900/20 rounded-full flex items-center justify-center">
           <Bookmark className="w-8 h-8 text-blue-500 dark:text-blue-400" />
         </div>
@@ -236,16 +238,16 @@ export const BookmarksEmpty = () => {
           <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
             No bookmarks yet
           </h3>
-          <p className="text-gray-600 dark:text-gray-400 max-w-sm">
+          <p className="text-gray-600 dark:text-gray-400 text-sm md:text-base px-4 md:px-0">
             Start bookmarking your favorite publications to read them later. 
             They'll appear here for easy access.
           </p>
         </div>
       </div>
-      <div className="text-center">
-        <p className="text-sm text-gray-500 dark:text-gray-500 flex items-center gap-1">
+      <div className="text-center px-4 md:px-0">
+        <p className="text-sm text-gray-500 dark:text-gray-500 flex items-center justify-center gap-1 flex-wrap">
           <span>Tap the</span>
-          <Bookmark className="w-4 h-4" />
+          <Bookmark className="w-4 h-4 flex-shrink-0" />
           <span>icon on any publication to bookmark it</span>
         </p>
       </div>
@@ -255,8 +257,8 @@ export const BookmarksEmpty = () => {
 
 export const SearchEmpty = () => {
   return (
-    <div className="p-16 flex flex-col gap-6 max-h-full overflow-scroll items-center justify-center min-h-[400px] bg-white dark:bg-slate-950">
-      <div className="flex flex-col items-center gap-4">
+    <div className="p-4 md:p-16 flex flex-col gap-6 max-h-full overflow-scroll items-center justify-center min-h-[400px] bg-white dark:bg-slate-950">
+      <div className="flex flex-col items-center gap-4 max-w-md mx-auto">
         <div className="w-16 h-16 bg-gray-50 dark:bg-gray-800/50 rounded-full flex items-center justify-center">
           <Search className="w-8 h-8 text-gray-500 dark:text-gray-400" />
         </div>
@@ -264,13 +266,13 @@ export const SearchEmpty = () => {
           <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
             No results found
           </h3>
-          <p className="text-gray-600 dark:text-gray-400 max-w-sm">
+          <p className="text-gray-600 dark:text-gray-400 text-sm md:text-base px-4 md:px-0">
             We couldn't find any publications matching your search. 
             Try adjusting your search terms or checking the spelling.
           </p>
         </div>
       </div>
-      <div className="text-center space-y-2">
+      <div className="text-center space-y-2 px-4 md:px-0">
         <p className="text-sm text-gray-500 dark:text-gray-500 font-medium">
           Search tips:
         </p>
