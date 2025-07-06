@@ -8,6 +8,7 @@ import { LoadingSpinner } from "./LoadingSpinner";
 import { Navigations } from "../types/navigation";
 import { PubListItem } from "./v2/PubListItem";
 import { RSSItem } from "../types/rss";
+import { STORAGE_CONFIG } from "../utils/storage";
 import { Virtuoso } from "react-virtuoso";
 import { errorMap } from "../utils/errors";
 import { useError } from "../utils/useError";
@@ -78,19 +79,24 @@ export const PubsList = () => {
       });
       try {
         const newItems = await fetchRSS(sourcesURL);
+        
+        // Aplicar límites de storage automáticamente
+        const limitedItems = applyStorageLimits(newItems);
+        
         dispatch({
           type: ActionTypes.SET_ITEMS,
-          payload: newItems,
+          payload: limitedItems,
         });
         dispatch({
           type: ActionTypes.SET_ACTIVE_ITEMS,
-          payload: newItems,
+          payload: limitedItems,
         });
         dispatch({
           type: ActionTypes.SET_LAST_UPDATED,
           payload: new Date().toISOString(),
         });
-      } catch {
+      } catch (error) {
+        console.error('Error fetching RSS:', error);
         showError(errorMap.fetchRSSItems);
         dispatch({
           type: ActionTypes.SET_LOADING,
@@ -309,4 +315,35 @@ const PubListShapeSkeleton = () => {
       <div className="w-full h-12 bg-gray-200 dark:bg-gray-800 rounded-md"></div>
     </div>
   );
+};
+
+// Función para aplicar límites de storage a los items RSS
+const applyStorageLimits = (items: RSSItem[]): RSSItem[] => {
+  if (!items || items.length === 0) return items;
+  
+  // Ordenar por fecha de publicación (más recientes primero)
+  const sortedItems = [...items].sort((a, b) => {
+    const dateA = new Date(a.pubDate || '').getTime();
+    const dateB = new Date(b.pubDate || '').getTime();
+    return dateB - dateA;
+  });
+  
+  // Limitar items por fuente
+  const itemsBySource = new Map<string, RSSItem[]>();
+  sortedItems.forEach(item => {
+    const source = item.source || 'unknown';
+    if (!itemsBySource.has(source)) {
+      itemsBySource.set(source, []);
+    }
+    const sourceItems = itemsBySource.get(source)!;
+    if (sourceItems.length < STORAGE_CONFIG.MAX_ITEMS_PER_SOURCE) {
+      sourceItems.push(item);
+    }
+  });
+  
+  // Combinar todos los items limitados por fuente
+  const limitedItems = Array.from(itemsBySource.values()).flat();
+  
+  // Aplicar límite total si es necesario
+  return limitedItems.slice(0, STORAGE_CONFIG.MAX_TOTAL_ITEMS);
 };

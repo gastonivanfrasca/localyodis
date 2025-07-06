@@ -34,11 +34,6 @@
           "name": "AlternativeTo News",
           "url": "https://feed.alternativeto.net/news/all",
           "description": "Software alternatives and recommendations"
-        },
-        {
-          "name": "Joe Rogan Experience",
-          "url": "https://feeds.megaphone.fm/GLT1412515089",
-          "description": "Joe Rogan's podcast"
         }
       ]
     },
