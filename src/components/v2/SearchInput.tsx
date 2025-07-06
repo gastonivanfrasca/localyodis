@@ -67,7 +67,7 @@ export const SearchInput = () => {
       <input
         type="text"
         placeholder="Search"
-        className="w-full text-lg focus:outline-none dark:text-white px-4 py-2"
+        className="w-full text-lg focus:outline-none dark:text-white px-4 py-2 bg-white dark:bg-slate-900 placeholder-gray-500 dark:placeholder-gray-400"
         onChange={handleSearch}
         value={state.searchQuery ?? ""}
       />

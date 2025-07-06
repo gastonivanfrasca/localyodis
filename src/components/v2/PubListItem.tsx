@@ -32,7 +32,7 @@ export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onU
 
   return (
     <div
-      className="flex flex-row w-full gap-1 md:w-full rounded-sm border-b-2 border-neutral-200 dark:border-neutral-600 text-left cursor-pointer mb-8"
+      className="flex flex-row w-full gap-1 md:w-full rounded-sm border-b-2 border-neutral-200 dark:border-neutral-600 text-left cursor-pointer mb-8 bg-white dark:bg-slate-950"
       key={`${link}-${title}-${index}`}
     >
       <div className="flex flex-col gap-2 rounded-sm dark:text-gray-200 grow break-words max-w-full items-start pb-4">

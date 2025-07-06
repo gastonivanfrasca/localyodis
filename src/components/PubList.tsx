@@ -168,7 +168,7 @@ export const PubsList = () => {
 
   return (
     <>
-      <div id="pubs-list" className="p-8 flex flex-col gap-8 h-full w-full">
+      <div id="pubs-list" className="p-8 flex flex-col gap-8 h-full w-full bg-white dark:bg-slate-950">
         <Virtuoso
           style={{
             height: "100vh",
@@ -211,7 +211,7 @@ export const PubsList = () => {
 export const PubListEmpty = () => {
   const navigate = useNavigate();
   return (
-    <div className="p-16 flex flex-col gap-8 max-h-full overflow-scroll items-center">
+    <div className="p-16 flex flex-col gap-8 max-h-full overflow-scroll items-center bg-white dark:bg-slate-950">
       <p className="text-xl dark:text-gray-200">No rss sources added</p>
       <p className="text-sm dark:text-gray-400">Go to sources to add one.</p>
       <BackgroundedButtonWithIcon
@@ -227,7 +227,7 @@ export const PubListEmpty = () => {
 
 export const BookmarksEmpty = () => {
   return (
-    <div className="p-16 flex flex-col gap-6 max-h-full overflow-scroll items-center justify-center min-h-[400px]">
+    <div className="p-16 flex flex-col gap-6 max-h-full overflow-scroll items-center justify-center min-h-[400px] bg-white dark:bg-slate-950">
       <div className="flex flex-col items-center gap-4">
         <div className="w-16 h-16 bg-blue-50 dark:bg-blue-900/20 rounded-full flex items-center justify-center">
           <Bookmark className="w-8 h-8 text-blue-500 dark:text-blue-400" />
@@ -255,7 +255,7 @@ export const BookmarksEmpty = () => {
 
 export const SearchEmpty = () => {
   return (
-    <div className="p-16 flex flex-col gap-6 max-h-full overflow-scroll items-center justify-center min-h-[400px]">
+    <div className="p-16 flex flex-col gap-6 max-h-full overflow-scroll items-center justify-center min-h-[400px] bg-white dark:bg-slate-950">
       <div className="flex flex-col items-center gap-4">
         <div className="w-16 h-16 bg-gray-50 dark:bg-gray-800/50 rounded-full flex items-center justify-center">
           <Search className="w-8 h-8 text-gray-500 dark:text-gray-400" />
@@ -299,7 +299,7 @@ const extractLink = (item: RSSItem): string => {
 
 const PubListShapeSkeleton = () => {
   return (
-    <div className="p-8 flex flex-col gap-8 max-h-full overflow-scroll items-center">
+    <div className="p-8 flex flex-col gap-8 max-h-full overflow-scroll items-center bg-white dark:bg-slate-950">
       <div className="w-full h-12 bg-gray-200 dark:bg-gray-800 rounded-md"></div>
       <div className="w-full h-12 bg-gray-200 dark:bg-gray-800 rounded-md"></div>
       <div className="w-full h-12 bg-gray-200 dark:bg-gray-800 rounded-md"></div>
