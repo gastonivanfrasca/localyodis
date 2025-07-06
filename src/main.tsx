@@ -4,6 +4,7 @@ import App from "./App.tsx";
 import { Discover } from "./views/discover/Discover.tsx";
 import { MainProvider } from "./context/main/provider.tsx";
 import { Menu } from "./views/menu/Menu.tsx";
+import { Settings } from "./views/settings/Settings.tsx";
 import { SourceProfile } from "./views/sources/SourceProfile.tsx";
 import { Sources } from "./views/sources/Sources.tsx";
 import { StrictMode } from "react";
@@ -21,6 +22,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/sources" element={<Sources />} />
             <Route path="/sources/:id" element={<SourceProfile />} />
             <Route path="/discover" element={<Discover />} />
+            <Route path="/settings" element={<Settings />} />
           </Route>
         </Routes>
       </BrowserRouter>
