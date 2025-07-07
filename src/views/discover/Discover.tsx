@@ -1,13 +1,13 @@
 import { ActionTypes, useMainContext } from "../../context/main";
-import { ArrowLeft, Compass, Plus } from "lucide-react";
 import { PredefinedSource, SourceCategory } from "../../types/predefined-sources";
 import { useEffect, useState } from "react";
 
 import { AddRSSSourceModals } from "../../components/AddSourceModals";
 import { CategoryPill } from "../../components/CategoryPill";
 import { DiscoverSourceCard } from "../../components/DiscoverSourceCard";
-import { Link } from "react-router";
+import { NavigationTitleWithBack } from "../../components/v2/NavigationTitleWithBack";
 import { Navigations } from "../../types/navigation";
+import { Plus } from "lucide-react";
 import Snackbar from "../../components/Snackbar";
 import { getPredefinedSources } from "../../utils/predefined-sources";
 import { useError } from "../../utils/useError";
@@ -105,22 +105,11 @@ export const Discover = () => {
 
   return (
     <div className="w-full h-screen dark:bg-slate-950 flex flex-col">
+      <NavigationTitleWithBack label="Discover Sources" />
+      
       {/* Header */}
-      <div className="flex-shrink-0 px-6 py-8">
+      <div className="flex-shrink-0 px-6 py-8 mt-16">
         <div className="max-w-4xl mx-auto">
-          <div className="flex items-center gap-4 mb-4">
-            <Link to="/">
-              <button className="bg-zinc-200 dark:bg-slate-800 p-2.5 rounded-xl hover:bg-zinc-300 dark:hover:bg-slate-700 transition-all duration-200">
-                <ArrowLeft className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
-              </button>
-            </Link>
-            <div className="flex items-center gap-2">
-              <Compass className="w-6 h-6 text-zinc-700 dark:text-zinc-300" />
-              <h1 className="text-2xl font-bold text-zinc-800 dark:text-white tracking-tight">
-                Discover Sources
-              </h1>
-            </div>
-          </div>
           <p className="text-zinc-600 dark:text-zinc-400 text-base">
             Explore and add new community-suggested RSS sources to enhance your reading experience. Green indicators show sources you've already added.
           </p>
