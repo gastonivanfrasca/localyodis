@@ -3,7 +3,7 @@ import { Navigations } from "../types/navigation";
 
 // Storage configuration to prevent QuotaExceededError
 export const STORAGE_CONFIG = {
-  MAX_ITEMS_PER_SOURCE: 50,    // Máximo de items por fuente RSS
+  MAX_ITEMS_PER_SOURCE: 50,    // Máximo de items por fuente RSS (solo informativo, no se aplica)
   MAX_TOTAL_ITEMS: 300,        // Máximo total de items en storage
   CLEANUP_KEEP_ITEMS: 30,      // Cuántos items mantener al limpiar por fuente
   CLEANUP_KEEP_TOTAL: 200,     // Cuántos items mantener al limpiar en total
@@ -54,29 +54,17 @@ export const cleanupStorageData = (data: LocallyStoredData): LocallyStoredData =
     return dateB - dateA; // Más recientes primero
   });
   
-  // Si tenemos menos items que el límite total, no hacer nada
+  // Si tenemos menos items que el límite total, mantener todos ordenados cronológicamente
   if (sortedItems.length <= STORAGE_CONFIG.MAX_TOTAL_ITEMS) {
-    return data;
+    return {
+      ...restData,
+      items: sortedItems,
+      activeItems: sortedItems,
+    };
   }
   
-  // Limitar items por fuente
-  const itemsBySource = new Map<string, typeof items>();
-  sortedItems.forEach(item => {
-    const source = item.source || 'unknown';
-    if (!itemsBySource.has(source)) {
-      itemsBySource.set(source, []);
-    }
-    const sourceItems = itemsBySource.get(source)!;
-    if (sourceItems.length < STORAGE_CONFIG.MAX_ITEMS_PER_SOURCE) {
-      sourceItems.push(item);
-    }
-  });
-  
-  // Combinar todos los items limitados por fuente
-  const limitedItems = Array.from(itemsBySource.values()).flat();
-  
-  // Si aún hay demasiados items, aplicar límite total
-  const finalItems = limitedItems.slice(0, STORAGE_CONFIG.MAX_TOTAL_ITEMS);
+  // Aplicar límite total manteniendo orden cronológico
+  const finalItems = sortedItems.slice(0, STORAGE_CONFIG.MAX_TOTAL_ITEMS);
   
   return {
     ...restData,

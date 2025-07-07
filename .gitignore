@@ -30,3 +30,4 @@ dev-dist/sw.js
 dev-dist/registerSW.js
 test.json
 view.json
+NOTIFICATION_SETUP.md

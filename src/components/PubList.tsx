@@ -328,22 +328,11 @@ const applyStorageLimits = (items: RSSItem[]): RSSItem[] => {
     return dateB - dateA;
   });
   
-  // Limitar items por fuente
-  const itemsBySource = new Map<string, RSSItem[]>();
-  sortedItems.forEach(item => {
-    const source = item.source || 'unknown';
-    if (!itemsBySource.has(source)) {
-      itemsBySource.set(source, []);
-    }
-    const sourceItems = itemsBySource.get(source)!;
-    if (sourceItems.length < STORAGE_CONFIG.MAX_ITEMS_PER_SOURCE) {
-      sourceItems.push(item);
-    }
-  });
+  // Si tenemos menos items que el límite total, mantener todos ordenados cronológicamente
+  if (sortedItems.length <= STORAGE_CONFIG.MAX_TOTAL_ITEMS) {
+    return sortedItems;
+  }
   
-  // Combinar todos los items limitados por fuente
-  const limitedItems = Array.from(itemsBySource.values()).flat();
-  
-  // Aplicar límite total si es necesario
-  return limitedItems.slice(0, STORAGE_CONFIG.MAX_TOTAL_ITEMS);
+  // Aplicar límite total manteniendo orden cronológico
+  return sortedItems.slice(0, STORAGE_CONFIG.MAX_TOTAL_ITEMS);
 };
