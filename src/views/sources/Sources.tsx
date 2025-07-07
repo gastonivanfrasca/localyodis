@@ -1,17 +1,16 @@
 import { ActionTypes, useMainContext } from "../../context/main";
-import { AddRSSSourceModals, AddYTChannelModal } from "../../components/AddSourceModals";
-import { Rss, Youtube } from "lucide-react";
 import { useEffect, useState } from "react";
 
+import { AddRSSSourceModals } from "../../components/AddSourceModals";
 import { BackgroundedButtonWithIcon } from "../../components/v2/AddSourceButton";
 import { NavigationTitleWithBack } from "../../components/v2/NavigationTitleWithBack";
+import { Rss } from "lucide-react";
 import Snackbar from "../../components/Snackbar";
 import { Source } from "../../types/storage";
 import { SourcesList } from "../../components/SourcesList";
 
 export const Sources = () => {
   const [isRSSModalOpen, setIsRSSModalOpen] = useState(false);
-  const [isYTModalOpen, setIsYTModalOpen] = useState(false);
   const { state, dispatch } = useMainContext();
   const sourcesList = state.sources;
 
@@ -48,11 +47,6 @@ export const Sources = () => {
                 icon={<Rss className="w-5 h-5 text-zinc-800 dark:text-zinc-200" />}
                 label="Add RSS source"
               />
-              <BackgroundedButtonWithIcon
-                onClick={() => setIsYTModalOpen(true)}
-                icon={<Youtube className="w-5 h-5 text-zinc-800 dark:text-zinc-200" />}
-                label="Add YT channel"
-              />
             </div>
 
             {sourcesList.length > 0 && (
@@ -70,12 +64,6 @@ export const Sources = () => {
         <AddRSSSourceModals
           isOpen={isRSSModalOpen}
           setIsModalOpen={setIsRSSModalOpen}
-        />
-        
-        {/* YouTube Modal */}
-        <AddYTChannelModal
-          isOpen={isYTModalOpen}
-          setIsModalOpen={setIsYTModalOpen}
         />
       </div>
       <Snackbar />
