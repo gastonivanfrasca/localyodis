@@ -1,0 +1,80 @@
+# Cursor Rules for LocalYodis
+
+## Project Overview
+LocalYodis is a React TypeScript PWA for local news and RSS feed management. Follow these rules to maintain consistency and quality.
+
+## Git & Commits
+- Be concise with commit messages, no more than two lines
+- First line: brief summary (max 50 chars)
+- Second line (optional): additional context if needed
+- Use conventional commits format: `feat:`, `fix:`, `refactor:`, `docs:`, etc.
+
+## TypeScript & React
+- Use TypeScript for all new files
+- Prefer functional components with hooks over class components
+- Use proper TypeScript types instead of `any`
+- Import types using `import type` syntax when importing only types
+- Use interfaces for object shapes, types for unions/primitives
+- Keep components focused and single-purpose
+
+## File Organization
+- Components go in `src/components/` or `src/components/v2/` for newer versions
+- Use PascalCase for component files (e.g., `SourceCard.tsx`)
+- Group related utilities in `src/utils/`
+- Types go in `src/types/` with descriptive names
+- Views/pages go in `src/views/` organized by feature
+
+## Component Patterns
+- Follow existing patterns in `src/components/v2/` for new components
+- Use consistent naming: Button components end with "Button"
+- Prefer composition over inheritance
+- Use React.memo for performance optimization when appropriate
+- Keep component files under 200 lines when possible
+
+## State Management
+- Use the existing context pattern in `src/context/main/`
+- Prefer React hooks for local state
+- Use custom hooks for reusable logic (see `src/utils/useError.ts`)
+- Keep state as close to where it's used as possible
+
+## Styling
+- Follow existing CSS patterns in `App.css`
+- Use semantic class names
+- Prefer CSS modules or styled-components for component-specific styles
+- Maintain responsive design principles for mobile-first approach
+
+## API & Data
+- Use the existing API utilities in `src/utils/api.ts`
+- Follow RSS parsing patterns in `src/utils/rss.ts`
+- Use proper error handling with the error utilities
+- Validate data using the patterns in `src/utils/validations.ts`
+
+## Performance
+- This is a PWA - consider performance implications
+- Use lazy loading for routes and heavy components
+- Optimize images and assets
+- Keep bundle size minimal
+
+## Code Quality
+- Follow ESLint configuration
+- Use meaningful variable and function names
+- Add JSDoc comments for complex functions
+- Remove unused imports and variables
+- Use early returns to reduce nesting
+
+## Testing
+- Write unit tests for utility functions
+- Test components with user interactions
+- Mock external dependencies appropriately
+- Keep tests simple and focused
+
+## Dependencies
+- Check if functionality exists in current dependencies before adding new ones
+- Prefer native browser APIs when possible
+- Keep dependencies up to date and minimal
+
+## PWA Considerations
+- Ensure offline functionality works
+- Consider caching strategies
+- Optimize for mobile performance
+- Test on different devices and network conditions 

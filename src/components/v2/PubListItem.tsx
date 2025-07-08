@@ -32,10 +32,10 @@ export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onU
 
   return (
     <div
-      className="flex flex-row w-full gap-1 md:w-full rounded-sm border-b-2 border-neutral-200 dark:border-neutral-600 text-left cursor-pointer mb-8 bg-white dark:bg-slate-950"
+      className="flex flex-row w-full gap-1 md:w-full text-left cursor-pointer mb-6 pb-4 border-b border-gray-200 dark:border-gray-700"
       key={`${link}-${title}-${index}`}
     >
-      <div className="flex flex-col gap-2 rounded-sm dark:text-gray-200 grow break-words max-w-full items-start pb-4">
+      <div className="flex flex-col gap-2 text-gray-900 dark:text-gray-200 grow break-words max-w-full items-start">
         <div className="flex flex-row gap-2 items-start">
           <button
             onClick={() => window.open(link, "_blank")}
@@ -55,12 +55,12 @@ export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onU
             />
             <button
               onClick={handleSourceClick}
-              className="text-xs truncate max-w-[100px] hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-left"
+              className="text-xs truncate max-w-[100px] hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-left text-gray-600 dark:text-gray-400"
             >
               {sourceData.name}
             </button>
             {item.pubDate && (
-              <p className="text-xs self-end text-right whitespace-nowrap">
+              <p className="text-xs self-end text-right whitespace-nowrap text-gray-500 dark:text-gray-400">
                 {formatPubDate(item.pubDate)}
               </p>
             )}
@@ -68,7 +68,7 @@ export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onU
 
           {bookmark !== undefined ? (
             <button
-              className="dark:text-gray-200 underline cursor-pointer"
+              className="text-gray-700 dark:text-gray-200 cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
               onClick={() => onUnbookmark(item)}
             >
               <BookmarkCheck
@@ -78,10 +78,10 @@ export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onU
             </button>
           ) : (
             <button
-              className="dark:text-gray-200 underline cursor-pointer"
+              className="text-gray-700 dark:text-gray-200 cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
               onClick={() => onBookmark(item)}
             >
-              <Bookmark className="h-4 text-gray-800 dark:text-gray-400 " />
+              <Bookmark className="h-4 text-gray-800 dark:text-gray-400" />
             </button>
           )}
         </div>

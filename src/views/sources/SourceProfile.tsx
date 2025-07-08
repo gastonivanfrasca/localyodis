@@ -123,10 +123,10 @@ export const SourceProfile = () => {
     return (
       <div className="min-h-screen bg-white dark:bg-slate-950 text-black dark:text-white font-sans flex flex-col">
         <NavigationTitleWithBack label="Source Not Found" />
-        <div className="flex-1 flex justify-center items-center">
+        <div className="flex-1 flex justify-center items-center pt-16">
           <div className="text-center">
-            <p className="text-lg dark:text-gray-200">Source not found</p>
-            <p className="text-sm dark:text-gray-400 mt-2">The source you're looking for doesn't exist.</p>
+            <p className="text-lg text-gray-900 dark:text-gray-200">Source not found</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">The source you're looking for doesn't exist.</p>
           </div>
         </div>
         <Snackbar />
@@ -139,8 +139,8 @@ export const SourceProfile = () => {
       <NavigationTitleWithBack label={source.name || "Source Profile"} />
       
       {/* Main Content Container - Centered on Desktop */}
-      <div className="flex-1 flex justify-center">
-        <div className="w-full max-w-4xl px-6 mt-16 flex flex-col gap-8 py-6">
+      <div className="flex-1 flex justify-center pt-16">
+        <div className="w-full max-w-4xl px-6 flex flex-col gap-6 py-6">
           
           {/* Source Header */}
           <div className="bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-gray-700 p-4 md:p-6">
@@ -198,22 +198,22 @@ export const SourceProfile = () => {
                 <p className="text-gray-600 dark:text-gray-400">No items found for this source.</p>
               </div>
             ) : (
-                             <div className="space-y-6">
-                 {sourceItems.map((item, index) => {
-                   const sourceData = state.sources.find(s => s.id === item.source);
-                   return (
-                     <PubListItem
-                       key={`${item.link}-${index}`}
-                       item={item}
-                       index={index}
-                       sourceData={sourceData}
-                       bookmark={isBookmarked(item)}
-                       onBookmark={() => handleBookmark(item)}
-                       onUnbookmark={() => handleUnbookmark(item)}
-                     />
-                   );
-                 })}
-               </div>
+              <div className="space-y-4">
+                {sourceItems.map((item, index) => {
+                  const sourceData = state.sources.find(s => s.id === item.source);
+                  return (
+                    <PubListItem
+                      key={`${item.link}-${index}`}
+                      item={item}
+                      index={index}
+                      sourceData={sourceData}
+                      bookmark={isBookmarked(item)}
+                      onBookmark={() => handleBookmark(item)}
+                      onUnbookmark={() => handleUnbookmark(item)}
+                    />
+                  );
+                })}
+              </div>
             )}
           </div>
         </div>
