@@ -5,6 +5,7 @@ import { RoundedIdentifier } from "./RoundedIdentifier";
 import { Source } from "../../types/storage";
 import { formatPubDate } from "../../utils/format";
 import { useNavigate } from "react-router";
+import { useState } from "react";
 
 interface PubListItemProps {
   item: RSSItem;
@@ -13,10 +14,13 @@ interface PubListItemProps {
   bookmark: RSSItem | undefined;
   onBookmark: (item: RSSItem) => void;
   onUnbookmark: (item: RSSItem) => void;
+  onHide: (item: RSSItem) => void;
 }
 
-export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onUnbookmark }: PubListItemProps) => {
+export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onUnbookmark, onHide }: PubListItemProps) => {
   const navigate = useNavigate();
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
   
   if (!sourceData) return null;
 
@@ -30,10 +34,34 @@ export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onU
     navigate(`/sources/${sourceData.id}`);
   };
 
+  // Swipe gesture handlers
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isRightSwipe = distance < -50; // Negative means right swipe
+    
+    if (isRightSwipe) {
+      onHide(item);
+    }
+  };
+
   return (
     <div
       className="flex flex-row w-full gap-1 md:w-full text-left cursor-pointer mb-6 pb-4 border-b border-gray-200 dark:border-gray-700"
       key={`${link}-${title}-${index}`}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
     >
       <div className="flex flex-col gap-2 text-gray-900 dark:text-gray-200 grow break-words max-w-full items-start">
         <div className="flex flex-row gap-2 items-start">

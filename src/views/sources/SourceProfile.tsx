@@ -1,4 +1,5 @@
 import { Calendar, Rss, Trash2, Youtube } from "lucide-react";
+import { extractItemTitle, filterHiddenItems } from "../../utils/storage";
 import { fetchRSS, getRSSItemStrProp } from "../../utils/rss";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router";
@@ -101,6 +102,18 @@ export const SourceProfile = () => {
     navigate('/sources');
   }, [source, state.sources, state.activeSources, dispatch, navigate]);
 
+  const handleHide = useCallback((item: RSSItem) => {
+    dispatch({
+      type: ActionTypes.HIDE_ITEM,
+      payload: item,
+    });
+    
+    // Remove item from sourceItems immediately
+    const itemTitle = extractItemTitle(item);
+    const filteredItems = sourceItems.filter(sourceItem => extractItemTitle(sourceItem) !== itemTitle);
+    setSourceItems(filteredItems);
+  }, [dispatch, sourceItems]);
+
   useEffect(() => {
     const fetchSourceItems = async () => {
       if (!source) return;
@@ -199,7 +212,7 @@ export const SourceProfile = () => {
               </div>
             ) : (
               <div className="space-y-4">
-                {sourceItems.map((item, index) => {
+                {filterHiddenItems(sourceItems, state.hiddenItems).map((item, index) => {
                   const sourceData = state.sources.find(s => s.id === item.source);
                   return (
                     <PubListItem
@@ -210,6 +223,7 @@ export const SourceProfile = () => {
                       bookmark={isBookmarked(item)}
                       onBookmark={() => handleBookmark(item)}
                       onUnbookmark={() => handleUnbookmark(item)}
+                      onHide={handleHide}
                     />
                   );
                 })}

@@ -1,5 +1,5 @@
 import { Action, ActionTypes, MainContext } from ".";
-import { getLocallyStoredData, storeDataLocally } from "../../utils/storage";
+import { extractItemTitle, filterHiddenItems, getLocallyStoredData, storeDataLocally } from "../../utils/storage";
 import { useEffect, useReducer } from "react";
 
 import { LocallyStoredData } from "../../types/storage";
@@ -10,8 +10,11 @@ const localData = getLocallyStoredData();
 // Determine if this is a first-time user (no sources configured)
 const isFirstTimeUser = localData.sources.length === 0;
 
+// Filter out any hidden items from the loaded data to prevent glitches
+const filteredItems = filterHiddenItems(localData.items, localData.hiddenItems || []);
+
 const initialState: LocallyStoredData = {
-  items: localData.items,
+  items: filteredItems,
   sources: localData.sources,
   theme: localData.theme,
   bookmarks: localData.bookmarks,
@@ -21,8 +24,9 @@ const initialState: LocallyStoredData = {
   scrollPosition: localData.scrollPosition,
   loading: localData.loading,
   searchQuery: localData.searchQuery || null,
-  activeItems: localData.items,
+  activeItems: filteredItems,
   error: null,
+  hiddenItems: localData.hiddenItems || [],
 };
 
 
@@ -56,6 +60,23 @@ const reducer = (state: LocallyStoredData, action: Action) => {
       return { ...state, error: action.payload };
     case ActionTypes.CLEAR_ERROR:
       return { ...state, error: null };
+    case ActionTypes.SET_HIDDEN_ITEMS:
+      return { ...state, hiddenItems: action.payload };
+    case ActionTypes.HIDE_ITEM:
+      {
+        const itemTitle = extractItemTitle(action.payload);
+        const hiddenItems = state.hiddenItems || [];
+        if (!hiddenItems.includes(itemTitle)) {
+          return { ...state, hiddenItems: [...hiddenItems, itemTitle] };
+        }
+        return state;
+      }
+    case ActionTypes.UNHIDE_ITEM:
+      {
+        const itemTitle = extractItemTitle(action.payload);
+        const hiddenItems = state.hiddenItems || [];
+        return { ...state, hiddenItems: hiddenItems.filter(title => title !== itemTitle) };
+      }
     default:    
       return state;
   }

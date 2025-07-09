@@ -37,4 +37,5 @@ export type LocallyStoredData = {
   searchQuery: string | null;
   activeItems: RSSItem[];
   error: ErrorState;
+  hiddenItems: string[]; // Array of hidden item IDs
 };

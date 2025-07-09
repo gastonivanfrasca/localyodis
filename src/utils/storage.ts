@@ -1,5 +1,6 @@
 import { LocallyStoredData } from "../types/storage";
 import { Navigations } from "../types/navigation";
+import { RSSItem } from "../types/rss";
 
 // Storage configuration to prevent QuotaExceededError
 export const STORAGE_CONFIG = {
@@ -22,6 +23,7 @@ const defaultLocallyStoredData = {
   searchQuery: null,
   activeItems: [],
   error: null,
+  hiddenItems: [], // Initialize empty array for hidden items
 } as LocallyStoredData;
 
 export const storeDataLocally = (data: LocallyStoredData) => {
@@ -176,4 +178,75 @@ const checkItemsPerSourceLimit = (items: typeof defaultLocallyStoredData.items) 
   });
   
   return Array.from(itemsBySource.values()).every(count => count <= STORAGE_CONFIG.MAX_ITEMS_PER_SOURCE);
+};
+
+// Utility functions for managing hidden items
+
+// Extract title from RSS item (simplified approach)
+export const extractItemTitle = (item: RSSItem): string => {
+  if (!item.title) return "";
+  
+  // Handle array format
+  if (Array.isArray(item.title)) {
+    return item.title[0] || "";
+  }
+  
+  // Handle object format (like { "_": "actual title" })
+  if (typeof item.title === "object" && item.title !== null) {
+    const titleObj = item.title as { _?: string; [key: string]: unknown };
+    return titleObj["_"] || "";
+  }
+  
+  // Handle string format
+  return item.title;
+};
+
+// Hide an item by adding its title to hiddenItems
+export const hideItem = (itemTitle: string) => {
+  const localData = getLocallyStoredData();
+  const hiddenItems = localData.hiddenItems || [];
+  
+  if (!hiddenItems.includes(itemTitle)) {
+    const updatedHiddenItems = [...hiddenItems, itemTitle];
+    storeDataLocally({ ...localData, hiddenItems: updatedHiddenItems });
+  }
+};
+
+// Unhide an item by removing its title from hiddenItems
+export const unhideItem = (itemTitle: string) => {
+  const localData = getLocallyStoredData();
+  const hiddenItems = localData.hiddenItems || [];
+  const updatedHiddenItems = hiddenItems.filter(title => title !== itemTitle);
+  storeDataLocally({ ...localData, hiddenItems: updatedHiddenItems });
+};
+
+// Clean up hidden items that no longer exist in the current items feed
+export const cleanupHiddenItems = (currentItems: RSSItem[]) => {
+  const localData = getLocallyStoredData();
+  const hiddenItems = localData.hiddenItems || [];
+  
+  if (hiddenItems.length === 0) return;
+  
+  // Extract titles from current items
+  const currentItemTitles = new Set(currentItems.map(item => extractItemTitle(item)));
+  
+  // Filter hidden items to keep only those that still exist in the feed
+  const validHiddenItems = hiddenItems.filter(hiddenTitle => currentItemTitles.has(hiddenTitle));
+  
+  // Update storage only if there are changes
+  if (validHiddenItems.length !== hiddenItems.length) {
+    storeDataLocally({ ...localData, hiddenItems: validHiddenItems });
+    console.log(`Cleaned up ${hiddenItems.length - validHiddenItems.length} hidden items that no longer exist`);
+  }
+};
+
+// Filter out hidden items from a list of items
+export const filterHiddenItems = (items: RSSItem[], hiddenItems: string[] = []) => {
+  if (hiddenItems.length === 0) return items;
+  
+  const hiddenItemsSet = new Set(hiddenItems);
+  return items.filter(item => {
+    const itemTitle = extractItemTitle(item);
+    return !hiddenItemsSet.has(itemTitle);
+  });
 };

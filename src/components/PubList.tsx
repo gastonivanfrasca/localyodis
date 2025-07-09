@@ -1,5 +1,6 @@
 import { ActionTypes, useMainContext } from "../context/main";
 import { Bookmark, Search, Settings } from "lucide-react";
+import { STORAGE_CONFIG, cleanupHiddenItems, extractItemTitle, filterHiddenItems } from "../utils/storage";
 import { fetchRSS, getRSSItemStrProp } from "../utils/rss";
 import { useEffect, useRef } from "react";
 
@@ -8,7 +9,6 @@ import { LoadingSpinner } from "./LoadingSpinner";
 import { Navigations } from "../types/navigation";
 import { PubListItem } from "./v2/PubListItem";
 import { RSSItem } from "../types/rss";
-import { STORAGE_CONFIG } from "../utils/storage";
 import { Virtuoso } from "react-virtuoso";
 import { errorMap } from "../utils/errors";
 import { useError } from "../utils/useError";
@@ -80,16 +80,23 @@ export const PubsList = () => {
       try {
         const newItems = await fetchRSS(sourcesURL);
         
+        // Cleanup hidden items that no longer exist in the new feed
+        cleanupHiddenItems(newItems);
+        
         // Aplicar límites de storage automáticamente
         const limitedItems = applyStorageLimits(newItems);
         
+        // Filter out hidden items before saving to localStorage
+        const filteredItems = filterHiddenItems(limitedItems, state.hiddenItems);
+        
         dispatch({
           type: ActionTypes.SET_ITEMS,
-          payload: limitedItems,
+          payload: filteredItems,
         });
+        
         dispatch({
           type: ActionTypes.SET_ACTIVE_ITEMS,
-          payload: limitedItems,
+          payload: filteredItems,
         });
         dispatch({
           type: ActionTypes.SET_LAST_UPDATED,
@@ -145,6 +152,28 @@ export const PubsList = () => {
     dispatch({
       type: ActionTypes.SET_BOOKMARKS,
       payload: updatedBookmarks,
+    });
+  };
+
+  const hideItem = (item: RSSItem) => {
+    dispatch({
+      type: ActionTypes.HIDE_ITEM,
+      payload: item,
+    });
+    
+    // Remove hidden item from both items and activeItems arrays
+    const itemTitle = extractItemTitle(item);
+    const filteredItems = state.items.filter(i => extractItemTitle(i) !== itemTitle);
+    const filteredActiveItems = state.activeItems.filter(i => extractItemTitle(i) !== itemTitle);
+    
+    dispatch({
+      type: ActionTypes.SET_ITEMS,
+      payload: filteredItems,
+    });
+    
+    dispatch({
+      type: ActionTypes.SET_ACTIVE_ITEMS,
+      payload: filteredActiveItems,
     });
   };
 
@@ -204,6 +233,7 @@ export const PubsList = () => {
                 bookmark={bookmark}
                 onBookmark={bookmarkItem}
                 onUnbookmark={unbookmarkItem}
+                onHide={hideItem}
               />
             );
           }}

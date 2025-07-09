@@ -28,6 +28,9 @@ export enum ActionTypes {
   SET_LOADING = "SET_LOADING",
   SET_ERROR = "SET_ERROR",
   CLEAR_ERROR = "CLEAR_ERROR",
+  SET_HIDDEN_ITEMS = "SET_HIDDEN_ITEMS",
+  HIDE_ITEM = "HIDE_ITEM",
+  UNHIDE_ITEM = "UNHIDE_ITEM",
 }
 
 export const MainContext = createContext<MainContextType | null>(null);
