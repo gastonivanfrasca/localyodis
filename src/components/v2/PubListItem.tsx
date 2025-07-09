@@ -123,7 +123,7 @@ export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onU
       )}
       
       <div className="flex flex-col gap-2 text-gray-900 dark:text-gray-200 grow break-words max-w-full items-start relative z-10">
-        <div className="flex flex-row gap-2 items-start">
+        <div className="flex flex-row gap-2 items-start flex-1">
           <button
             onClick={() => window.open(link, "_blank")}
             className="font-semibold text-lg text-left cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
@@ -131,45 +131,49 @@ export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onU
             {title}
           </button>
         </div>
-        <div className="flex flex-row gap-2 w-full justify-between items-end mt-2">
-          <div className="flex flex-row gap-2 items-center">
-            <RoundedIdentifier
-              color={sourceData.color}
-              textColor={sourceData.textColor}
-              initial={sourceData.initial}
-              video={sourceData.type === "video"}
-              small
-            />
+        
+        {/* Bottom section positioned at the bottom */}
+        <div className="flex flex-row gap-2 w-full justify-between items-center mt-auto mb-1">
+          <div className="flex flex-row gap-2 items-center min-w-0 flex-1">
+            <div className="flex-shrink-0">
+              <RoundedIdentifier
+                color={sourceData.color}
+                textColor={sourceData.textColor}
+                initial={sourceData.initial}
+                video={sourceData.type === "video"}
+                extraSmall
+              />
+            </div>
             <button
               onClick={handleSourceClick}
-              className="text-xs truncate max-w-[100px] hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-left text-gray-600 dark:text-gray-400"
+              className="text-xs truncate max-w-[100px] hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-left text-gray-600 dark:text-gray-400 flex-shrink-0"
             >
               {sourceData.name}
             </button>
             {item.pubDate && (
-              <p className="text-xs self-end text-right whitespace-nowrap text-gray-500 dark:text-gray-400">
+              <p className="text-xs whitespace-nowrap text-gray-500 dark:text-gray-400 flex-shrink-0">
                 {formatPubDate(item.pubDate)}
               </p>
             )}
           </div>
 
-          <div className="relative z-20">
+          <div className="flex-shrink-0 ml-2">
             {bookmark !== undefined ? (
               <button
-                className="text-gray-700 dark:text-gray-200 cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                className="text-gray-700 dark:text-gray-200 cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors p-1"
                 onClick={() => onUnbookmark(item)}
               >
                 <BookmarkCheck
-                  className="h-4"
+                  className="h-4 w-4"
                   style={{ color: "#1e7bc0" }}
                 />
               </button>
             ) : (
               <button
-                className="text-gray-700 dark:text-gray-200 cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                className="text-gray-700 dark:text-gray-200 cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors p-1"
                 onClick={() => onBookmark(item)}
               >
-                <Bookmark className="h-4 text-gray-800 dark:text-gray-400" />
+                <Bookmark className="h-4 w-4 text-gray-800 dark:text-gray-400" />
               </button>
             )}
           </div>

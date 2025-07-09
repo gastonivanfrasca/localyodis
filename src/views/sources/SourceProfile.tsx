@@ -1,4 +1,4 @@
-import { Calendar, Rss, Trash2, Youtube } from "lucide-react";
+import { Calendar, Check, Edit3, Rss, Trash2, X, Youtube } from "lucide-react";
 import { extractItemTitle, filterHiddenItems } from "../../utils/storage";
 import { fetchRSS, getRSSItemStrProp } from "../../utils/rss";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -23,6 +23,8 @@ export const SourceProfile = () => {
   const navigate = useNavigate();
   const [sourceItems, setSourceItems] = useState<RSSItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingName, setEditingName] = useState("");
 
   // Find the source by ID - memoize to prevent re-creation
   const source = useMemo(() => {
@@ -114,6 +116,42 @@ export const SourceProfile = () => {
     setSourceItems(filteredItems);
   }, [dispatch, sourceItems]);
 
+  // Handle name editing functions
+  const handleStartEdit = useCallback(() => {
+    if (!source) return;
+    setEditingName(source.name || "");
+    setIsEditing(true);
+  }, [source]);
+
+  const handleCancelEdit = useCallback(() => {
+    setIsEditing(false);
+    setEditingName("");
+  }, []);
+
+  const handleSaveEdit = useCallback(() => {
+    if (!source || !editingName.trim()) return;
+    
+    dispatch({
+      type: ActionTypes.UPDATE_SOURCE,
+      payload: {
+        id: source.id,
+        name: editingName.trim(),
+        initial: editingName.trim()[0]?.toUpperCase() || source.initial
+      }
+    });
+    
+    setIsEditing(false);
+    setEditingName("");
+  }, [source, editingName, dispatch]);
+
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSaveEdit();
+    } else if (e.key === 'Escape') {
+      handleCancelEdit();
+    }
+  }, [handleSaveEdit, handleCancelEdit]);
+
   useEffect(() => {
     const fetchSourceItems = async () => {
       if (!source) return;
@@ -166,9 +204,47 @@ export const SourceProfile = () => {
                 small={false}
               />
               <div className="flex-1 min-w-0">
-                <h1 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-2 truncate">
-                  {source.name || "Unnamed Source"}
-                </h1>
+                {isEditing ? (
+                  <div className="flex items-center gap-2 mb-2">
+                    <input
+                      type="text"
+                      value={editingName}
+                      onChange={(e) => setEditingName(e.target.value)}
+                      onKeyDown={handleKeyDown}
+                      className="text-xl md:text-2xl font-bold bg-transparent border-b-2 border-blue-500 dark:border-blue-400 text-gray-900 dark:text-white focus:outline-none flex-1 min-w-0"
+                      placeholder="Enter source name"
+                      autoFocus
+                    />
+                    <button
+                      onClick={handleSaveEdit}
+                      className="p-1 rounded-lg bg-green-50 dark:bg-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/40 text-green-600 dark:text-green-400 transition-colors"
+                      title="Save changes"
+                      disabled={!editingName.trim()}
+                    >
+                      <Check className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={handleCancelEdit}
+                      className="p-1 rounded-lg bg-gray-50 dark:bg-gray-900/20 hover:bg-gray-100 dark:hover:bg-gray-900/40 text-gray-600 dark:text-gray-400 transition-colors"
+                      title="Cancel"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2 mb-2">
+                    <h1 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white truncate flex-1">
+                      {source.name || "Unnamed Source"}
+                    </h1>
+                    <button
+                      onClick={handleStartEdit}
+                      className="p-1 rounded-lg bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/40 text-blue-600 dark:text-blue-400 transition-colors"
+                      title="Edit name"
+                    >
+                      <Edit3 className="w-4 h-4" />
+                    </button>
+                  </div>
+                )}
                 <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 mb-3">
                   {source.type === "video" ? (
                     <Youtube className="w-4 h-4 flex-shrink-0" />

@@ -36,6 +36,15 @@ const reducer = (state: LocallyStoredData, action: Action) => {
       return { ...state, items: action.payload };
     case ActionTypes.SET_SOURCES:
       return { ...state, sources: action.payload };
+    case ActionTypes.UPDATE_SOURCE:
+      return { 
+        ...state, 
+        sources: state.sources.map(source => 
+          source.id === action.payload.id 
+            ? { ...source, ...action.payload } 
+            : source
+        )
+      };
     case ActionTypes.SET_THEME:
       return { ...state, theme: action.payload };
     case ActionTypes.SET_BOOKMARKS:

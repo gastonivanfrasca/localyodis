@@ -16,6 +16,7 @@ export interface MainContextType {
 export enum ActionTypes {
   SET_ITEMS = "SET_ITEMS",
   SET_SOURCES = "SET_SOURCES",
+  UPDATE_SOURCE = "UPDATE_SOURCE",
   SET_THEME = "SET_THEME",
   SET_BOOKMARKS = "SET_BOOKMARKS",
   SET_NAVIGATION = "SET_NAVIGATION",
