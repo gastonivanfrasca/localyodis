@@ -1,4 +1,4 @@
-import { Calendar, Check, Edit3, Rss, Trash2, X, Youtube } from "lucide-react";
+import { Calendar, Rss, Trash2, Youtube, Edit3, Check, X, Palette } from "lucide-react";
 import { extractItemTitle, filterHiddenItems } from "../../utils/storage";
 import { fetchRSS, getRSSItemStrProp } from "../../utils/rss";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -10,9 +10,10 @@ import { NavigationTitleWithBack } from "../../components/v2/NavigationTitleWith
 import { PubListItem } from "../../components/v2/PubListItem";
 import { RSSItem } from "../../types/rss";
 import { RoundedIdentifier } from "../../components/v2/RoundedIdentifier";
+import { ColorPicker } from "../../components/v2/ColorPicker";
 import Snackbar from "../../components/Snackbar";
 import { errorMap } from "../../utils/errors";
-import { formatPubDate } from "../../utils/format";
+import { formatPubDate, generateTextColorForBackground } from "../../utils/format";
 import { useError } from "../../utils/useError";
 import { useMainContext } from "../../context/main";
 
@@ -25,6 +26,8 @@ export const SourceProfile = () => {
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [editingName, setEditingName] = useState("");
+  const [isEditingColor, setIsEditingColor] = useState(false);
+  const [editingColor, setEditingColor] = useState("");
 
   // Find the source by ID - memoize to prevent re-creation
   const source = useMemo(() => {
@@ -152,6 +155,36 @@ export const SourceProfile = () => {
     }
   }, [handleSaveEdit, handleCancelEdit]);
 
+  // Handle color editing functions
+  const handleStartColorEdit = useCallback(() => {
+    if (!source) return;
+    setEditingColor(source.color);
+    setIsEditingColor(true);
+  }, [source]);
+
+  const handleCancelColorEdit = useCallback(() => {
+    setIsEditingColor(false);
+    setEditingColor("");
+  }, []);
+
+  const handleColorSelect = useCallback((color: string) => {
+    if (!source) return;
+    
+    const textColor = generateTextColorForBackground(color);
+    
+    dispatch({
+      type: ActionTypes.UPDATE_SOURCE,
+      payload: {
+        id: source.id,
+        color: color,
+        textColor: textColor
+      }
+    });
+    
+    setIsEditingColor(false);
+    setEditingColor("");
+  }, [source, dispatch]);
+
   useEffect(() => {
     const fetchSourceItems = async () => {
       if (!source) return;
@@ -196,13 +229,38 @@ export const SourceProfile = () => {
           {/* Source Header */}
           <div className="bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-gray-700 p-4 md:p-6">
             <div className="flex items-start gap-3 md:gap-4">
-              <RoundedIdentifier
-                color={source.color}
-                textColor={source.textColor}
-                initial={source.initial}
-                video={source.type === "video"}
-                small={false}
-              />
+              <div className="flex flex-col items-center gap-2">
+                <RoundedIdentifier
+                  color={source.color}
+                  textColor={source.textColor}
+                  initial={source.initial}
+                  video={source.type === "video"}
+                  small={false}
+                />
+                {isEditingColor ? (
+                  <div className="flex flex-col items-center gap-3 p-3 bg-gray-50 dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-600">
+                    <ColorPicker 
+                      selectedColor={editingColor}
+                      onColorSelect={handleColorSelect}
+                      className="max-w-xs"
+                    />
+                    <button
+                      onClick={handleCancelColorEdit}
+                      className="px-3 py-1 text-xs bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-md transition-colors"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={handleStartColorEdit}
+                    className="p-1 rounded-lg bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/40 text-blue-600 dark:text-blue-400 transition-colors"
+                    title="Edit color"
+                  >
+                    <Palette className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
               <div className="flex-1 min-w-0">
                 {isEditing ? (
                   <div className="flex items-center gap-2 mb-2">
