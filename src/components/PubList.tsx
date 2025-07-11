@@ -5,12 +5,14 @@ import { fetchRSS, getRSSItemStrProp } from "../utils/rss";
 import { useEffect, useRef } from "react";
 
 import { BackgroundedButtonWithIcon } from "./v2/AddSourceButton";
+import { DateSeparator } from "./v2/DateSeparator";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { Navigations } from "../types/navigation";
 import { PubListItem } from "./v2/PubListItem";
 import { RSSItem } from "../types/rss";
 import { Virtuoso } from "react-virtuoso";
 import { errorMap } from "../utils/errors";
+import { groupItemsByDateWithSeparators } from "../utils/format";
 import { useError } from "../utils/useError";
 import { useNavigate } from "react-router";
 
@@ -210,14 +212,28 @@ export const PubsList = () => {
             scrollBehavior: "smooth",
             WebkitOverflowScrolling: "touch",
           }}
-          totalCount={state.activeItems?.length || 0}
+          totalCount={groupItemsByDateWithSeparators(state.activeItems || []).length}
           components={{ ScrollSeekPlaceholder: PubListShapeSkeleton }}
           scrollSeekConfiguration={{
             enter: (velocity) => Math.abs(velocity) > 500,
             exit: (velocity) => Math.abs(velocity) < 500,
           }}
           itemContent={(index) => {
-            const item = state.activeItems?.[index];
+            const groupedItems = groupItemsByDateWithSeparators(state.activeItems || []);
+            const currentItem = groupedItems[index];
+            
+            if (!currentItem) return null;
+            
+            if (currentItem.type === 'separator') {
+              return (
+                <DateSeparator 
+                  key={`separator-${currentItem.category}`}
+                  category={currentItem.category || 'unknown'}
+                />
+              );
+            }
+            
+            const item = currentItem.data!;
             const bookmark = state.bookmarks?.find((bookmark) => {
               const bookmarkLink = bookmark.link;
               const itemLink = extractLink(item);

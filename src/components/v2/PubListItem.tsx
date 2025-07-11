@@ -1,9 +1,9 @@
 import { Bookmark, BookmarkCheck, EyeOff } from "lucide-react";
+import { formatPubDate, formatTime, getDateCategory } from "../../utils/format";
 
 import { RSSItem } from "../../types/rss";
 import { RoundedIdentifier } from "./RoundedIdentifier";
 import { Source } from "../../types/storage";
-import { formatPubDate } from "../../utils/format";
 import { useNavigate } from "react-router";
 import { useState } from "react";
 
@@ -152,7 +152,10 @@ export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onU
             </button>
             {item.pubDate && (
               <p className="text-xs whitespace-nowrap text-gray-500 dark:text-gray-400 flex-shrink-0">
-                {formatPubDate(item.pubDate)}
+                {getDateCategory(item.pubDate) === "today" 
+                  ? formatTime(item.pubDate)
+                  : formatPubDate(item.pubDate)
+                }
               </p>
             )}
           </div>

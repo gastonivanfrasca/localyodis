@@ -1,19 +1,20 @@
-import { Calendar, Rss, Trash2, Youtube, Edit3, Check, X, Palette } from "lucide-react";
+import { Calendar, Check, Edit3, Palette, Rss, Trash2, X, Youtube } from "lucide-react";
 import { extractItemTitle, filterHiddenItems } from "../../utils/storage";
 import { fetchRSS, getRSSItemStrProp } from "../../utils/rss";
+import { formatPubDate, generateTextColorForBackground, groupItemsByDateWithSeparators } from "../../utils/format";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 
 import { ActionTypes } from "../../context/main";
+import { ColorPicker } from "../../components/v2/ColorPicker";
+import { DateSeparator } from "../../components/v2/DateSeparator";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { NavigationTitleWithBack } from "../../components/v2/NavigationTitleWithBack";
 import { PubListItem } from "../../components/v2/PubListItem";
 import { RSSItem } from "../../types/rss";
 import { RoundedIdentifier } from "../../components/v2/RoundedIdentifier";
-import { ColorPicker } from "../../components/v2/ColorPicker";
 import Snackbar from "../../components/Snackbar";
 import { errorMap } from "../../utils/errors";
-import { formatPubDate, generateTextColorForBackground } from "../../utils/format";
 import { useError } from "../../utils/useError";
 import { useMainContext } from "../../context/main";
 
@@ -343,7 +344,17 @@ export const SourceProfile = () => {
               </div>
             ) : (
               <div className="space-y-4">
-                {filterHiddenItems(sourceItems, state.hiddenItems).map((item, index) => {
+                {groupItemsByDateWithSeparators(filterHiddenItems(sourceItems, state.hiddenItems)).map((groupedItem, index) => {
+                  if (groupedItem.type === 'separator') {
+                    return (
+                      <DateSeparator 
+                        key={`separator-${groupedItem.category}-${index}`}
+                        category={groupedItem.category || 'unknown'}
+                      />
+                    );
+                  }
+                  
+                  const item = groupedItem.data!;
                   const sourceData = state.sources.find(s => s.id === item.source);
                   return (
                     <PubListItem
