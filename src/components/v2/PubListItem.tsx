@@ -84,7 +84,7 @@ export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onU
 
   return (
     <div
-      className={`relative flex flex-row w-full gap-1 md:w-full text-left cursor-pointer mb-6 pb-4 border-b border-gray-200 dark:border-gray-700 transition-all duration-300 overflow-hidden ${
+      className={`relative flex flex-row w-full gap-1 md:w-full text-left cursor-pointer mb-6 pb-0 border-b border-gray-200 dark:border-gray-700 transition-all duration-300 overflow-hidden ${
         isAnimating ? 'swipe-out' : ''
       }`}
       key={`${link}-${title}-${index}`}
