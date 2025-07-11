@@ -162,11 +162,6 @@ export const SourceProfile = () => {
     setIsEditingColor(true);
   }, [source]);
 
-  const handleCancelColorEdit = useCallback(() => {
-    setIsEditingColor(false);
-    setEditingColor("");
-  }, []);
-
   const handleColorSelect = useCallback((color: string) => {
     if (!source) return;
     
@@ -180,10 +175,12 @@ export const SourceProfile = () => {
         textColor: textColor
       }
     });
-    
+  }, [source, dispatch]);
+
+  const handleColorPickerClose = useCallback(() => {
     setIsEditingColor(false);
     setEditingColor("");
-  }, [source, dispatch]);
+  }, []);
 
   useEffect(() => {
     const fetchSourceItems = async () => {
@@ -245,10 +242,10 @@ export const SourceProfile = () => {
                       className="max-w-xs"
                     />
                     <button
-                      onClick={handleCancelColorEdit}
+                      onClick={handleColorPickerClose}
                       className="px-3 py-1 text-xs bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-md transition-colors"
                     >
-                      Cancel
+                      Done
                     </button>
                   </div>
                 ) : (
