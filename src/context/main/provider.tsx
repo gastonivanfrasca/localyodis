@@ -4,6 +4,7 @@ import { useEffect, useReducer } from "react";
 
 import { LocallyStoredData } from "../../types/storage";
 import { Navigations } from "../../types/navigation";
+import { getBrowserLanguage } from "../../i18n";
 
 const localData = getLocallyStoredData();
 
@@ -17,6 +18,7 @@ const initialState: LocallyStoredData = {
   items: filteredItems,
   sources: localData.sources,
   theme: localData.theme,
+  language: localData.language || getBrowserLanguage(),
   bookmarks: localData.bookmarks,
   navigation: isFirstTimeUser ? Navigations.FTU : (localData.navigation || Navigations.HOME),
   lastUpdated: localData.lastUpdated,
@@ -48,6 +50,8 @@ const reducer = (state: LocallyStoredData, action: Action) => {
       };
     case ActionTypes.SET_THEME:
       return { ...state, theme: action.payload };
+    case ActionTypes.SET_LANGUAGE:
+      return { ...state, language: action.payload };
     case ActionTypes.SET_BOOKMARKS:
       return { ...state, bookmarks: action.payload };
     case ActionTypes.SET_NAVIGATION:

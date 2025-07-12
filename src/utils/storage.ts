@@ -2,6 +2,7 @@ import { HistoryItem, LocallyStoredData } from "../types/storage";
 
 import { Navigations } from "../types/navigation";
 import { RSSItem } from "../types/rss";
+import { getBrowserLanguage } from "../i18n";
 
 // Storage configuration to prevent QuotaExceededError
 export const STORAGE_CONFIG = {
@@ -13,6 +14,7 @@ export const STORAGE_CONFIG = {
 
 const defaultLocallyStoredData = {
   theme: "dark",
+  language: getBrowserLanguage(),
   sources: [],
   bookmarks: [],
   activeSources: [],
@@ -123,6 +125,11 @@ export const getLocallyStoredData = (): LocallyStoredData => {
   // Ensure history exists (for backward compatibility)
   if (!parsedStoredData.history) {
     parsedStoredData.history = [];
+  }
+
+  // Ensure language exists (for backward compatibility)
+  if (!parsedStoredData.language) {
+    parsedStoredData.language = getBrowserLanguage();
   }
 
   parsedStoredData.sources.forEach((source) => {

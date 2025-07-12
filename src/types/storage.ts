@@ -1,5 +1,6 @@
 import { Navigations } from "./navigation";
 import { RSSItem } from "./rss";
+import { SupportedLanguage } from "./i18n";
 
 export type Source = {
   name: string | null | undefined;
@@ -34,6 +35,7 @@ export type ErrorState = {
 
 export type LocallyStoredData = {
   theme: string;
+  language: SupportedLanguage;
   sources: Source[];
   bookmarks: Items[];
   navigation: Navigations;
