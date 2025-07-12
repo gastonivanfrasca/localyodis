@@ -207,6 +207,7 @@ export const PubsList = () => {
     <>
       <div id="pubs-list" className="p-0 flex flex-col gap-8 h-full w-full bg-white dark:bg-slate-950">
         <Virtuoso
+          className="hide-scrollbar"
           style={{
             height: "100vh",
             scrollBehavior: "smooth",
