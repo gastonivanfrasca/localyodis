@@ -1,4 +1,4 @@
-import { ArrowLeft, Bookmark, Clock, Compass, Home, Menu, Search } from 'lucide-react';
+import { ArrowLeft, Bookmark, Compass, Home, Menu, Search } from 'lucide-react';
 import { HomeButtonModes, Navigations } from '../../types/navigation';
 import { Link, useLocation } from 'react-router';
 
@@ -156,26 +156,4 @@ export const SidebarDiscoverButton = () => {
   );
 };
 
-// History Button for Sidebar
-export const SidebarHistoryButton = () => {
-  const location = useLocation();
-  const { dispatch } = useMainContext();
-  const isActive = location.pathname === "/history";
-
-  const handleClick = () => {
-    dispatch({
-      type: ActionTypes.SET_NAVIGATION,
-      payload: Navigations.HISTORY,
-    });
-  };
-
-  return (
-    <Link to="/history" onClick={handleClick}>
-      <SidebarButton
-        icon={<Clock size={20} />}
-        label="History"
-        isActive={isActive}
-      />
-    </Link>
-  );
-}; 
+ 

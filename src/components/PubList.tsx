@@ -1,5 +1,5 @@
 import { ActionTypes, useMainContext } from "../context/main";
-import { Bookmark, Search, Settings } from "lucide-react";
+import { Bookmark, Search, Settings, Clock } from "lucide-react";
 import { STORAGE_CONFIG, cleanupHiddenItems, extractItemTitle, filterHiddenItems } from "../utils/storage";
 import { fetchRSS, getRSSItemStrProp } from "../utils/rss";
 import { useEffect, useRef } from "react";
@@ -45,6 +45,28 @@ export const PubsList = () => {
       dispatch({
         type: ActionTypes.SET_ACTIVE_ITEMS,
         payload: state.bookmarks,
+      });
+      dispatch({
+        type: ActionTypes.SET_LOADING,
+        payload: false,
+      });
+      return;
+    }
+
+    if (state.navigation === Navigations.HISTORY) {
+      // Convert history items to RSS-like format for PubListItem compatibility
+      const historyAsRSSItems = state.history?.map(historyItem => ({
+        title: historyItem.title,
+        link: historyItem.link,
+        source: historyItem.source,
+        pubDate: historyItem.visitedAt,
+        description: `Visited from ${historyItem.sourceName}`,
+        id: historyItem.link,
+      })) || [];
+      
+      dispatch({
+        type: ActionTypes.SET_ACTIVE_ITEMS,
+        payload: historyAsRSSItems,
       });
       dispatch({
         type: ActionTypes.SET_LOADING,
@@ -132,6 +154,7 @@ export const PubsList = () => {
     state.sources,
     state.activeSources,
     state.bookmarks,
+    state.history,
   ]);
 
   const bookmarkItem = (item: RSSItem) => {
@@ -179,6 +202,23 @@ export const PubsList = () => {
     });
   };
 
+  const removeFromHistory = (item: RSSItem) => {
+    const itemLink = extractLink(item);
+    dispatch({
+      type: ActionTypes.REMOVE_FROM_HISTORY,
+      payload: itemLink,
+    });
+    
+    // Also remove from activeItems if we're in history view
+    if (state.navigation === Navigations.HISTORY) {
+      const filteredActiveItems = state.activeItems.filter(i => extractLink(i) !== itemLink);
+      dispatch({
+        type: ActionTypes.SET_ACTIVE_ITEMS,
+        payload: filteredActiveItems,
+      });
+    }
+  };
+
   if (
     state.activeItems?.length < 1 &&
     state.navigation === Navigations.HOME &&
@@ -193,6 +233,14 @@ export const PubsList = () => {
     !state.loading
   ) {
     return <BookmarksEmpty />;
+  }
+
+  if (
+    state.navigation === Navigations.HISTORY &&
+    state.history?.length < 1 &&
+    !state.loading
+  ) {
+    return <HistoryEmpty />;
   }
 
   if (
@@ -250,7 +298,7 @@ export const PubsList = () => {
                 bookmark={bookmark}
                 onBookmark={bookmarkItem}
                 onUnbookmark={unbookmarkItem}
-                onHide={hideItem}
+                onHide={state.navigation === Navigations.HISTORY ? removeFromHistory : hideItem}
               />
             );
           }}
@@ -302,6 +350,31 @@ export const BookmarksEmpty = () => {
           <span>Tap the</span>
           <Bookmark className="w-4 h-4 flex-shrink-0" />
           <span>icon on any publication to bookmark it</span>
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export const HistoryEmpty = () => {
+  return (
+    <div className="p-4 md:p-16 flex flex-col gap-6 max-h-full overflow-scroll items-center justify-center min-h-[400px] bg-white dark:bg-slate-950">
+      <div className="flex flex-col items-center gap-4 max-w-md mx-auto">
+        <div className="w-16 h-16 bg-gray-50 dark:bg-gray-800/50 rounded-full flex items-center justify-center">
+          <Clock className="w-8 h-8 text-gray-500 dark:text-gray-400" />
+        </div>
+        <div className="text-center space-y-2">
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+            No hay historial
+          </h3>
+          <p className="text-gray-600 dark:text-gray-400 text-sm md:text-base px-4 md:px-0">
+            Los enlaces que visites aparecerán aquí para que puedas acceder a ellos más tarde.
+          </p>
+        </div>
+      </div>
+      <div className="text-center px-4 md:px-0">
+        <p className="text-sm text-gray-500 dark:text-gray-500">
+          Empieza a leer artículos y tu historial se mostrará aquí
         </p>
       </div>
     </div>
