@@ -6,10 +6,12 @@ import { ActionTypes } from '../../context/main';
 import { ActiveIndicator } from '../ActiveIndicator';
 import { SidebarButton } from './SidebarButton';
 import { useMainContext } from '../../context/main';
+import { useI18n } from '../../context/i18n';
 
 // Home Button for Sidebar
 export const SidebarHomeButton = ({ mode }: { mode: HomeButtonModes }) => {
   const { state, dispatch } = useMainContext();
+  const { t } = useI18n();
   const navigation = state.navigation;
   const isActive = navigation === Navigations.HOME;
 
@@ -25,7 +27,7 @@ export const SidebarHomeButton = ({ mode }: { mode: HomeButtonModes }) => {
       <Link to="/" onClick={handleOnClick}>
         <SidebarButton
           icon={<Home size={20} />}
-          label="Home"
+          label={t('home')}
           isActive={isActive}
         />
       </Link>
@@ -35,7 +37,7 @@ export const SidebarHomeButton = ({ mode }: { mode: HomeButtonModes }) => {
   return (
     <SidebarButton
       icon={<Home size={20} />}
-      label="Home"
+      label={t('home')}
       isActive={isActive}
       onClick={handleOnClick}
     />
@@ -45,6 +47,7 @@ export const SidebarHomeButton = ({ mode }: { mode: HomeButtonModes }) => {
 // Search Button for Sidebar
 export const SidebarSearchButton = () => {
   const { state, dispatch } = useMainContext();
+  const { t } = useI18n();
   const hasActiveSearch = state.searchQuery && state.searchQuery.trim() !== '';
   const isActive = state.navigation === Navigations.SEARCH;
 
@@ -69,7 +72,7 @@ export const SidebarSearchButton = () => {
   return (
     <SidebarButton
       icon={<Search size={20} />}
-      label="Search"
+      label={t('search')}
       isActive={isActive}
       onClick={handleClick}
     >
@@ -83,6 +86,7 @@ export const SidebarSearchButton = () => {
 // Bookmarks Button for Sidebar
 export const SidebarBookmarksButton = () => {
   const { state, dispatch } = useMainContext();
+  const { t } = useI18n();
   const isActive = state.navigation === Navigations.BOOKMARKEDS;
   
   const handleClick = () => {
@@ -95,7 +99,7 @@ export const SidebarBookmarksButton = () => {
   return (
     <SidebarButton
       icon={<Bookmark size={20} />}
-      label="Bookmarks"
+      label={t('bookmarks')}
       isActive={isActive}
       onClick={handleClick}
     />
@@ -105,6 +109,7 @@ export const SidebarBookmarksButton = () => {
 // History Button for Sidebar
 export const SidebarHistoryButton = () => {
   const { state, dispatch } = useMainContext();
+  const { t } = useI18n();
   const isActive = state.navigation === Navigations.HISTORY;
   
   const handleClick = () => {
@@ -117,7 +122,7 @@ export const SidebarHistoryButton = () => {
   return (
     <SidebarButton
       icon={<Clock size={20} />}
-      label="History"
+      label={t('history')}
       isActive={isActive}
       onClick={handleClick}
     />
@@ -127,6 +132,7 @@ export const SidebarHistoryButton = () => {
 // Menu Button for Sidebar
 export const SidebarMenuButton = () => {
   const { dispatch } = useMainContext();
+  const { t } = useI18n();
 
   const handleClick = () => {
     dispatch({
@@ -139,7 +145,7 @@ export const SidebarMenuButton = () => {
     <Link to="/menu">
       <SidebarButton
         icon={<Menu size={20} />}
-        label="Menu"
+        label={t('menu')}
         onClick={handleClick}
       />
     </Link>
@@ -148,10 +154,11 @@ export const SidebarMenuButton = () => {
 
 // Back Button for Sidebar
 export const SidebarBackButton = () => {
+  const { t } = useI18n();
   return (
     <SidebarButton
       icon={<ArrowLeft size={20} />}
-      label="Back"
+      label={t('common.back')}
     />
   );
 };
@@ -160,6 +167,7 @@ export const SidebarBackButton = () => {
 export const SidebarDiscoverButton = () => {
   const location = useLocation();
   const { dispatch } = useMainContext();
+  const { t } = useI18n();
   const isActive = location.pathname === "/discover";
 
   const handleClick = () => {
@@ -173,7 +181,7 @@ export const SidebarDiscoverButton = () => {
     <Link to="/discover" onClick={handleClick}>
       <SidebarButton
         icon={<Compass size={20} />}
-        label="Discover"
+        label={t('discover')}
         isActive={isActive}
       />
     </Link>

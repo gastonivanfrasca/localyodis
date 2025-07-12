@@ -15,6 +15,7 @@ import { errorMap } from "../utils/errors";
 import { groupItemsByDateWithSeparators } from "../utils/format";
 import { useError } from "../utils/useError";
 import { useNavigate } from "react-router";
+import { useI18n } from "../context/i18n";
 
 export const PubsList = () => {
   const { state, dispatch } = useMainContext();
@@ -317,24 +318,26 @@ export const PubsList = () => {
 
 export const PubListEmpty = () => {
   const navigate = useNavigate();
+  const { t } = useI18n();
   return (
     <div className="p-4 md:p-16 flex flex-col gap-8 max-h-full overflow-scroll items-center bg-white dark:bg-slate-950">
       <div className="text-center max-w-md mx-auto px-4 md:px-0">
-        <p className="text-xl dark:text-gray-200">No rss sources added</p>
-        <p className="text-sm dark:text-gray-400 mt-2">Go to sources to add one.</p>
+        <p className="text-xl dark:text-gray-200">{t('sources.noSourcesAdded')}</p>
+        <p className="text-sm dark:text-gray-400 mt-2">{t('sources.goToAdd')}</p>
       </div>
       <BackgroundedButtonWithIcon
         onClick={() => {
           navigate("/sources");
         }}
         icon={<Settings className="w-5 h-5 text-zinc-800 dark:text-zinc-200" />}
-        label="Go to sources"
+        label={t('sources.goToSources')}
       />
     </div>
   );
 };
 
 export const BookmarksEmpty = () => {
+  const { t } = useI18n();
   return (
     <div className="p-4 md:p-16 flex flex-col gap-6 max-h-full overflow-scroll items-center justify-center min-h-[400px] bg-white dark:bg-slate-950">
       <div className="flex flex-col items-center gap-4 max-w-md mx-auto">
@@ -343,19 +346,18 @@ export const BookmarksEmpty = () => {
         </div>
         <div className="text-center space-y-2">
           <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
-            No bookmarks yet
+            {t('bookmarks.empty')}
           </h3>
           <p className="text-gray-600 dark:text-gray-400 text-sm md:text-base px-4 md:px-0">
-            Start bookmarking your favorite publications to read them later. 
-            They'll appear here for easy access.
+            {t('bookmarks.emptyDescription')}
           </p>
         </div>
       </div>
       <div className="text-center px-4 md:px-0">
         <p className="text-sm text-gray-500 dark:text-gray-500 flex items-center justify-center gap-1 flex-wrap">
-          <span>Tap the</span>
+          <span>{t('bookmarks.tapIcon')}</span>
           <Bookmark className="w-4 h-4 flex-shrink-0" />
-          <span>icon on any publication to bookmark it</span>
+          <span>{t('bookmarks.emptyHint')}</span>
         </p>
       </div>
     </div>
@@ -363,6 +365,7 @@ export const BookmarksEmpty = () => {
 };
 
 export const HistoryEmpty = () => {
+  const { t } = useI18n();
   return (
     <div className="p-4 md:p-16 flex flex-col gap-6 max-h-full overflow-scroll items-center justify-center min-h-[400px] bg-white dark:bg-slate-950">
       <div className="flex flex-col items-center gap-4 max-w-md mx-auto">
@@ -371,16 +374,16 @@ export const HistoryEmpty = () => {
         </div>
         <div className="text-center space-y-2">
           <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
-            No history
+            {t('history.empty')}
           </h3>
           <p className="text-gray-600 dark:text-gray-400 text-sm md:text-base px-4 md:px-0">
-            Links you visit will appear here so you can access them later.
+            {t('history.emptyDescription')}
           </p>
         </div>
       </div>
       <div className="text-center px-4 md:px-0">
         <p className="text-sm text-gray-500 dark:text-gray-500">
-          Start reading articles and your history will be shown here
+          {t('history.startReading')}
         </p>
       </div>
     </div>
@@ -388,6 +391,7 @@ export const HistoryEmpty = () => {
 };
 
 export const SearchEmpty = () => {
+  const { t } = useI18n();
   return (
     <div className="p-4 md:p-16 flex flex-col gap-6 max-h-full overflow-scroll items-center justify-center min-h-[400px] bg-white dark:bg-slate-950">
       <div className="flex flex-col items-center gap-4 max-w-md mx-auto">
@@ -396,22 +400,21 @@ export const SearchEmpty = () => {
         </div>
         <div className="text-center space-y-2">
           <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
-            No results found
+            {t('search.noResults')}
           </h3>
           <p className="text-gray-600 dark:text-gray-400 text-sm md:text-base px-4 md:px-0">
-            We couldn't find any publications matching your search. 
-            Try adjusting your search terms or checking the spelling.
+            {t('search.noResultsDescription')}
           </p>
         </div>
       </div>
       <div className="text-center space-y-2 px-4 md:px-0">
         <p className="text-sm text-gray-500 dark:text-gray-500 font-medium">
-          Search tips:
+          {t('search.tips')}
         </p>
         <ul className="text-sm text-gray-500 dark:text-gray-500 space-y-1">
-          <li>• Try different keywords</li>
-          <li>• Use fewer words</li>
-          <li>• Check your spelling</li>
+          <li>• {t('search.tipKeywords')}</li>
+          <li>• {t('search.tipFewerWords')}</li>
+          <li>• {t('search.tipSpelling')}</li>
         </ul>
       </div>
     </div>

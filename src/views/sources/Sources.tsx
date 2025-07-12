@@ -8,10 +8,12 @@ import { Rss } from "lucide-react";
 import Snackbar from "../../components/Snackbar";
 import { Source } from "../../types/storage";
 import { SourcesList } from "../../components/SourcesList";
+import { useI18n } from "../../context/i18n";
 
 export const Sources = () => {
   const [isRSSModalOpen, setIsRSSModalOpen] = useState(false);
   const { state, dispatch } = useMainContext();
+  const { t } = useI18n();
   const sourcesList = state.sources;
 
   useEffect(() => {
@@ -31,13 +33,13 @@ export const Sources = () => {
   return (
     <div className="w-full h-screen dark:bg-slate-950 bg-white">
       <div className="flex flex-col h-full w-full">
-        <NavigationTitleWithBack label="Sources" />
+        <NavigationTitleWithBack label={t('sources.title')} />
         
         {/* Main Content Container - Centered on Desktop */}
         <div className="flex-1 flex justify-center bg-white dark:bg-slate-950">
           <div className="w-full max-w-2xl px-8 mt-20 md:mt-16 flex flex-col gap-8 pb-20 bg-white dark:bg-slate-950">
             {sourcesList.length === 0 && (
-              <p className="text-sm dark:text-gray-400 text-center">No sources added yet.</p>
+              <p className="text-sm dark:text-gray-400 text-center">{t('sources.empty')}</p>
             )}
             
             {/* Add Source Buttons */}
@@ -45,7 +47,7 @@ export const Sources = () => {
               <BackgroundedButtonWithIcon
                 onClick={() => setIsRSSModalOpen(true)}
                 icon={<Rss className="w-5 h-5 text-zinc-800 dark:text-zinc-200" />}
-                label="Add RSS source"
+                label={t('sources.addRss')}
               />
             </div>
 

@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 
 import { ActionTypes } from '../context/main';
 import { useMainContext } from '../context/main';
+import { useI18n } from '../context/i18n';
 
 const Snackbar: React.FC = () => {
   const { state, dispatch } = useMainContext();
+  const { t } = useI18n();
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -77,7 +79,7 @@ const Snackbar: React.FC = () => {
       <button
         onClick={handleClose}
         className="ml-4 text-white hover:text-gray-200 focus:outline-none"
-        aria-label="Cerrar notificación"
+        aria-label={t('a11y.closeNotification')}
       >
         <svg
           className="w-4 h-4"

@@ -7,6 +7,7 @@ import { getLocallyStoredData } from "../utils/storage";
 import { useError } from "../utils/useError";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { useI18n } from "../context/i18n";
 
 type AddRSSSourceModalsProps = {
   isOpen: boolean;
@@ -18,6 +19,7 @@ export const AddRSSSourceModals = (props: AddRSSSourceModalsProps) => {
   const [rssUrl, setRssUrl] = useState("");
   const { dispatch, state } = useMainContext();
   const { showError } = useError();
+  const { t } = useI18n();
   const handleSubmit = async () => {
     try {
       if (!rssUrl) {
@@ -80,7 +82,7 @@ export const AddRSSSourceModals = (props: AddRSSSourceModalsProps) => {
         <button
           className="absolute top-4 right-4 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 cursor-pointer transition-colors"
           onClick={() => setIsModalOpen(false)}
-          aria-label="Close modal"
+          aria-label={t('a11y.closeModal')}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -98,12 +100,12 @@ export const AddRSSSourceModals = (props: AddRSSSourceModalsProps) => {
           </svg>
         </button>
 
-        <h2 className="text-2xl font-bold mb-6">Add RSS Source</h2>
+        <h2 className="text-2xl font-bold mb-6">{t('modal.addRss')}</h2>
 
         {/* RSS URL input */}
-        <label className="block text-sm font-medium mb-2">RSS link</label>
+        <label className="block text-sm font-medium mb-2">{t('rss.link')}</label>
         <textarea
-          placeholder="e.g. https://example.com/feed.xml"
+          placeholder={t('rss.example')}
           value={rssUrl}
           onChange={(e) => setRssUrl(e.target.value)}
           className="w-full h-24 bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 border border-gray-300 dark:border-slate-600 rounded-lg p-3 resize-none focus:outline-none focus:ring-2 focus:ring-zinc-500 dark:focus:ring-zinc-400 focus:border-transparent mb-6 transition-all"
@@ -116,7 +118,7 @@ export const AddRSSSourceModals = (props: AddRSSSourceModalsProps) => {
             onClick={handleSubmit}
             className="bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900 font-medium py-2.5 px-6 rounded-xl hover:bg-zinc-700 dark:hover:bg-zinc-300 transition disabled:opacity-50 disabled:cursor-not-allowed text-sm tracking-tight"
           >
-            Add RSS Source
+            {t('modal.addRss')}
           </button>
         </div>
       </div>
@@ -134,6 +136,7 @@ export const AddYTChannelModal = (props: AddYTChannelModalProps) => {
   const [channelName, setChannelName] = useState("");
   const { dispatch, state } = useMainContext();
   const { showError } = useError();
+  const { t } = useI18n();
   const handleSubmit = async () => {
     try {
       if (!channelName) {
@@ -197,7 +200,7 @@ export const AddYTChannelModal = (props: AddYTChannelModalProps) => {
         <button
           className="absolute top-4 right-4 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 cursor-pointer transition-colors"
           onClick={() => setIsModalOpen(false)}
-          aria-label="Close modal"
+          aria-label={t('a11y.closeModal')}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -215,12 +218,12 @@ export const AddYTChannelModal = (props: AddYTChannelModalProps) => {
           </svg>
         </button>
 
-        <h2 className="text-2xl font-bold mb-6">Add YouTube Channel</h2>
+        <h2 className="text-2xl font-bold mb-6">{t('modal.addYoutube')}</h2>
 
         {/* Channel name input */}
-        <label className="block text-sm font-medium mb-2">Channel name</label>
+        <label className="block text-sm font-medium mb-2">{t('youtube.channelName')}</label>
         <textarea
-          placeholder="e.g. Example Channel Name"
+          placeholder={t('youtube.example')}
           value={channelName}
           onChange={(e) => setChannelName(e.target.value)}
           className="w-full h-24 bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 border border-gray-300 dark:border-slate-600 rounded-lg p-3 resize-none focus:outline-none focus:ring-2 focus:ring-zinc-500 dark:focus:ring-zinc-400 focus:border-transparent mb-6 transition-all"
@@ -233,7 +236,7 @@ export const AddYTChannelModal = (props: AddYTChannelModalProps) => {
             onClick={handleSubmit}
             className="bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900 font-medium py-2.5 px-6 rounded-xl hover:bg-zinc-700 dark:hover:bg-zinc-300 transition disabled:opacity-50 disabled:cursor-not-allowed text-sm tracking-tight"
           >
-            Add YT Channel
+            {t('youtube.add')}
           </button>
         </div>
       </div>

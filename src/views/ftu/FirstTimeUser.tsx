@@ -9,6 +9,7 @@ import { SourceCard } from "../../components/SourceCard";
 import { getPredefinedSources } from "../../utils/predefined-sources";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { useI18n } from "../../context/i18n";
 
 const generateRandomColor = () => {
   const randomColor = Math.floor(Math.random() * 16777215).toString(16);
@@ -26,6 +27,7 @@ const generateTextColorForBackground = (bgColor: string) => {
 
 export const FirstTimeUser = () => {
   const { dispatch, state } = useMainContext();
+  const { t } = useI18n();
   const predefinedSourcesData = getPredefinedSources();
   const [selectedCategory, setSelectedCategory] = useState<string>(predefinedSourcesData.categories[0]?.id || "");
   const [selectedSources, setSelectedSources] = useState<Set<string>>(new Set());
@@ -107,7 +109,7 @@ export const FirstTimeUser = () => {
       <div className="flex-shrink-0 px-6 py-8">
         <div className="max-w-4xl mx-auto">
           <p className="text-zinc-600 dark:text-zinc-400 text-base">
-            Get started by selecting from these community-suggested RSS sources to begin reading interesting content
+            {t('ftu.description')}
           </p>
         </div>
       </div>
@@ -119,7 +121,7 @@ export const FirstTimeUser = () => {
           <div className="max-w-4xl mx-auto">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold text-zinc-800 dark:text-white tracking-tight">
-                Categories
+                {t('ftu.categories')}
               </h2>
               <button
                 onClick={() => setIsRSSModalOpen(true)}
@@ -128,7 +130,7 @@ export const FirstTimeUser = () => {
                 <div className="bg-zinc-200 dark:bg-slate-800 p-1 rounded-lg">
                   <Plus className="w-3 h-3" />
                 </div>
-                <span className="tracking-tight">Add your own source</span>
+                <span className="tracking-tight">{t('ftu.addOwnSource')}</span>
               </button>
             </div>
             <div className="flex flex-wrap gap-3">
@@ -176,14 +178,14 @@ export const FirstTimeUser = () => {
           </button>
           <div className="flex items-center gap-4">
             <span className="text-sm text-zinc-600 dark:text-zinc-400">
-              {selectedSources.size} sources selected
+              {selectedSources.size} {t('sources.selected')}
             </span>
             <button
               onClick={handleFinishSetup}
               disabled={selectedSources.size === 0}
               className="bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900 font-medium py-2.5 px-6 rounded-xl hover:bg-zinc-700 dark:hover:bg-zinc-300 transition disabled:opacity-50 disabled:cursor-not-allowed text-sm tracking-tight"
             >
-              Continue {selectedSources.size > 0 && `(${selectedSources.size})`}
+              {t('common.continue')} {selectedSources.size > 0 && `(${selectedSources.size})`}
             </button>
           </div>
         </div>

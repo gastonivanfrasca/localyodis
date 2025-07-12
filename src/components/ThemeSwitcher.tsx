@@ -2,6 +2,7 @@ import { ActionTypes, useMainContext } from "../context/main";
 import { Moon, Sun } from "lucide-react";
 
 import { MenuItem } from "./v2/MenuItem";
+import { useI18n } from "../context/i18n";
 
 enum Themes {
   DARK = "dark",
@@ -18,6 +19,7 @@ const getThemeIcon = (theme: Themes) => {
 
 export const ThemeSwitcher = () => {
   const { state, dispatch } = useMainContext();
+  const { t } = useI18n();
   const localTheme = state.theme as Themes;
   const icon = getThemeIcon(localTheme);
 
@@ -34,7 +36,7 @@ export const ThemeSwitcher = () => {
 
   return (
     <MenuItem
-      label="Switch theme"
+      label={t('a11y.switchTheme')}
       icon={icon}
       chevron={false}
       onClick={() => {
