@@ -32,6 +32,9 @@ export enum ActionTypes {
   SET_HIDDEN_ITEMS = "SET_HIDDEN_ITEMS",
   HIDE_ITEM = "HIDE_ITEM",
   UNHIDE_ITEM = "UNHIDE_ITEM",
+  ADD_TO_HISTORY = "ADD_TO_HISTORY",
+  CLEAR_HISTORY = "CLEAR_HISTORY",
+  REMOVE_FROM_HISTORY = "REMOVE_FROM_HISTORY",
 }
 
 export const MainContext = createContext<MainContextType | null>(null);

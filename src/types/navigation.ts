@@ -5,6 +5,7 @@ export enum Navigations {
     SEARCH = "search",
     FTU = "ftu",
     DISCOVER = "discover",
+    HISTORY = "history",
 }
 
 export enum HomeButtonModes {

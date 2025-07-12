@@ -1,7 +1,8 @@
+import { Clock, Rss, Settings } from "lucide-react";
+
 import { Link } from "react-router";
 import { MenuItem } from "../../components/v2/MenuItem";
 import { NavigationTitleWithBack } from "../../components/v2/NavigationTitleWithBack";
-import { Rss, Settings } from "lucide-react";
 import Snackbar from "../../components/Snackbar";
 import { ThemeSwitcher } from "../../components/ThemeSwitcher";
 
@@ -16,6 +17,9 @@ export const Menu = () => {
         <div className="w-full max-w-2xl px-6 mt-16 flex flex-col gap-5 py-6">
           <Link to={"/sources"} className="cursor-pointer">
             <MenuItem icon={<Rss />} label="Sources" />
+          </Link>
+          <Link to={"/history"} className="cursor-pointer">
+            <MenuItem icon={<Clock />} label="Historial" />
           </Link>
           <Link to={"/settings"} className="cursor-pointer">
             <MenuItem icon={<Settings />} label="Settings" />

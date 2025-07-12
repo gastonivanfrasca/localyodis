@@ -27,6 +27,7 @@ const initialState: LocallyStoredData = {
   activeItems: filteredItems,
   error: null,
   hiddenItems: localData.hiddenItems || [],
+  history: localData.history || [],
 };
 
 
@@ -85,6 +86,35 @@ const reducer = (state: LocallyStoredData, action: Action) => {
         const itemTitle = extractItemTitle(action.payload);
         const hiddenItems = state.hiddenItems || [];
         return { ...state, hiddenItems: hiddenItems.filter(title => title !== itemTitle) };
+      }
+    case ActionTypes.ADD_TO_HISTORY:
+      {
+        const history = state.history || [];
+        const newItem = action.payload;
+        
+        // Avoid duplicates by checking if the link already exists
+        const existingIndex = history.findIndex(item => item.link === newItem.link);
+        
+        if (existingIndex !== -1) {
+          // Update existing item with new visited time
+          const updatedHistory = [...history];
+          updatedHistory[existingIndex] = { ...newItem, visitedAt: new Date().toISOString() };
+          return { ...state, history: updatedHistory };
+        } else {
+          // Add new item to the beginning of the array (most recent first)
+          const newHistory = [{ ...newItem, visitedAt: new Date().toISOString() }, ...history];
+          // Keep only the last 100 history items to prevent storage overflow
+          const trimmedHistory = newHistory.slice(0, 100);
+          return { ...state, history: trimmedHistory };
+        }
+      }
+    case ActionTypes.CLEAR_HISTORY:
+      return { ...state, history: [] };
+    case ActionTypes.REMOVE_FROM_HISTORY:
+      {
+        const history = state.history || [];
+        const updatedHistory = history.filter(item => item.link !== action.payload);
+        return { ...state, history: updatedHistory };
       }
     default:    
       return state;

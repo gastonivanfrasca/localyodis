@@ -19,6 +19,14 @@ export type Items = {
   pubDate: string | null | undefined;
 };
 
+export type HistoryItem = {
+  title: string;
+  link: string;
+  source: string;
+  visitedAt: string;
+  sourceName?: string;
+};
+
 export type ErrorState = {
   message: string;
   type: 'error' | 'warning' | 'success' | 'info';
@@ -38,4 +46,5 @@ export type LocallyStoredData = {
   activeItems: RSSItem[];
   error: ErrorState;
   hiddenItems: string[]; // Array of hidden item IDs
+  history: HistoryItem[]; // Array of visited links
 };

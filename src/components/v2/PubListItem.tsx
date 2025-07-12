@@ -1,9 +1,10 @@
+import { ActionTypes, useMainContext } from "../../context/main";
 import { Bookmark, BookmarkCheck, EyeOff } from "lucide-react";
+import { HistoryItem, Source } from "../../types/storage";
 import { formatOlderDateTime, formatTime, getDateCategory } from "../../utils/format";
 
 import { RSSItem } from "../../types/rss";
 import { RoundedIdentifier } from "./RoundedIdentifier";
-import { Source } from "../../types/storage";
 import { useNavigate } from "react-router";
 import { useState } from "react";
 
@@ -19,6 +20,7 @@ interface PubListItemProps {
 
 export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onUnbookmark, onHide }: PubListItemProps) => {
   const navigate = useNavigate();
+  const { dispatch } = useMainContext();
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -34,6 +36,25 @@ export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onU
 
   const handleSourceClick = () => {
     navigate(`/sources/${sourceData.id}`);
+  };
+
+  const handleLinkClick = () => {
+    // Add to history before opening link
+    const historyItem: HistoryItem = {
+      title: title || "",
+      link: link,
+      source: item.source || "",
+      visitedAt: new Date().toISOString(),
+      sourceName: sourceData.name || "",
+    };
+    
+    dispatch({
+      type: ActionTypes.ADD_TO_HISTORY,
+      payload: historyItem,
+    });
+
+    // Open link in new tab
+    window.open(link, "_blank");
   };
 
   // Swipe gesture handlers
@@ -125,7 +146,7 @@ export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onU
       <div className="flex flex-col gap-2 text-gray-900 dark:text-gray-200 grow break-words max-w-full items-start relative z-10">
         <div className="flex flex-row gap-2 items-start flex-1">
           <button
-            onClick={() => window.open(link, "_blank")}
+            onClick={handleLinkClick}
             className="font-semibold text-lg text-left cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
           >
             {title}

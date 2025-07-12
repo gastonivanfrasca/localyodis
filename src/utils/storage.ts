@@ -1,4 +1,5 @@
-import { LocallyStoredData } from "../types/storage";
+import { HistoryItem, LocallyStoredData } from "../types/storage";
+
 import { Navigations } from "../types/navigation";
 import { RSSItem } from "../types/rss";
 
@@ -24,6 +25,7 @@ const defaultLocallyStoredData = {
   activeItems: [],
   error: null,
   hiddenItems: [], // Initialize empty array for hidden items
+  history: [], // Initialize empty array for history
 } as LocallyStoredData;
 
 export const storeDataLocally = (data: LocallyStoredData) => {
@@ -85,6 +87,7 @@ export const handleQuotaExceededError = (data: LocallyStoredData) => {
       ...data,
       items: data.items.slice(0, STORAGE_CONFIG.CLEANUP_KEEP_TOTAL),
       activeItems: data.activeItems.slice(0, STORAGE_CONFIG.CLEANUP_KEEP_TOTAL),
+      history: (data.history || []).slice(0, 50), // Keep only last 50 history items
     };
     
     // Intentar guardar datos limpios
@@ -97,6 +100,7 @@ export const handleQuotaExceededError = (data: LocallyStoredData) => {
       ...data,
       items: data.items.slice(0, 50), // Mantener solo 50 items
       activeItems: data.activeItems.slice(0, 50),
+      history: (data.history || []).slice(0, 20), // Keep only last 20 history items
     };
     
     try {
@@ -116,13 +120,18 @@ export const getLocallyStoredData = (): LocallyStoredData => {
     ? (JSON.parse(storedData) as LocallyStoredData)
     : (defaultLocallyStoredData as LocallyStoredData);
 
-    parsedStoredData.sources.forEach((source) => {
-      if (typeof source.name === "object" && source.name !== null) {
-        source.name = source.name["_"] ? source.name["_"] : source.name;
-        source.initial = source.name[0];
-        storeDataLocally(parsedStoredData);
-      }
-    });
+  // Ensure history exists (for backward compatibility)
+  if (!parsedStoredData.history) {
+    parsedStoredData.history = [];
+  }
+
+  parsedStoredData.sources.forEach((source) => {
+    if (typeof source.name === "object" && source.name !== null) {
+      source.name = source.name["_"] ? source.name["_"] : source.name;
+      source.initial = source.name[0];
+      storeDataLocally(parsedStoredData);
+    }
+  });
 
   return parsedStoredData;
 };
@@ -249,4 +258,42 @@ export const filterHiddenItems = (items: RSSItem[], hiddenItems: string[] = []) 
     const itemTitle = extractItemTitle(item);
     return !hiddenItemsSet.has(itemTitle);
   });
+};
+
+// History management functions
+
+// Add a visited link to history
+export const addToHistory = (historyItem: HistoryItem) => {
+  const localData = getLocallyStoredData();
+  const history = localData.history || [];
+  
+  // Avoid duplicates by checking if the link already exists
+  const existingIndex = history.findIndex(item => item.link === historyItem.link);
+  
+  if (existingIndex !== -1) {
+    // Update existing item with new visited time
+    history[existingIndex] = { ...historyItem, visitedAt: new Date().toISOString() };
+  } else {
+    // Add new item to the beginning of the array (most recent first)
+    history.unshift({ ...historyItem, visitedAt: new Date().toISOString() });
+  }
+  
+  // Keep only the last 100 history items to prevent storage overflow
+  const trimmedHistory = history.slice(0, 100);
+  
+  storeDataLocally({ ...localData, history: trimmedHistory });
+};
+
+// Clear all history
+export const clearHistory = () => {
+  const localData = getLocallyStoredData();
+  storeDataLocally({ ...localData, history: [] });
+};
+
+// Remove a specific item from history
+export const removeFromHistory = (linkToRemove: string) => {
+  const localData = getLocallyStoredData();
+  const history = localData.history || [];
+  const updatedHistory = history.filter(item => item.link !== linkToRemove);
+  storeDataLocally({ ...localData, history: updatedHistory });
 };
