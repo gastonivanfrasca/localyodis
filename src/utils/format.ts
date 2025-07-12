@@ -150,4 +150,15 @@ export const generateTextColorForBackground = (bgColor: string): string => {
   const brightness = (r * 299 + g * 587 + b * 114) / 1000;
   return brightness >= 128 ? "#000000" : "#ffffff";
 };
+
+export const formatOlderDateTime = (pubDate: string): string => {
+  const date = new Date(pubDate);
+  if (isNaN(date.getTime())) return "Unknown";
+  const dd = String(date.getDate()).padStart(2, '0');
+  const mm = String(date.getMonth() + 1).padStart(2, '0');
+  const yy = date.getFullYear().toString().slice(-2);
+  const HH = String(date.getHours()).padStart(2, '0');
+  const MM = String(date.getMinutes()).padStart(2, '0');
+  return `${dd}/${mm}/${yy} - ${HH}:${MM}`;
+};
   

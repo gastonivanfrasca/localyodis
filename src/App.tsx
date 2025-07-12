@@ -26,7 +26,7 @@ function App() {
     <div className="w-full h-screen dark:bg-slate-950 bg-white max-h-screen">
       <AdaptiveNavigation>
         {state.navigation === Navigations.SEARCH && <SearchInput />}
-        <div className="px-4 md:px-6 pt-2 flex flex-col gap-8 max-h-full overflow-scroll items-center bg-white dark:bg-slate-950">
+        <div className="px-8 md:px-6 pt-2 flex flex-col gap-8 max-h-full overflow-scroll items-center bg-white dark:bg-slate-950">
           <PubsList />
         </div>
       </AdaptiveNavigation>

@@ -205,7 +205,7 @@ export const PubsList = () => {
 
   return (
     <>
-      <div id="pubs-list" className="p-8 flex flex-col gap-8 h-full w-full bg-white dark:bg-slate-950">
+      <div id="pubs-list" className="p-0 flex flex-col gap-8 h-full w-full bg-white dark:bg-slate-950">
         <Virtuoso
           style={{
             height: "100vh",
