@@ -371,16 +371,16 @@ export const HistoryEmpty = () => {
         </div>
         <div className="text-center space-y-2">
           <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
-            No hay historial
+            No history
           </h3>
           <p className="text-gray-600 dark:text-gray-400 text-sm md:text-base px-4 md:px-0">
-            Los enlaces que visites aparecerán aquí para que puedas acceder a ellos más tarde.
+            Links you visit will appear here so you can access them later.
           </p>
         </div>
       </div>
       <div className="text-center px-4 md:px-0">
         <p className="text-sm text-gray-500 dark:text-gray-500">
-          Empieza a leer artículos y tu historial se mostrará aquí
+          Start reading articles and your history will be shown here
         </p>
       </div>
     </div>

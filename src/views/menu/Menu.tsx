@@ -31,7 +31,7 @@ export const Menu = () => {
             <MenuItem icon={<Rss />} label="Sources" />
           </Link>
           <button onClick={handleHistoryClick} className="cursor-pointer">
-            <MenuItem icon={<Clock />} label="Historial" />
+            <MenuItem icon={<Clock />} label="History" />
           </button>
           <Link to={"/settings"} className="cursor-pointer">
             <MenuItem icon={<Settings />} label="Settings" />
