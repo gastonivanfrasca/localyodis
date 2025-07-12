@@ -1,6 +1,7 @@
 import { Search } from "lucide-react";
 import { Source } from "../types/storage";
 import { SourceItem } from "./v2/SourceItem";
+import { useI18n } from "../context/i18n";
 import { useState } from "react";
 
 type SourcesListProps = {
@@ -10,6 +11,7 @@ type SourcesListProps = {
 
 export const SourcesList = (props: SourcesListProps) => {
   const { sources, setSources } = props;
+  const { t } = useI18n();
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleRemoveSource = (id: string) => {
@@ -30,7 +32,7 @@ export const SourcesList = (props: SourcesListProps) => {
       <div className="relative w-full max-w-md mx-auto">
         <input
           type="text"
-          placeholder="Search sources..."
+          placeholder={t('sources.search.placeholder')}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="w-full px-4 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg 
@@ -45,7 +47,7 @@ export const SourcesList = (props: SourcesListProps) => {
       <div className="flex flex-col gap-4 w-full overflow-scroll bg-white dark:bg-slate-950">
         {filteredSources.length === 0 && searchQuery ? (
           <p className="dark:text-gray-400 text-center py-4">
-            No sources found matching "{searchQuery}"
+            {t('sources.noSourcesFound')} "{searchQuery}"
           </p>
         ) : (
           filteredSources.map((source) => (

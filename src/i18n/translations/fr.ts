@@ -61,6 +61,7 @@ export const fr: TranslationKeys = {
   'sources.selected': 'sources sélectionnées',
   'sources.alreadyExists': 'La source existe déjà !',
   'sources.addedSuccessfully': 'Source ajoutée avec succès !',
+  'sources.noSourcesFound': 'Aucune source trouvée correspondant à',
   
   // Discover
   'discover.title': 'Découvrir',
@@ -68,6 +69,9 @@ export const fr: TranslationKeys = {
   'discover.categories': 'Catégories',
   'discover.description': 'Explorez et ajoutez de nouvelles sources RSS suggérées par la communauté pour améliorer votre expérience de lecture. Les indicateurs verts montrent les sources que vous avez déjà ajoutées.',
   'discover.addedIndicator': 'Déjà ajouté',
+  'discover.addedCount': 'de',
+  'discover.addCustomSource': 'Ajouter une source personnalisée',
+  'discover.added': 'ajoutées',
   
   // Menu
   'menu.title': 'Menu',

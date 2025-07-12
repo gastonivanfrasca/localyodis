@@ -68,6 +68,7 @@ export type TranslationKeys = {
   'sources.selected': string;
   'sources.alreadyExists': string;
   'sources.addedSuccessfully': string;
+  'sources.noSourcesFound': string;
   
   // Discover
   'discover.title': string;
@@ -75,6 +76,9 @@ export type TranslationKeys = {
   'discover.categories': string;
   'discover.description': string;
   'discover.addedIndicator': string;
+  'discover.addedCount': string;
+  'discover.addCustomSource': string;
+  'discover.added': string;
   
   // Menu
   'menu.title': string;

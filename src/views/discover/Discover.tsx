@@ -11,6 +11,7 @@ import { Plus } from "lucide-react";
 import Snackbar from "../../components/Snackbar";
 import { getPredefinedSources } from "../../utils/predefined-sources";
 import { useError } from "../../utils/useError";
+import { useI18n } from "../../context/i18n";
 import { v4 as uuidv4 } from "uuid";
 
 const generateRandomColor = () => {
@@ -30,6 +31,7 @@ const generateTextColorForBackground = (bgColor: string) => {
 export const Discover = () => {
   const { dispatch, state } = useMainContext();
   const { showError } = useError();
+  const { t } = useI18n();
   const predefinedSourcesData = getPredefinedSources();
   const [selectedCategory, setSelectedCategory] = useState<string>(predefinedSourcesData.categories[0]?.id || "");
   const [isRSSModalOpen, setIsRSSModalOpen] = useState(false);
@@ -105,13 +107,13 @@ export const Discover = () => {
 
   return (
     <div className="w-full h-screen dark:bg-slate-950 flex flex-col">
-      <NavigationTitleWithBack label="Discover Sources" />
+      <NavigationTitleWithBack label={t('discover.title')} />
       
       {/* Header */}
       <div className="flex-shrink-0 px-6 py-8 mt-16">
         <div className="max-w-4xl mx-auto">
           <p className="text-zinc-600 dark:text-zinc-400 text-base">
-            Explore and add new community-suggested RSS sources to enhance your reading experience. Green indicators show sources you've already added.
+            {t('discover.description')}
           </p>
         </div>
       </div>
@@ -124,11 +126,11 @@ export const Discover = () => {
             <div className="flex justify-between items-center mb-4">
               <div className="flex items-center gap-4">
                 <h2 className="text-lg font-semibold text-zinc-800 dark:text-white tracking-tight">
-                  Categories
+                  {t('discover.categories')}
                 </h2>
                 {selectedCategoryData && (
                   <span className="text-sm text-zinc-600 dark:text-zinc-400">
-                    {addedSourcesInCategory} of {selectedCategoryData.sources.length} added
+                    {addedSourcesInCategory} {t('discover.addedCount')} {selectedCategoryData.sources.length} {t('discover.added')}
                   </span>
                 )}
               </div>
@@ -139,7 +141,7 @@ export const Discover = () => {
                 <div className="bg-zinc-200 dark:bg-slate-800 p-1 rounded-lg">
                   <Plus className="w-3 h-3" />
                 </div>
-                <span className="tracking-tight">Add custom source</span>
+                <span className="tracking-tight">{t('discover.addCustomSource')}</span>
               </button>
             </div>
             <div className="flex flex-wrap gap-3">

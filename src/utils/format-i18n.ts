@@ -61,7 +61,7 @@ export const formatTimeI18n = (pubDate: string, language: SupportedLanguage): st
 };
 
 // Internationalized date category for grouping
-export const getDateCategoryI18n = (pubDate: string, language: SupportedLanguage): string => {
+export const getDateCategoryI18n = (pubDate: string): string => {
   const date = new Date(pubDate);
   const today = new Date();
   const yesterday = new Date(today);

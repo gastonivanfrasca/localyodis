@@ -61,6 +61,7 @@ export const es: TranslationKeys = {
   'sources.selected': 'fuentes seleccionadas',
   'sources.alreadyExists': '¡La fuente ya existe!',
   'sources.addedSuccessfully': '¡Fuente agregada exitosamente!',
+  'sources.noSourcesFound': 'No se encontraron fuentes que coincidan con',
   
   // Discover
   'discover.title': 'Descubrir',
@@ -68,6 +69,9 @@ export const es: TranslationKeys = {
   'discover.categories': 'Categorías',
   'discover.description': 'Explora y agrega nuevas fuentes RSS sugeridas por la comunidad para mejorar tu experiencia de lectura. Los indicadores verdes muestran las fuentes que ya agregaste.',
   'discover.addedIndicator': 'Ya agregado',
+  'discover.addedCount': 'de',
+  'discover.addCustomSource': 'Agregar fuente personalizada',
+  'discover.added': 'agregadas',
   
   // Menu
   'menu.title': 'Menú',
