@@ -1,5 +1,5 @@
 import { ActionTypes, useMainContext } from "../context/main";
-import { Bookmark, Search, Settings, Clock } from "lucide-react";
+import { Bookmark, Clock, Search, Settings } from "lucide-react";
 import { STORAGE_CONFIG, cleanupHiddenItems, extractItemTitle, filterHiddenItems } from "../utils/storage";
 import { fetchRSS, getRSSItemStrProp } from "../utils/rss";
 import { useEffect, useRef } from "react";
@@ -273,12 +273,16 @@ export const PubsList = () => {
             
             if (!currentItem) return null;
             
+            const isFirstItem = index === 0;
+            
             if (currentItem.type === 'separator') {
               return (
-                <DateSeparator 
-                  key={`separator-${currentItem.category}`}
-                  category={currentItem.category || 'unknown'}
-                />
+                <div className={isFirstItem ? 'pt-6' : ''}>
+                  <DateSeparator 
+                    key={`separator-${currentItem.category}`}
+                    category={currentItem.category || 'unknown'}
+                  />
+                </div>
               );
             }
             
@@ -290,16 +294,18 @@ export const PubsList = () => {
             }) as RSSItem | undefined;
 
             return (
-              <PubListItem
-                key={`${item.link}-${index}`}
-                item={item}
-                index={index}
-                sourceData={state.sources.find(s => s.id === item.source)}
-                bookmark={bookmark}
-                onBookmark={bookmarkItem}
-                onUnbookmark={unbookmarkItem}
-                onHide={state.navigation === Navigations.HISTORY ? removeFromHistory : hideItem}
-              />
+              <div className={isFirstItem ? 'pt-6' : ''}>
+                <PubListItem
+                  key={`${item.link}-${index}`}
+                  item={item}
+                  index={index}
+                  sourceData={state.sources.find(s => s.id === item.source)}
+                  bookmark={bookmark}
+                  onBookmark={bookmarkItem}
+                  onUnbookmark={unbookmarkItem}
+                  onHide={state.navigation === Navigations.HISTORY ? removeFromHistory : hideItem}
+                />
+              </div>
             );
           }}
         />

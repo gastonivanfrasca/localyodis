@@ -1,6 +1,7 @@
 import {
   SidebarBookmarksButton,
   SidebarDiscoverButton,
+  SidebarHistoryButton,
   SidebarHomeButton,
   SidebarMenuButton,
   SidebarSearchButton
@@ -13,6 +14,7 @@ export const SidebarHomeButtons = () => {
     <div className="flex flex-col gap-1 w-full">
       <SidebarHomeButton mode={HomeButtonModes.ACTION} />
       <SidebarBookmarksButton />
+      <SidebarHistoryButton />
       <SidebarSearchButton />
       <SidebarDiscoverButton />
       <SidebarMenuButton />

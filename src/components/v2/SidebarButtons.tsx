@@ -1,4 +1,4 @@
-import { ArrowLeft, Bookmark, Compass, Home, Menu, Search } from 'lucide-react';
+import { ArrowLeft, Bookmark, Clock, Compass, Home, Menu, Search } from 'lucide-react';
 import { HomeButtonModes, Navigations } from '../../types/navigation';
 import { Link, useLocation } from 'react-router';
 
@@ -82,7 +82,8 @@ export const SidebarSearchButton = () => {
 
 // Bookmarks Button for Sidebar
 export const SidebarBookmarksButton = () => {
-  const { dispatch } = useMainContext();
+  const { state, dispatch } = useMainContext();
+  const isActive = state.navigation === Navigations.BOOKMARKEDS;
   
   const handleClick = () => {
     dispatch({
@@ -95,6 +96,29 @@ export const SidebarBookmarksButton = () => {
     <SidebarButton
       icon={<Bookmark size={20} />}
       label="Bookmarks"
+      isActive={isActive}
+      onClick={handleClick}
+    />
+  );
+};
+
+// History Button for Sidebar
+export const SidebarHistoryButton = () => {
+  const { state, dispatch } = useMainContext();
+  const isActive = state.navigation === Navigations.HISTORY;
+  
+  const handleClick = () => {
+    dispatch({
+      type: ActionTypes.SET_NAVIGATION,
+      payload: Navigations.HISTORY,
+    });
+  };
+
+  return (
+    <SidebarButton
+      icon={<Clock size={20} />}
+      label="History"
+      isActive={isActive}
       onClick={handleClick}
     />
   );

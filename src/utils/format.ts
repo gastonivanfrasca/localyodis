@@ -122,12 +122,14 @@ export const groupItemsByDateWithSeparators = (items: RSSItem[]): ItemWithSepara
   sortedItems.forEach((item) => {
     const category = getDateCategory(item.pubDate || '');
     
-    // Add separator if this is a new category
+    // Add separator if this is a new category and it's not "today"
     if (category !== currentCategory) {
-      grouped.push({
-        type: 'separator',
-        category: category
-      });
+      if (category !== "today") {
+        grouped.push({
+          type: 'separator',
+          category: category
+        });
+      }
       currentCategory = category;
     }
     

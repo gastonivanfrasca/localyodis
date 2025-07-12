@@ -1,10 +1,11 @@
 import { BackArrowButton } from "./BackArrowButton";
 import { BookmarkedsButton } from "../BookmarkedsButton";
 import { DiscoverButton } from "../DiscoverButton";
+import { HistoryButton } from "../HistoryButton";
 import { HomeButton } from "../HomeButton";
 import { HomeButtonModes } from "../../types/navigation";
-import { SearchButton } from "../SearchButton";
 import { MenuButton } from "../MenuButton";
+import { SearchButton } from "../SearchButton";
 
 type ButtonsProps = {
   orientation?: 'horizontal' | 'vertical';
@@ -26,6 +27,9 @@ export const HomeButtons = ({ orientation = 'horizontal' }: ButtonsProps = {}) =
       </div>
       <div className={buttonClasses}>
         <BookmarkedsButton />
+      </div>
+      <div className={buttonClasses}>
+        <HistoryButton />
       </div>
       <div className={buttonClasses}>
         <SearchButton />
