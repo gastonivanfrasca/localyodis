@@ -35,11 +35,6 @@ export const SidebarButton = ({
           </div>
         )}
       </button>
-      
-      {/* Tooltip on hover */}
-      <div className="absolute left-full ml-2 top-1/2 transform -translate-y-1/2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-sm px-2 py-1 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
-        {label}
-      </div>
     </div>
   );
 }; 

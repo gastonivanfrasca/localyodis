@@ -32,12 +32,20 @@ export const Discover = () => {
   const { showError } = useError();
   const { t } = useI18n();
   const predefinedSourcesData = getPredefinedSources();
-  const [selectedCategory, setSelectedCategory] = useState<string>(predefinedSourcesData.categories[0]?.id || "");
+  const [selectedCategories, setSelectedCategories] = useState<Set<string>>(
+    new Set([predefinedSourcesData.categories[0]?.id || ""])
+  );
   const [isRSSModalOpen, setIsRSSModalOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState<SupportedLanguage | 'all'>('all');
 
   const handleCategorySelect = (categoryId: string) => {
-    setSelectedCategory(categoryId);
+    const newSelected = new Set(selectedCategories);
+    if (newSelected.has(categoryId)) {
+      newSelected.delete(categoryId);
+    } else {
+      newSelected.add(categoryId);
+    }
+    setSelectedCategories(newSelected);
   };
 
   const handleLanguageSelect = (language: SupportedLanguage | 'all') => {
@@ -89,14 +97,23 @@ export const Discover = () => {
     }
   };
 
-  const selectedCategoryData = predefinedSourcesData.categories.find(
-    cat => cat.id === selectedCategory
-  );
 
-  // Filter sources by language
-  const filteredSources = selectedCategoryData?.sources.filter(source => 
-    selectedLanguage === 'all' || source.language === selectedLanguage
-  ) || [];
+
+  // Get sources from all selected categories
+  const allSelectedSources = selectedCategories.size === 0 
+    ? [] 
+    : predefinedSourcesData.categories
+        .filter(cat => selectedCategories.has(cat.id))
+        .flatMap(cat => cat.sources);
+
+  // Filter sources by language and remove duplicates
+  const filteredSources = Array.from(
+    new Map(
+      allSelectedSources
+        .filter(source => selectedLanguage === 'all' || source.language === selectedLanguage)
+        .map(source => [source.url, source])
+    ).values()
+  );
 
   // Get unique languages from all sources
   const availableLanguages = Array.from(new Set(
@@ -108,7 +125,7 @@ export const Discover = () => {
   // Get added sources URLs for comparison
   const addedSourceUrls = new Set(state.sources.map(source => source.url));
 
-  // Count added sources in current category (filtered)
+  // Count added sources in current selection (filtered)
   const addedSourcesInCategory = filteredSources.filter(source => 
     addedSourceUrls.has(source.url)
   ).length || 0;
@@ -129,18 +146,16 @@ export const Discover = () => {
       {/* Content */}
       <div className="flex-1 overflow-hidden flex flex-col">
         {/* Categories */}
-        <div className="flex-shrink-0 px-6 py-6">
+        <div className="flex-shrink-0 px-6 py-4">
           <div className="max-w-4xl mx-auto">
-            <div className="flex justify-between items-center mb-4">
+            <div className="flex justify-between items-center mb-3">
               <div className="flex items-center gap-4">
                 <h2 className="text-lg font-semibold text-zinc-800 dark:text-white tracking-tight">
                   {t('discover.categories')}
                 </h2>
-                {selectedCategoryData && (
-                  <span className="text-sm text-zinc-600 dark:text-zinc-400">
-                    {addedSourcesInCategory} {t('discover.addedCount')} {filteredSources.length} {t('discover.added')}
-                  </span>
-                )}
+                <span className="text-sm text-zinc-600 dark:text-zinc-400">
+                  {addedSourcesInCategory} {t('discover.addedCount')} {filteredSources.length} {t('discover.added')}
+                </span>
               </div>
               <button
                 onClick={() => setIsRSSModalOpen(true)}
@@ -152,15 +167,17 @@ export const Discover = () => {
                 <span className="tracking-tight">{t('discover.addCustomSource')}</span>
               </button>
             </div>
-            <div className="flex flex-wrap gap-3">
-              {predefinedSourcesData.categories.map((category: SourceCategory) => (
-                <CategoryPill
-                  key={category.id}
-                  category={category}
-                  isSelected={selectedCategory === category.id}
-                  onSelect={handleCategorySelect}
-                />
-              ))}
+            <div className="overflow-x-auto">
+              <div className="flex gap-2 pb-2">
+                {predefinedSourcesData.categories.map((category: SourceCategory) => (
+                  <CategoryPill
+                    key={category.id}
+                    category={category}
+                    isSelected={selectedCategories.has(category.id)}
+                    onSelect={handleCategorySelect}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -172,30 +189,32 @@ export const Discover = () => {
               <h3 className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
                 {t('discover.language')}:
               </h3>
-              <div className="flex flex-wrap gap-2">
-                <button
-                  onClick={() => handleLanguageSelect('all')}
-                  className={`px-3 py-1 rounded-lg text-sm font-medium transition-all duration-200 ${
-                    selectedLanguage === 'all'
-                      ? 'bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900'
-                      : 'bg-zinc-200 dark:bg-slate-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-slate-700'
-                  }`}
-                >
-                  {t('discover.allLanguages')}
-                </button>
-                {availableLanguages.map((lang) => (
+              <div className="overflow-x-auto">
+                <div className="flex gap-2">
                   <button
-                    key={lang}
-                    onClick={() => handleLanguageSelect(lang)}
-                    className={`px-3 py-1 rounded-lg text-sm font-medium transition-all duration-200 ${
-                      selectedLanguage === lang
+                    onClick={() => handleLanguageSelect('all')}
+                    className={`px-3 py-1 rounded-lg text-sm font-medium transition-all duration-200 text-nowrap flex-shrink-0 ${
+                      selectedLanguage === 'all'
                         ? 'bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900'
                         : 'bg-zinc-200 dark:bg-slate-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-slate-700'
                     }`}
                   >
-                    {lang.toUpperCase()}
+                    {t('discover.allLanguages')}
                   </button>
-                ))}
+                  {availableLanguages.map((lang) => (
+                    <button
+                      key={lang}
+                      onClick={() => handleLanguageSelect(lang)}
+                      className={`px-3 py-1 rounded-lg text-sm font-medium transition-all duration-200 text-nowrap flex-shrink-0 ${
+                        selectedLanguage === lang
+                          ? 'bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900'
+                          : 'bg-zinc-200 dark:bg-slate-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-slate-700'
+                      }`}
+                    >
+                      {lang.toUpperCase()}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -204,27 +223,33 @@ export const Discover = () => {
         {/* Sources Grid */}
         <div className="flex-1 overflow-y-auto px-6 py-6">
           <div className="max-w-4xl mx-auto">
-                      {selectedCategoryData && (
-            <>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {filteredSources.map((source: PredefinedSource) => (
-                  <DiscoverSourceCard
-                    key={source.url}
-                    source={source}
-                    isAdded={addedSourceUrls.has(source.url)}
-                    onAdd={handleAddSource}
-                  />
-                ))}
-              </div>
-              {filteredSources.length === 0 && (
-                <div className="text-center py-12">
-                  <p className="text-zinc-500 dark:text-zinc-400">
-                    {t('sources.noSourcesFound')} {selectedLanguage === 'all' ? t('discover.categories') : selectedLanguage.toUpperCase()}
-                  </p>
+            {selectedCategories.size > 0 ? (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {filteredSources.map((source: PredefinedSource) => (
+                    <DiscoverSourceCard
+                      key={source.url}
+                      source={source}
+                      isAdded={addedSourceUrls.has(source.url)}
+                      onAdd={handleAddSource}
+                    />
+                  ))}
                 </div>
-              )}
-            </>
-          )}
+                {filteredSources.length === 0 && (
+                  <div className="text-center py-12">
+                    <p className="text-zinc-500 dark:text-zinc-400">
+                      {t('sources.noSourcesFound')} {selectedLanguage === 'all' ? t('discover.categories') : selectedLanguage.toUpperCase()}
+                    </p>
+                  </div>
+                )}
+              </>
+            ) : (
+                             <div className="text-center py-12">
+                 <p className="text-zinc-500 dark:text-zinc-400">
+                   {t('discover.description')}
+                 </p>
+               </div>
+            )}
           </div>
         </div>
       </div>
