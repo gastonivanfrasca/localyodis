@@ -190,6 +190,12 @@
             "url": "https://feeds.bbci.co.uk/mundo/rss.xml",
             "description": "Noticias internacionales en español",
             "language": "es"
+          },
+          {
+            "name": "Infobae",
+            "url": "https://www.infobae.com/arc/outboundfeeds/rss/",
+            "description": "Noticias de América Latina y el mundo",
+            "language": "es"
           }
         ]
       },
