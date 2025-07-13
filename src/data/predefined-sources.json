@@ -196,6 +196,12 @@
             "url": "https://www.infobae.com/arc/outboundfeeds/rss/",
             "description": "Noticias de América Latina y el mundo",
             "language": "es"
+          },
+          {
+            "name": "Google News Argentina",
+            "url": "https://news.google.com/rss?hl=es-419&gl=AR&ceid=AR:es-419",
+            "description": "Noticias destacadas de Argentina",
+            "language": "es"
           }
         ]
       },
