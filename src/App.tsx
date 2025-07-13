@@ -6,6 +6,7 @@ import { Navigations } from "./types/navigation";
 import { PubsList } from "./components/PubList";
 import { SearchInput } from "./components/v2/SearchInput";
 import { SectionIndicator } from "./components/v2/SectionIndicator";
+import { Settings } from "./views/settings/Settings";
 import Snackbar from "./components/Snackbar";
 import { useMainContext } from "./context/main";
 
@@ -17,6 +18,16 @@ function App() {
     return (
       <div className="w-full h-screen">
         <FirstTimeUser />
+        <Snackbar />
+      </div>
+    );
+  }
+
+  // Show Settings if navigation is set to SETTINGS
+  if (state.navigation === Navigations.SETTINGS) {
+    return (
+      <div className="w-full h-screen">
+        <Settings />
         <Snackbar />
       </div>
     );
