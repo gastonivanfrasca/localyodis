@@ -72,6 +72,9 @@ export const en: TranslationKeys = {
   'discover.addedCount': 'of',
   'discover.addCustomSource': 'Add custom source',
   'discover.added': 'added',
+  'discover.language': 'Language',
+  'discover.allLanguages': 'All languages',
+  'discover.filterByLanguage': 'Filter by language',
   
   // Menu
   'menu.title': 'Menu',
@@ -101,6 +104,9 @@ export const en: TranslationKeys = {
   'ftu.getStarted': 'Get Started',
   'ftu.categories': 'Categories',
   'ftu.addOwnSource': 'Add your own source',
+  'ftu.language': 'Language',
+  'ftu.allLanguages': 'All languages',
+  'ftu.filterByLanguage': 'Filter by language',
   
   // RSS Feed
   'rss.lastUpdated': 'Last updated',

@@ -3,154 +3,214 @@
     {
       "id": "tech",
       "name": "Technology",
-              "icon": "monitor",
+      "icon": "monitor",
       "sources": [
         {
           "name": "TechCrunch",
           "url": "https://techcrunch.com/feed/",
-          "description": "Startup and technology news"
+          "description": "Startup and technology news",
+          "language": "en"
         },
         {
           "name": "Ars Technica",
           "url": "https://feeds.arstechnica.com/arstechnica/index",
-          "description": "Technology, science, and policy"
+          "description": "Technology, science, and policy",
+          "language": "en"
         },
         {
           "name": "The Verge",
           "url": "https://www.theverge.com/rss/index.xml",
-          "description": "Technology, art, science, and culture"
+          "description": "Technology, art, science, and culture",
+          "language": "en"
         },
         {
           "name": "Wired",
           "url": "https://www.wired.com/feed/rss",
-          "description": "Ideas that matter in technology"
+          "description": "Ideas that matter in technology",
+          "language": "en"
         },
         {
           "name": "Where's Your Ed At",
           "url": "https://www.wheresyoured.at/rss/",
-          "description": "Ed Zitron's commentary on technology and business"
+          "description": "Ed Zitron's commentary on technology and business",
+          "language": "en"
         },
         {
           "name": "AlternativeTo News",
           "url": "https://feed.alternativeto.net/news/all",
-          "description": "Software alternatives and recommendations"
+          "description": "Software alternatives and recommendations",
+          "language": "en"
         }
       ]
     },
     {
       "id": "news",
-              "name": "News",
-        "icon": "newspaper",
-        "sources": [
-          {
-            "name": "BBC News",
-            "url": "http://feeds.bbci.co.uk/news/rss.xml",
-            "description": "International news from the BBC"
-          },
-          {
-            "name": "Reuters",
-            "url": "https://feeds.reuters.com/reuters/topNews",
-            "description": "World news and business"
-          },
-          {
-            "name": "NPR News",
-            "url": "https://feeds.npr.org/1001/rss.xml",
-            "description": "US public radio news"
-          }
+      "name": "News",
+      "icon": "newspaper",
+      "sources": [
+        {
+          "name": "BBC News",
+          "url": "http://feeds.bbci.co.uk/news/rss.xml",
+          "description": "International news from the BBC",
+          "language": "en"
+        },
+        {
+          "name": "Reuters",
+          "url": "https://feeds.reuters.com/reuters/topNews",
+          "description": "World news and business",
+          "language": "en"
+        },
+        {
+          "name": "NPR News",
+          "url": "https://feeds.npr.org/1001/rss.xml",
+          "description": "US public radio news",
+          "language": "en"
+        }
       ]
     },
     {
       "id": "science",
-              "name": "Science",
-        "icon": "microscope",
-        "sources": [
-          {
-            "name": "NASA",
-            "url": "https://www.nasa.gov/rss/dyn/breaking_news.rss",
-            "description": "Latest news from NASA"
-          },
-          {
-            "name": "Science Daily",
-            "url": "https://www.sciencedaily.com/rss/all.xml",
-            "description": "Scientific discoveries"
-          },
-          {
-            "name": "New Scientist",
-            "url": "https://www.newscientist.com/feed/home/",
-            "description": "Science and technology"
-          }
+      "name": "Science",
+      "icon": "microscope",
+      "sources": [
+        {
+          "name": "NASA",
+          "url": "https://www.nasa.gov/rss/dyn/breaking_news.rss",
+          "description": "Latest news from NASA",
+          "language": "en"
+        },
+        {
+          "name": "Science Daily",
+          "url": "https://www.sciencedaily.com/rss/all.xml",
+          "description": "Scientific discoveries",
+          "language": "en"
+        },
+        {
+          "name": "New Scientist",
+          "url": "https://www.newscientist.com/feed/home/",
+          "description": "Science and technology",
+          "language": "en"
+        }
       ]
     },
     {
       "id": "design",
-              "name": "Design",
-        "icon": "palette",
-        "sources": [
-          {
-            "name": "Smashing Magazine",
-            "url": "https://www.smashingmagazine.com/feed/",
-            "description": "Web design and development"
-          },
-          {
-            "name": "Creative Bloq",
-            "url": "https://www.creativebloq.com/feed",
-            "description": "Art, design, and inspiration"
-          },
-          {
-            "name": "Designer News",
-            "url": "https://www.designernews.co/rss",
-            "description": "Design community"
-          }
+      "name": "Design",
+      "icon": "palette",
+      "sources": [
+        {
+          "name": "Smashing Magazine",
+          "url": "https://www.smashingmagazine.com/feed/",
+          "description": "Web design and development",
+          "language": "en"
+        },
+        {
+          "name": "Creative Bloq",
+          "url": "https://www.creativebloq.com/feed",
+          "description": "Art, design, and inspiration",
+          "language": "en"
+        },
+        {
+          "name": "Designer News",
+          "url": "https://www.designernews.co/rss",
+          "description": "Design community",
+          "language": "en"
+        }
       ]
     },
     {
       "id": "programming",
-              "name": "Programming",
-        "icon": "code",
-        "sources": [
-          {
-            "name": "Dev.to",
-            "url": "https://dev.to/feed",
-            "description": "Developer community"
-          },
-          {
-            "name": "Hacker News",
-            "url": "https://hnrss.org/frontpage",
-            "description": "Tech news and discussions"
-          },
-          {
-            "name": "CSS-Tricks",
-            "url": "https://css-tricks.com/feed/",
-            "description": "CSS and frontend tips & tricks"
-          },
-          {
-            "name": "JavaScript Weekly",
-            "url": "https://javascriptweekly.com/rss/",
-            "description": "Weekly JavaScript news"
-          }
+      "name": "Programming",
+      "icon": "code",
+      "sources": [
+        {
+          "name": "Dev.to",
+          "url": "https://dev.to/feed",
+          "description": "Developer community",
+          "language": "en"
+        },
+        {
+          "name": "Hacker News",
+          "url": "https://hnrss.org/frontpage",
+          "description": "Tech news and discussions",
+          "language": "en"
+        },
+        {
+          "name": "CSS-Tricks",
+          "url": "https://css-tricks.com/feed/",
+          "description": "CSS and frontend tips & tricks",
+          "language": "en"
+        },
+        {
+          "name": "JavaScript Weekly",
+          "url": "https://javascriptweekly.com/rss/",
+          "description": "Weekly JavaScript news",
+          "language": "en"
+        }
       ]
     },
-    {
-      "id": "business",
-              "name": "Business",
+          {
+        "id": "business",
+        "name": "Business",
         "icon": "trending-up",
         "sources": [
           {
             "name": "Harvard Business Review",
             "url": "https://feeds.hbr.org/harvardbusiness",
-            "description": "Management and strategy ideas"
+            "description": "Management and strategy ideas",
+            "language": "en"
           },
           {
             "name": "Entrepreneur",
             "url": "https://www.entrepreneur.com/latest.rss",
-            "description": "Entrepreneurship news"
+            "description": "Entrepreneurship news",
+            "language": "en"
           },
           {
             "name": "Fast Company",
             "url": "https://www.fastcompany.com/rss",
-            "description": "Business and technology innovation"
+            "description": "Business and technology innovation",
+            "language": "en"
           }
-      ]
-    }
+        ]
+      },
+      {
+        "id": "spanish-news",
+        "name": "Spanish News",
+        "icon": "newspaper",
+        "sources": [
+          {
+            "name": "El País",
+            "url": "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/portada",
+            "description": "Noticias de España y el mundo",
+            "language": "es"
+          },
+          {
+            "name": "BBC Mundo",
+            "url": "https://feeds.bbci.co.uk/mundo/rss.xml",
+            "description": "Noticias internacionales en español",
+            "language": "es"
+          }
+        ]
+      },
+      {
+        "id": "french-news",
+        "name": "French News",
+        "icon": "newspaper",
+        "sources": [
+          {
+            "name": "Le Monde",
+            "url": "https://www.lemonde.fr/rss/une.xml",
+            "description": "Actualités françaises et internationales",
+            "language": "fr"
+          },
+          {
+            "name": "France 24",
+            "url": "https://www.france24.com/fr/rss",
+            "description": "Actualités internationales en français",
+            "language": "fr"
+          }
+        ]
+      }
   ]
 } 

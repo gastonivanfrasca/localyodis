@@ -6,10 +6,12 @@ import { AddRSSSourceModals } from "../../components/AddSourceModals";
 import { CategoryPill } from "../../components/CategoryPill";
 import { Navigations } from "../../types/navigation";
 import { SourceCard } from "../../components/SourceCard";
+import { SupportedLanguage } from "../../types/i18n";
 import { getPredefinedSources } from "../../utils/predefined-sources";
+import { useI18n } from "../../context/i18n";
+import { useNavigate } from "react-router";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { useI18n } from "../../context/i18n";
 
 const generateRandomColor = () => {
   const randomColor = Math.floor(Math.random() * 16777215).toString(16);
@@ -17,21 +19,22 @@ const generateRandomColor = () => {
 };
 
 const generateTextColorForBackground = (bgColor: string) => {
-  const color = bgColor.replace("#", "");
-  const r = parseInt(color.substr(0, 2), 16);
-  const g = parseInt(color.substr(2, 2), 16);
-  const b = parseInt(color.substr(4, 2), 16);
+  const r = parseInt(bgColor.substr(1, 2), 16);
+  const g = parseInt(bgColor.substr(3, 2), 16);
+  const b = parseInt(bgColor.substr(5, 2), 16);
   const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-  return brightness >= 128 ? "#000000" : "#ffffff";
+  return brightness > 125 ? "#000000" : "#ffffff";
 };
 
 export const FirstTimeUser = () => {
+  const navigate = useNavigate();
   const { dispatch, state } = useMainContext();
   const { t } = useI18n();
   const predefinedSourcesData = getPredefinedSources();
   const [selectedCategory, setSelectedCategory] = useState<string>(predefinedSourcesData.categories[0]?.id || "");
   const [selectedSources, setSelectedSources] = useState<Set<string>>(new Set());
   const [isRSSModalOpen, setIsRSSModalOpen] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState<SupportedLanguage | 'all'>('all');
 
   const handleCategorySelect = (categoryId: string) => {
     setSelectedCategory(categoryId);
@@ -45,6 +48,10 @@ export const FirstTimeUser = () => {
       newSelected.add(sourceUrl);
     }
     setSelectedSources(newSelected);
+  };
+
+  const handleLanguageSelect = (language: SupportedLanguage | 'all') => {
+    setSelectedLanguage(language);
   };
 
   const handleFinishSetup = () => {
@@ -103,6 +110,18 @@ export const FirstTimeUser = () => {
     cat => cat.id === selectedCategory
   );
 
+  // Filter sources by language
+  const filteredSources = selectedCategoryData?.sources.filter(source => 
+    selectedLanguage === 'all' || source.language === selectedLanguage
+  ) || [];
+
+  // Get unique languages from all sources
+  const availableLanguages = Array.from(new Set(
+    predefinedSourcesData.categories.flatMap(cat => 
+      cat.sources.map(source => source.language)
+    )
+  )).sort();
+
   return (
     <div className="w-full h-screen dark:bg-slate-950 flex flex-col">
       {/* Header */}
@@ -146,13 +165,49 @@ export const FirstTimeUser = () => {
           </div>
         </div>
 
+        {/* Language Filter */}
+        <div className="flex-shrink-0 px-6 py-2">
+          <div className="max-w-4xl mx-auto">
+            <div className="flex items-center gap-4">
+              <h3 className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                {t('ftu.language')}:
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={() => handleLanguageSelect('all')}
+                  className={`px-3 py-1 rounded-lg text-sm font-medium transition-all duration-200 ${
+                    selectedLanguage === 'all'
+                      ? 'bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900'
+                      : 'bg-zinc-200 dark:bg-slate-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-slate-700'
+                  }`}
+                >
+                  {t('ftu.allLanguages')}
+                </button>
+                {availableLanguages.map((lang) => (
+                  <button
+                    key={lang}
+                    onClick={() => handleLanguageSelect(lang)}
+                    className={`px-3 py-1 rounded-lg text-sm font-medium transition-all duration-200 ${
+                      selectedLanguage === lang
+                        ? 'bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900'
+                        : 'bg-zinc-200 dark:bg-slate-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-slate-700'
+                    }`}
+                  >
+                    {lang.toUpperCase()}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Sources Grid */}
         <div className="flex-1 overflow-y-auto px-6 py-6">
           <div className="max-w-4xl mx-auto">
             {selectedCategoryData && (
               <>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {selectedCategoryData.sources.map((source: PredefinedSource) => (
+                  {filteredSources.map((source: PredefinedSource) => (
                     <SourceCard
                       key={source.url}
                       source={source}
@@ -161,6 +216,13 @@ export const FirstTimeUser = () => {
                     />
                   ))}
                 </div>
+                {filteredSources.length === 0 && (
+                  <div className="text-center py-12">
+                    <p className="text-zinc-500 dark:text-zinc-400">
+                      {t('sources.noSourcesFound')} {selectedLanguage === 'all' ? t('ftu.categories') : selectedLanguage.toUpperCase()}
+                    </p>
+                  </div>
+                )}
               </>
             )}
           </div>
@@ -171,7 +233,9 @@ export const FirstTimeUser = () => {
       <div className="flex-shrink-0 px-6 py-6 border-t border-zinc-300 dark:border-zinc-800">
         <div className="max-w-4xl mx-auto flex justify-between items-center">
           <button
-            onClick={() => dispatch({ type: ActionTypes.SET_NAVIGATION, payload: Navigations.SETTINGS })}
+            onClick={() => {
+              navigate(Navigations.SETTINGS);
+            }}
             className="bg-zinc-200 dark:bg-slate-800 p-2.5 rounded-xl hover:bg-zinc-300 dark:hover:bg-slate-700 transition-all duration-200"
           >
             <Settings className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />

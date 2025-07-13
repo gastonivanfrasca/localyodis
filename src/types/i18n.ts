@@ -79,6 +79,9 @@ export type TranslationKeys = {
   'discover.addedCount': string;
   'discover.addCustomSource': string;
   'discover.added': string;
+  'discover.language': string;
+  'discover.allLanguages': string;
+  'discover.filterByLanguage': string;
   
   // Menu
   'menu.title': string;
@@ -108,6 +111,9 @@ export type TranslationKeys = {
   'ftu.getStarted': string;
   'ftu.categories': string;
   'ftu.addOwnSource': string;
+  'ftu.language': string;
+  'ftu.allLanguages': string;
+  'ftu.filterByLanguage': string;
   
   // RSS Feed
   'rss.lastUpdated': string;
