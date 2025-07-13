@@ -1,11 +1,11 @@
 import { ActionTypes, useMainContext } from "../../context/main";
+import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import { PredefinedSource, SourceCategory } from "../../types/predefined-sources";
 
 import { AddRSSSourceModals } from "../../components/AddSourceModals";
 import { CategoryPill } from "../../components/CategoryPill";
 import { DiscoverSourceCard } from "../../components/DiscoverSourceCard";
 import { NavigationTitleWithBack } from "../../components/v2/NavigationTitleWithBack";
-import { Plus } from "lucide-react";
 import Snackbar from "../../components/Snackbar";
 import { SupportedLanguage } from "../../types/i18n";
 import { getPredefinedSources } from "../../utils/predefined-sources";
@@ -32,9 +32,7 @@ export const Discover = () => {
   const { showError } = useError();
   const { t } = useI18n();
   const predefinedSourcesData = getPredefinedSources();
-  const [selectedCategories, setSelectedCategories] = useState<Set<string>>(
-    new Set([predefinedSourcesData.categories[0]?.id || ""])
-  );
+  const [selectedCategories, setSelectedCategories] = useState<Set<string>>(new Set());
   const [isRSSModalOpen, setIsRSSModalOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState<SupportedLanguage | 'all'>('all');
 
@@ -134,28 +132,21 @@ export const Discover = () => {
     <div className="w-full h-screen dark:bg-slate-950 flex flex-col">
       <NavigationTitleWithBack label={t('discover.title')} />
       
-      {/* Header */}
-      <div className="flex-shrink-0 px-6 py-8 mt-16">
-        <div className="max-w-4xl mx-auto">
-          <p className="text-zinc-600 dark:text-zinc-400 text-base">
-            {t('discover.description')}
-          </p>
-        </div>
-      </div>
-
       {/* Content */}
-      <div className="flex-1 overflow-hidden flex flex-col">
+      <div className="flex-1 overflow-hidden flex flex-col mt-16">
         {/* Categories */}
-        <div className="flex-shrink-0 px-6 py-4">
+        <div className="flex-shrink-0 px-6 py-6">
           <div className="max-w-4xl mx-auto">
-            <div className="flex justify-between items-center mb-3">
-              <div className="flex items-center gap-4">
-                <h2 className="text-lg font-semibold text-zinc-800 dark:text-white tracking-tight">
+            <div className="flex justify-between items-start mb-4">
+              <div className="flex-1">
+                <h2 className="text-lg font-semibold text-zinc-800 dark:text-white tracking-tight mb-1">
                   {t('discover.categories')}
                 </h2>
-                <span className="text-sm text-zinc-600 dark:text-zinc-400">
-                  {addedSourcesInCategory} {t('discover.addedCount')} {filteredSources.length} {t('discover.added')}
-                </span>
+                {selectedCategories.size > 0 && (
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                    {addedSourcesInCategory} {t('discover.addedCount')} {filteredSources.length} {t('discover.added')}
+                  </p>
+                )}
               </div>
               <button
                 onClick={() => setIsRSSModalOpen(true)}
@@ -167,58 +158,72 @@ export const Discover = () => {
                 <span className="tracking-tight">{t('discover.addCustomSource')}</span>
               </button>
             </div>
-            <div className="overflow-x-auto">
-              <div className="flex gap-2 pb-2">
-                {predefinedSourcesData.categories.map((category: SourceCategory) => (
-                  <CategoryPill
-                    key={category.id}
-                    category={category}
-                    isSelected={selectedCategories.has(category.id)}
-                    onSelect={handleCategorySelect}
-                  />
-                ))}
+            <div className="relative">
+              <div className="overflow-x-auto hide-scrollbar">
+                <div className="flex gap-2 pb-2">
+                  {predefinedSourcesData.categories.map((category: SourceCategory) => (
+                    <CategoryPill
+                      key={category.id}
+                      category={category}
+                      isSelected={selectedCategories.has(category.id)}
+                      onSelect={handleCategorySelect}
+                    />
+                  ))}
+                </div>
               </div>
+              {/* Scroll indicators */}
+              <div className="absolute left-0 top-0 bottom-2 w-4 bg-gradient-to-r from-white dark:from-slate-950 to-transparent pointer-events-none opacity-60"></div>
+              <div className="absolute right-0 top-0 bottom-2 w-4 bg-gradient-to-l from-white dark:from-slate-950 to-transparent pointer-events-none opacity-60"></div>
+              <ChevronLeft className="absolute left-1 top-1/2 -translate-y-1/2 w-3 h-3 text-zinc-400 pointer-events-none" />
+              <ChevronRight className="absolute right-1 top-1/2 -translate-y-1/2 w-3 h-3 text-zinc-400 pointer-events-none" />
             </div>
           </div>
         </div>
 
         {/* Language Filter */}
-        <div className="flex-shrink-0 px-6 py-2">
-          <div className="max-w-4xl mx-auto">
-            <div className="flex items-center gap-4">
-              <h3 className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-                {t('discover.language')}:
-              </h3>
-              <div className="overflow-x-auto">
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => handleLanguageSelect('all')}
-                    className={`px-3 py-1 rounded-lg text-sm font-medium transition-all duration-200 text-nowrap flex-shrink-0 ${
-                      selectedLanguage === 'all'
-                        ? 'bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900'
-                        : 'bg-zinc-200 dark:bg-slate-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-slate-700'
-                    }`}
-                  >
-                    {t('discover.allLanguages')}
-                  </button>
-                  {availableLanguages.map((lang) => (
-                    <button
-                      key={lang}
-                      onClick={() => handleLanguageSelect(lang)}
-                      className={`px-3 py-1 rounded-lg text-sm font-medium transition-all duration-200 text-nowrap flex-shrink-0 ${
-                        selectedLanguage === lang
-                          ? 'bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900'
-                          : 'bg-zinc-200 dark:bg-slate-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-slate-700'
-                      }`}
-                    >
-                      {lang.toUpperCase()}
-                    </button>
-                  ))}
+        {selectedCategories.size > 0 && (
+          <div className="flex-shrink-0 px-6 py-2">
+            <div className="max-w-4xl mx-auto">
+              <div className="flex items-center gap-4">
+                <h3 className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                  {t('discover.language')}:
+                </h3>
+                <div className="relative flex-1">
+                  <div className="overflow-x-auto hide-scrollbar">
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => handleLanguageSelect('all')}
+                        className={`px-3 py-1 rounded-lg text-sm font-medium transition-all duration-200 text-nowrap flex-shrink-0 ${
+                          selectedLanguage === 'all'
+                            ? 'bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900'
+                            : 'bg-zinc-200 dark:bg-slate-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-slate-700'
+                        }`}
+                      >
+                        {t('discover.allLanguages')}
+                      </button>
+                      {availableLanguages.map((lang) => (
+                        <button
+                          key={lang}
+                          onClick={() => handleLanguageSelect(lang)}
+                          className={`px-3 py-1 rounded-lg text-sm font-medium transition-all duration-200 text-nowrap flex-shrink-0 ${
+                            selectedLanguage === lang
+                              ? 'bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900'
+                              : 'bg-zinc-200 dark:bg-slate-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-slate-700'
+                          }`}
+                        >
+                          {lang.toUpperCase()}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  {/* Scroll indicators for languages */}
+                  <div className="absolute left-0 top-0 bottom-0 w-3 bg-gradient-to-r from-white dark:from-slate-950 to-transparent pointer-events-none opacity-40"></div>
+                  <div className="absolute right-0 top-0 bottom-0 w-3 bg-gradient-to-l from-white dark:from-slate-950 to-transparent pointer-events-none opacity-40"></div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* Sources Grid */}
         <div className="flex-1 overflow-y-auto px-6 py-6">
@@ -244,11 +249,11 @@ export const Discover = () => {
                 )}
               </>
             ) : (
-                             <div className="text-center py-12">
-                 <p className="text-zinc-500 dark:text-zinc-400">
-                   {t('discover.description')}
-                 </p>
-               </div>
+              <div className="text-center py-12">
+                <p className="text-zinc-500 dark:text-zinc-400 text-base">
+                  {t('discover.description')}
+                </p>
+              </div>
             )}
           </div>
         </div>
