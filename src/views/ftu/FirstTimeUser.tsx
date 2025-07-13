@@ -1,5 +1,5 @@
 import { ActionTypes, useMainContext } from "../../context/main";
-import { ChevronLeft, ChevronRight, Plus, Settings } from "lucide-react";
+import { Plus, Settings } from "lucide-react";
 import { PredefinedSource, SourceCategory } from "../../types/predefined-sources";
 
 import { AddRSSSourceModals } from "../../components/AddSourceModals";
@@ -106,8 +106,6 @@ export const FirstTimeUser = () => {
     navigate("/");
   };
 
-
-
   // Get sources from all selected categories
   const allSelectedSources = selectedCategories.size === 0 
     ? [] 
@@ -161,7 +159,7 @@ export const FirstTimeUser = () => {
             </div>
             <div className="relative">
               <div className="overflow-x-auto hide-scrollbar">
-                <div className="flex gap-2 pb-2">
+                <div className="flex gap-2 pb-2 pr-8">
                   {predefinedSourcesData.categories.map((category: SourceCategory) => (
                     <CategoryPill
                       key={category.id}
@@ -172,11 +170,8 @@ export const FirstTimeUser = () => {
                   ))}
                 </div>
               </div>
-              {/* Scroll indicators */}
-              <div className="absolute left-0 top-0 bottom-2 w-4 bg-gradient-to-r from-white dark:from-slate-950 to-transparent pointer-events-none opacity-60"></div>
-              <div className="absolute right-0 top-0 bottom-2 w-4 bg-gradient-to-l from-white dark:from-slate-950 to-transparent pointer-events-none opacity-60"></div>
-              <ChevronLeft className="absolute left-1 top-1/2 -translate-y-1/2 w-3 h-3 text-zinc-400 pointer-events-none" />
-              <ChevronRight className="absolute right-1 top-1/2 -translate-y-1/2 w-3 h-3 text-zinc-400 pointer-events-none" />
+              {/* Subtle gradient fade */}
+              <div className="absolute right-0 top-0 bottom-2 w-8 bg-gradient-to-l from-white dark:from-slate-950 to-transparent pointer-events-none"></div>
             </div>
           </div>
         </div>
@@ -191,7 +186,7 @@ export const FirstTimeUser = () => {
                 </h3>
                 <div className="relative flex-1">
                   <div className="overflow-x-auto hide-scrollbar">
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 pr-8">
                       <button
                         onClick={() => handleLanguageSelect('all')}
                         className={`px-3 py-1 rounded-lg text-sm font-medium transition-all duration-200 text-nowrap flex-shrink-0 ${
@@ -217,9 +212,8 @@ export const FirstTimeUser = () => {
                       ))}
                     </div>
                   </div>
-                  {/* Scroll indicators for languages */}
-                  <div className="absolute left-0 top-0 bottom-0 w-3 bg-gradient-to-r from-white dark:from-slate-950 to-transparent pointer-events-none opacity-40"></div>
-                  <div className="absolute right-0 top-0 bottom-0 w-3 bg-gradient-to-l from-white dark:from-slate-950 to-transparent pointer-events-none opacity-40"></div>
+                  {/* Subtle gradient fade */}
+                  <div className="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-white dark:from-slate-950 to-transparent pointer-events-none"></div>
                 </div>
               </div>
             </div>
