@@ -65,6 +65,42 @@
           "url": "https://feeds.npr.org/1001/rss.xml",
           "description": "US public radio news",
           "language": "en"
+        },
+        {
+          "name": "El País",
+          "url": "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/portada",
+          "description": "Noticias de España y el mundo",
+          "language": "es"
+        },
+        {
+          "name": "BBC Mundo",
+          "url": "https://feeds.bbci.co.uk/mundo/rss.xml",
+          "description": "Noticias internacionales en español",
+          "language": "es"
+        },
+        {
+          "name": "Infobae",
+          "url": "https://www.infobae.com/arc/outboundfeeds/rss/",
+          "description": "Noticias de América Latina y el mundo",
+          "language": "es"
+        },
+        {
+          "name": "Google News Argentina",
+          "url": "https://news.google.com/rss?hl=es-419&gl=AR&ceid=AR:es-419",
+          "description": "Noticias destacadas de Argentina",
+          "language": "es"
+        },
+        {
+          "name": "Le Monde",
+          "url": "https://www.lemonde.fr/rss/une.xml",
+          "description": "Actualités françaises et internationales",
+          "language": "fr"
+        },
+        {
+          "name": "France 24",
+          "url": "https://www.france24.com/fr/rss",
+          "description": "Actualités internationales en français",
+          "language": "fr"
         }
       ]
     },
@@ -149,80 +185,30 @@
         }
       ]
     },
-          {
-        "id": "business",
-        "name": "Business",
-        "icon": "trending-up",
-        "sources": [
-          {
-            "name": "Harvard Business Review",
-            "url": "https://feeds.hbr.org/harvardbusiness",
-            "description": "Management and strategy ideas",
-            "language": "en"
-          },
-          {
-            "name": "Entrepreneur",
-            "url": "https://www.entrepreneur.com/latest.rss",
-            "description": "Entrepreneurship news",
-            "language": "en"
-          },
-          {
-            "name": "Fast Company",
-            "url": "https://www.fastcompany.com/rss",
-            "description": "Business and technology innovation",
-            "language": "en"
-          }
-        ]
-      },
-      {
-        "id": "spanish-news",
-        "name": "Spanish News",
-        "icon": "newspaper",
-        "sources": [
-          {
-            "name": "El País",
-            "url": "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/portada",
-            "description": "Noticias de España y el mundo",
-            "language": "es"
-          },
-          {
-            "name": "BBC Mundo",
-            "url": "https://feeds.bbci.co.uk/mundo/rss.xml",
-            "description": "Noticias internacionales en español",
-            "language": "es"
-          },
-          {
-            "name": "Infobae",
-            "url": "https://www.infobae.com/arc/outboundfeeds/rss/",
-            "description": "Noticias de América Latina y el mundo",
-            "language": "es"
-          },
-          {
-            "name": "Google News Argentina",
-            "url": "https://news.google.com/rss?hl=es-419&gl=AR&ceid=AR:es-419",
-            "description": "Noticias destacadas de Argentina",
-            "language": "es"
-          }
-        ]
-      },
-      {
-        "id": "french-news",
-        "name": "French News",
-        "icon": "newspaper",
-        "sources": [
-          {
-            "name": "Le Monde",
-            "url": "https://www.lemonde.fr/rss/une.xml",
-            "description": "Actualités françaises et internationales",
-            "language": "fr"
-          },
-          {
-            "name": "France 24",
-            "url": "https://www.france24.com/fr/rss",
-            "description": "Actualités internationales en français",
-            "language": "fr"
-          }
-        ]
-      }
+    {
+      "id": "business",
+      "name": "Business",
+      "icon": "trending-up",
+      "sources": [
+        {
+          "name": "Harvard Business Review",
+          "url": "https://feeds.hbr.org/harvardbusiness",
+          "description": "Management and strategy ideas",
+          "language": "en"
+        },
+        {
+          "name": "Entrepreneur",
+          "url": "https://www.entrepreneur.com/latest.rss",
+          "description": "Entrepreneurship news",
+          "language": "en"
+        },
+        {
+          "name": "Fast Company",
+          "url": "https://www.fastcompany.com/rss",
+          "description": "Business and technology innovation",
+          "language": "en"
+        }
+      ]
+    }
   ]
 } 
