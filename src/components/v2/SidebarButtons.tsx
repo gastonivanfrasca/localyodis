@@ -1,6 +1,6 @@
 import { ArrowLeft, Bookmark, Clock, Compass, Home, Menu, Search } from 'lucide-react';
 import { HomeButtonModes, Navigations } from '../../types/navigation';
-import { Link, useLocation } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
 import { ActionTypes } from '../../context/main';
 import { ActiveIndicator } from '../ActiveIndicator';
@@ -10,30 +10,69 @@ import { useMainContext } from '../../context/main';
 
 // Home Button for Sidebar
 export const SidebarHomeButton = ({ mode }: { mode: HomeButtonModes }) => {
+  const { state, dispatch } = useMainContext();
   const { t } = useI18n();
   const location = useLocation();
-  const isActive = location.pathname === "/";
+  const navigate = useNavigate();
+  
+  // Only active when on home page and in default state
+  const isActive = location.pathname === "/" && state.navigation === null;
+
+  const handleHomeClick = () => {
+    // If not on home page, navigate to home
+    if (location.pathname !== "/") {
+      navigate("/");
+      return;
+    }
+
+    // If we're in bookmarks, history, or search mode, go to general feed
+    if (state.navigation !== null) {
+      dispatch({
+        type: ActionTypes.SET_NAVIGATION,
+        payload: null,
+      });
+      
+      // Clear search query if we were in search mode
+      if (state.navigation === Navigations.SEARCH) {
+        dispatch({
+          type: ActionTypes.SET_SEARCH_QUERY,
+          payload: null,
+        });
+      }
+      return;
+    }
+
+    // If we're already in general feed, just scroll to top (no refresh)
+    const pubsListElement = document.getElementById("pubs-list");
+    if (pubsListElement) {
+      pubsListElement.scrollTop = 0;
+    }
+
+    // Reset scroll position in state
+    dispatch({
+      type: ActionTypes.SET_SCROLL_POSITION,
+      payload: 0,
+    });
+  };
 
   if (mode === HomeButtonModes.LINK) {
     return (
-      <Link to="/">
-        <SidebarButton
-          icon={<Home size={20} />}
-          label={t('home')}
-          isActive={isActive}
-        />
-      </Link>
-    );
-  }
-
-  return (
-    <Link to="/">
       <SidebarButton
         icon={<Home size={20} />}
         label={t('home')}
         isActive={isActive}
+        onClick={handleHomeClick}
       />
-    </Link>
+    );
+  }
+
+  return (
+    <SidebarButton
+      icon={<Home size={20} />}
+      label={t('home')}
+      isActive={isActive}
+      onClick={handleHomeClick}
+    />
   );
 };
 
@@ -137,14 +176,18 @@ export const SidebarHistoryButton = () => {
 // Menu Button for Sidebar
 export const SidebarMenuButton = () => {
   const { t } = useI18n();
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate("/menu");
+  };
 
   return (
-    <Link to="/menu">
-      <SidebarButton
-        icon={<Menu size={20} />}
-        label={t('menu')}
-      />
-    </Link>
+    <SidebarButton
+      icon={<Menu size={20} />}
+      label={t('menu')}
+      onClick={handleClick}
+    />
   );
 };
 
@@ -165,16 +208,20 @@ export const SidebarBackButton = ({ onClick }: { onClick: () => void }) => {
 export const SidebarDiscoverButton = () => {
   const location = useLocation();
   const { t } = useI18n();
+  const navigate = useNavigate();
   const isActive = location.pathname === "/discover";
 
+  const handleClick = () => {
+    navigate("/discover");
+  };
+
   return (
-    <Link to="/discover">
-      <SidebarButton
-        icon={<Compass size={20} />}
-        label={t('discover')}
-        isActive={isActive}
-      />
-    </Link>
+    <SidebarButton
+      icon={<Compass size={20} />}
+      label={t('discover')}
+      isActive={isActive}
+      onClick={handleClick}
+    />
   );
 };
 
