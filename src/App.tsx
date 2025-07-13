@@ -1,36 +1,29 @@
 import "./App.css";
 
 import { AdaptiveNavigation } from "./components/AdaptiveNavigation";
-import { FirstTimeUser } from "./views/ftu/FirstTimeUser";
 import { Navigations } from "./types/navigation";
 import { PubsList } from "./components/PubList";
 import { SearchInput } from "./components/v2/SearchInput";
 import { SectionIndicator } from "./components/v2/SectionIndicator";
-import { Settings } from "./views/settings/Settings";
 import Snackbar from "./components/Snackbar";
+import { useEffect } from "react";
 import { useMainContext } from "./context/main";
+import { useNavigate } from "react-router";
 
 function App() {
   const { state } = useMainContext();
+  const navigate = useNavigate();
 
-  // Show FTU if no sources are configured (simple, clean logic)
+  // Redirect to FTU if no sources are configured
+  useEffect(() => {
+    if (state.sources.length === 0) {
+      navigate("/ftu");
+    }
+  }, [state.sources.length, navigate]);
+
+  // Don't render anything if redirecting to FTU
   if (state.sources.length === 0) {
-    return (
-      <div className="w-full h-screen">
-        <FirstTimeUser />
-        <Snackbar />
-      </div>
-    );
-  }
-
-  // Show Settings if navigation is set to SETTINGS
-  if (state.navigation === Navigations.SETTINGS) {
-    return (
-      <div className="w-full h-screen">
-        <Settings />
-        <Snackbar />
-      </div>
-    );
+    return null;
   }
 
   // Show normal app if sources exist

@@ -1,6 +1,5 @@
 import { ActionTypes, useMainContext } from "../../context/main";
 
-import { Navigations } from "../../types/navigation";
 import { X } from "lucide-react";
 import { getRSSItemStrProp } from "../../utils/rss";
 import { useEffect } from "react";
@@ -50,7 +49,7 @@ export const SearchInput = () => {
   const handleClearSearch = () => {
     dispatch({
       type: ActionTypes.SET_NAVIGATION,
-      payload: Navigations.HOME,
+      payload: null,
     });
 
     dispatch({
@@ -65,18 +64,24 @@ export const SearchInput = () => {
   };
 
   return (
-    <div className="w-full sticky top-0 left-0 right-0 z-10 bg-white dark:bg-slate-900 p-2 flex justify-between items-center gap-4 shadow-lg">
-      <input
-        type="text"
-        placeholder={t('search.placeholder')}
-        className="w-full text-lg focus:outline-none dark:text-white px-4 py-2 bg-white dark:bg-slate-900 placeholder-gray-500 dark:placeholder-gray-400"
-        onChange={handleSearch}
-        value={state.searchQuery ?? ""}
-      />
-      <div className="flex items-center gap-4 mr-4">
-        <button onClick={handleClearSearch} className="cursor-pointer">
-          <X className="w-6 h-6 dark:text-white" />
-        </button>
+    <div className="px-8 md:px-6 pt-6 pb-4 bg-white dark:bg-slate-950 border-b border-gray-200 dark:border-gray-700">
+      <div className="relative">
+        <input
+          type="text"
+          placeholder={t('search.placeholder')}
+          value={state.searchQuery || ""}
+          onChange={handleSearch}
+          className="w-full p-3 pl-4 pr-10 text-lg bg-gray-100 dark:bg-gray-800 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+          autoFocus
+        />
+        {state.searchQuery && (
+          <button
+            onClick={handleClearSearch}
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+          >
+            <X size={20} />
+          </button>
+        )}
       </div>
     </div>
   );

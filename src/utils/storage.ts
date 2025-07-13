@@ -1,6 +1,5 @@
 import { HistoryItem, LocallyStoredData } from "../types/storage";
 
-import { Navigations } from "../types/navigation";
 import { RSSItem } from "../types/rss";
 import { getBrowserLanguage } from "../i18n";
 
@@ -20,7 +19,7 @@ const defaultLocallyStoredData = {
   activeSources: [],
   scrollPosition: 0,
   loading: false,
-  navigation: Navigations.HOME,
+  navigation: null,
   items: [],
   lastUpdated: new Date().toISOString(),
   searchQuery: null,

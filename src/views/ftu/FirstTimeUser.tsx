@@ -4,7 +4,6 @@ import { PredefinedSource, SourceCategory } from "../../types/predefined-sources
 
 import { AddRSSSourceModals } from "../../components/AddSourceModals";
 import { CategoryPill } from "../../components/CategoryPill";
-import { Navigations } from "../../types/navigation";
 import { SourceCard } from "../../components/SourceCard";
 import { SupportedLanguage } from "../../types/i18n";
 import { getPredefinedSources } from "../../utils/predefined-sources";
@@ -98,10 +97,7 @@ export const FirstTimeUser = () => {
     });
 
     // Navigate to home
-    dispatch({
-      type: ActionTypes.SET_NAVIGATION,
-      payload: Navigations.HOME,
-    });
+    navigate("/");
   };
 
 
@@ -234,7 +230,7 @@ export const FirstTimeUser = () => {
         <div className="max-w-4xl mx-auto flex justify-between items-center">
           <button
             onClick={() => {
-              navigate(Navigations.SETTINGS);
+              navigate("/settings");
             }}
             className="bg-zinc-200 dark:bg-slate-800 p-2.5 rounded-xl hover:bg-zinc-300 dark:hover:bg-slate-700 transition-all duration-200"
           >

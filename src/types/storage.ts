@@ -38,7 +38,7 @@ export type LocallyStoredData = {
   language: SupportedLanguage;
   sources: Source[];
   bookmarks: Items[];
-  navigation: Navigations;
+  navigation: Navigations | null;
   items: RSSItem[];
   activeSources: string[];
   scrollPosition: number;

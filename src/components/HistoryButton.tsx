@@ -14,7 +14,7 @@ export const HistoryButton = () => {
         onClick={() => {
           dispatch({
             type: ActionTypes.SET_NAVIGATION,
-            payload: Navigations.HOME,
+            payload: null,
           });
         }}
       >

@@ -1,42 +1,32 @@
-import { HomeButtonModes, Navigations } from "../types/navigation";
+import { Link, useLocation } from "react-router";
 
-import { ActionTypes } from "../context/main";
 import { Home } from "lucide-react";
-import { Link } from "react-router";
-import { useMainContext } from "../context/main";
+import { HomeButtonModes } from "../types/navigation";
 
-type HomeButtonProps = {
+export interface HomeButtonProps {
   mode: HomeButtonModes;
-};
+}
 
 export const HomeButton = (props: HomeButtonProps) => {
   const { mode } = props;
-  const { state, dispatch } = useMainContext();
-  const navigation = state.navigation;
+  const location = useLocation();
 
-  const isActive = navigation === Navigations.HOME;
+  const isActive = location.pathname === "/";
   const activeClasses = isActive
     ? "text-[#1e7bc0]"
     : "text-gray-800 dark:text-gray-400";
 
-  const handleOnClick = () => {
-    dispatch({
-      type: ActionTypes.SET_NAVIGATION,
-      payload: Navigations.HOME,
-    });
-  };
-
   if (mode === HomeButtonModes.LINK) {
     return (
-      <Link to={"/"} onClick={handleOnClick}>
+      <Link to={"/"}>
         <Home className={`cursor-pointer ${activeClasses}`} />
       </Link>
     );
   }
 
   return (
-    <button onClick={handleOnClick}>
+    <Link to={"/"}>
       <Home className={`cursor-pointer ${activeClasses}`} />
-    </button>
+    </Link>
   );
 };

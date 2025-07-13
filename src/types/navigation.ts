@@ -1,10 +1,6 @@
 export enum Navigations {
-    HOME = "home",
     BOOKMARKEDS = "bookmarkeds",
-    SETTINGS = "settings",
-    SEARCH = "search",
-    FTU = "ftu",
-    DISCOVER = "discover",
+    SEARCH = "search", 
     HISTORY = "history",
 }
 

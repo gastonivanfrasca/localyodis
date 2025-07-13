@@ -14,8 +14,8 @@ import { Virtuoso } from "react-virtuoso";
 import { errorMap } from "../utils/errors";
 import { groupItemsByDateWithSeparators } from "../utils/format";
 import { useError } from "../utils/useError";
-import { useNavigate } from "react-router";
 import { useI18n } from "../context/i18n";
+import { useNavigate } from "react-router";
 
 export const PubsList = () => {
   const { state, dispatch } = useMainContext();
@@ -222,7 +222,7 @@ export const PubsList = () => {
 
   if (
     state.activeItems?.length < 1 &&
-    state.navigation === Navigations.HOME &&
+    state.navigation === null &&
     !state.loading
   ) {
     return <PubListEmpty />;

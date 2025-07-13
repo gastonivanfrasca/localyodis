@@ -1,18 +1,17 @@
 import { ActionTypes, useMainContext } from "../../context/main";
 import { PredefinedSource, SourceCategory } from "../../types/predefined-sources";
-import { useEffect, useState } from "react";
 
 import { AddRSSSourceModals } from "../../components/AddSourceModals";
 import { CategoryPill } from "../../components/CategoryPill";
 import { DiscoverSourceCard } from "../../components/DiscoverSourceCard";
 import { NavigationTitleWithBack } from "../../components/v2/NavigationTitleWithBack";
-import { Navigations } from "../../types/navigation";
 import { Plus } from "lucide-react";
 import Snackbar from "../../components/Snackbar";
 import { SupportedLanguage } from "../../types/i18n";
 import { getPredefinedSources } from "../../utils/predefined-sources";
 import { useError } from "../../utils/useError";
 import { useI18n } from "../../context/i18n";
+import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 const generateRandomColor = () => {
@@ -36,14 +35,6 @@ export const Discover = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>(predefinedSourcesData.categories[0]?.id || "");
   const [isRSSModalOpen, setIsRSSModalOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState<SupportedLanguage | 'all'>('all');
-
-  // Set navigation state when component mounts
-  useEffect(() => {
-    dispatch({
-      type: ActionTypes.SET_NAVIGATION,
-      payload: Navigations.DISCOVER,
-    });
-  }, [dispatch]);
 
   const handleCategorySelect = (categoryId: string) => {
     setSelectedCategory(categoryId);

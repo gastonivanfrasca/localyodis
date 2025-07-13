@@ -17,7 +17,7 @@ export const SearchButton = () => {
           onClick={() => {
             dispatch({
               type: ActionTypes.SET_NAVIGATION,   
-              payload: Navigations.HOME,
+              payload: null,
             });
             dispatch({
               type: ActionTypes.SET_SEARCH_QUERY,

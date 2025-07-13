@@ -15,7 +15,7 @@ export const BookmarkedsButton = () => {
         onClick={() => {
           dispatch({
             type: ActionTypes.SET_NAVIGATION,
-            payload: Navigations.HOME,
+            payload: null,
           });
         }}
       >
