@@ -1,7 +1,7 @@
 import { ConfirmationModal } from "../../components/ConfirmationModal";
 import { NavigationTitleWithBack } from "../../components/v2/NavigationTitleWithBack";
-import { useState } from "react";
 import { useI18n } from "../../context/i18n";
+import { useState } from "react";
 
 export const Settings = () => {
   const [isResetModalOpen, setIsResetModalOpen] = useState(false);
@@ -46,7 +46,6 @@ export const Settings = () => {
                       : 'bg-white dark:bg-slate-800 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700'
                   }`}
                 >
-                  <span className="text-xl">{lang.flag}</span>
                   <div className="text-left">
                     <div className="font-medium">{lang.nativeName}</div>
                     <div className="text-sm opacity-75">{lang.name}</div>

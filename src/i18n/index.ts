@@ -1,4 +1,5 @@
-import type { SupportedLanguage, LanguageOption, Translations } from '../types/i18n';
+import type { LanguageOption, SupportedLanguage, Translations } from '../types/i18n';
+
 import { en } from './translations/en';
 import { es } from './translations/es';
 import { fr } from './translations/fr';
@@ -12,19 +13,16 @@ export const SUPPORTED_LANGUAGES: LanguageOption[] = [
     code: 'en',
     name: 'English',
     nativeName: 'English',
-    flag: '🇺🇸',
   },
   {
     code: 'es',
     name: 'Spanish',
     nativeName: 'Español',
-    flag: '🇪🇸',
   },
   {
     code: 'fr',
     name: 'French',
     nativeName: 'Français',
-    flag: '🇫🇷',
   },
 ];
 

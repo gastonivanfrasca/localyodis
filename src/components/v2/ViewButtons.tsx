@@ -14,11 +14,11 @@ type ButtonsProps = {
 export const HomeButtons = ({ orientation = 'horizontal' }: ButtonsProps = {}) => {
   const containerClasses = orientation === 'vertical' 
     ? "flex flex-col gap-4 w-full" 
-    : "w-full p-8 flex justify-between items-center";
+    : "w-full px-4 py-2 flex justify-evenly items-center";
 
   const buttonClasses = orientation === 'vertical' 
     ? "flex items-center justify-center p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800/50 transition-colors duration-200" 
-    : "";
+    : "flex items-center justify-center min-w-[48px]";
 
   return (
     <div className={containerClasses}>
@@ -47,11 +47,11 @@ export const HomeButtons = ({ orientation = 'horizontal' }: ButtonsProps = {}) =
 export const SettingsButtons = ({ orientation = 'horizontal' }: ButtonsProps = {}) => {
   const containerClasses = orientation === 'vertical' 
     ? "flex flex-col gap-4 w-full" 
-    : "w-full p-8 flex justify-between items-center";
+    : "w-full px-4 py-2 flex justify-evenly items-center";
 
   const buttonClasses = orientation === 'vertical' 
     ? "flex items-center justify-center p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800/50 transition-colors duration-200" 
-    : "";
+    : "flex items-center justify-center min-w-[48px]";
 
   return (
     <div className={containerClasses}>

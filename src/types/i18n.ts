@@ -4,7 +4,6 @@ export type LanguageOption = {
   code: SupportedLanguage;
   name: string;
   nativeName: string;
-  flag: string;
 };
 
 export type TranslationKeys = {
