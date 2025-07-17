@@ -172,9 +172,11 @@ export type TranslationKeys = {
   // Google News RSS Builder
   'googleNews.title': string;
   'googleNews.subtitle': string;
-  'googleNews.searchTerms': string;
-  'googleNews.searchTerms.placeholder': string;
-  'googleNews.searchTerms.help': string;
+  'googleNews.interests': string;
+  'googleNews.interests.placeholder': string;
+  'googleNews.interests.help': string;
+  'googleNews.source': string;
+  'googleNews.sources': string;
   'googleNews.operators': string;
   'googleNews.operators.and': string;
   'googleNews.operators.or': string;

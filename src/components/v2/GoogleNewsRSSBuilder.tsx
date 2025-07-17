@@ -30,15 +30,6 @@ const LANGUAGE_COUNTRY_OPTIONS: LanguageCountryOption[] = [
   { code: "pt-BR", name: "Português (Brasil)", hl: "pt-BR", gl: "BR", ceid: "BR:pt-419" },
 ];
 
-const TIME_FILTER_OPTIONS = [
-  { value: "", label: "googleNews.timeFilter.all" },
-  { value: "when:1h", label: "googleNews.timeFilter.1h" },
-  { value: "when:12h", label: "googleNews.timeFilter.12h" },
-  { value: "when:1d", label: "googleNews.timeFilter.1d" },
-  { value: "when:7d", label: "googleNews.timeFilter.7d" },
-  { value: "when:30d", label: "googleNews.timeFilter.30d" },
-];
-
 const generateRandomColor = () => {
   const randomColor = Math.floor(Math.random() * 16777215).toString(16);
   return "#" + randomColor.padStart(6, "0");
@@ -57,88 +48,122 @@ export const GoogleNewsRSSBuilder = ({ onSourceAdded }: GoogleNewsRSSBuilderProp
   const { dispatch, state } = useMainContext();
   const { showError } = useError();
 
-  const [searchTerms, setSearchTerms] = useState("");
-  const [timeFilter, setTimeFilter] = useState("");
+  const [interests, setInterests] = useState("");
   const [languageCountry, setLanguageCountry] = useState(LANGUAGE_COUNTRY_OPTIONS[0]);
   const [showExamples, setShowExamples] = useState(false);
 
-  // Generate the Google News RSS URL
-  const generateRSSUrl = () => {
-    if (!searchTerms.trim()) return "";
+  // Generate the Google News RSS URL for a specific interest
+  const generateRSSUrlForInterest = (interest: string) => {
+    if (!interest.trim()) return "";
     
-    let query = searchTerms.trim();
-    if (timeFilter) {
-      query += ` ${timeFilter}`;
-    }
-    
+    const query = interest.trim();
     const encodedQuery = encodeURIComponent(query);
     return `https://news.google.com/rss/search?q=${encodedQuery}&hl=${languageCountry.hl}&gl=${languageCountry.gl}&ceid=${languageCountry.ceid}`;
   };
 
-  const handleAddSource = async () => {
-    if (!searchTerms.trim()) {
-      showError("Please enter search terms", "warning");
+  // Parse interests from input (comma-separated)
+  const parseInterests = () => {
+    return interests
+      .split(',')
+      .map(interest => interest.trim())
+      .filter(interest => interest.length > 0);
+  };
+
+  const handleAddSources = async () => {
+    if (!interests.trim()) {
+      showError("Please enter at least one interest", "warning");
       return;
     }
 
-    const rssUrl = generateRSSUrl();
-    
-    // Check if source already exists
-    const existingSource = state.sources.find(source => source.url === rssUrl);
-    if (existingSource) {
-      showError("This Google News RSS feed already exists!", "warning");
+    const interestList = parseInterests();
+    if (interestList.length === 0) {
+      showError("Please enter valid interests separated by commas", "warning");
       return;
     }
 
     try {
-      const bgColor = generateRandomColor();
-      const textColor = generateTextColorForBackground(bgColor);
-      const sourceId = uuidv4();
+      const newSources = [];
+      const newSourceIds = [];
+      let addedCount = 0;
+      let skippedCount = 0;
 
-      // Create a descriptive name for the source
-      const sourceName = `Google News: ${searchTerms}${timeFilter ? ` (${timeFilter.replace('when:', '')})` : ''}`;
+      for (const interest of interestList) {
+        const rssUrl = generateRSSUrlForInterest(interest);
+        
+        // Check if source already exists
+        const existingSource = state.sources.find(source => source.url === rssUrl);
+        if (existingSource) {
+          skippedCount++;
+          continue;
+        }
 
-      const newSource = {
-        name: sourceName,
-        url: rssUrl,
-        type: "rss",
-        addedOn: new Date().toISOString(),
-        id: sourceId,
-        color: bgColor,
-        textColor: textColor,
-        initial: "GN",
-      };
+        const bgColor = generateRandomColor();
+        const textColor = generateTextColorForBackground(bgColor);
+        const sourceId = uuidv4();
 
-      // Add to sources
-      dispatch({
-        type: ActionTypes.SET_SOURCES,
-        payload: [...state.sources, newSource],
-      });
+        // Create a descriptive name for the source
+        const sourceName = `GN - ${interest}`;
 
-      // Add to active sources
-      dispatch({
-        type: ActionTypes.SET_ACTIVE_SOURCES,
-        payload: [...state.activeSources, sourceId],
-      });
+        const newSource = {
+          name: sourceName,
+          url: rssUrl,
+          type: "rss",
+          addedOn: new Date().toISOString(),
+          id: sourceId,
+          color: bgColor,
+          textColor: textColor,
+          initial: "GN",
+        };
 
-      showError("Google News RSS feed added successfully!", "success");
-      
-      // Reset form
-      setSearchTerms("");
-      setTimeFilter("");
-      
-      onSourceAdded?.();
+        newSources.push(newSource);
+        newSourceIds.push(sourceId);
+        addedCount++;
+      }
+
+      if (newSources.length > 0) {
+        // Add to sources
+        dispatch({
+          type: ActionTypes.SET_SOURCES,
+          payload: [...state.sources, ...newSources],
+        });
+
+        // Add to active sources
+        dispatch({
+          type: ActionTypes.SET_ACTIVE_SOURCES,
+          payload: [...state.activeSources, ...newSourceIds],
+        });
+
+        let message = "";
+        if (addedCount > 0 && skippedCount > 0) {
+          message = `Added ${addedCount} new interests, ${skippedCount} already existed`;
+        } else if (addedCount > 0) {
+          message = `Successfully added ${addedCount} Google News RSS ${addedCount === 1 ? 'feed' : 'feeds'}!`;
+        }
+        
+        showError(message, "success");
+        
+        // Reset form
+        setInterests("");
+        
+        onSourceAdded?.();
+      } else {
+        showError("All interests already exist as sources", "warning");
+      }
     } catch {
-      showError("Failed to add Google News RSS feed", "error");
+      showError("Failed to add Google News RSS feeds", "error");
     }
   };
 
   const handleExampleClick = (example: string) => {
-    setSearchTerms(example);
+    setInterests(example);
     setShowExamples(false);
   };
 
-  const previewUrl = generateRSSUrl();
+  // Generate preview URLs for current interests
+  const previewUrls = parseInterests().map(interest => ({
+    interest,
+    url: generateRSSUrlForInterest(interest)
+  }));
 
   return (
     <div className="bg-white dark:bg-slate-900 border border-zinc-300 dark:border-zinc-700 rounded-2xl p-6 shadow-sm">
@@ -157,40 +182,21 @@ export const GoogleNewsRSSBuilder = ({ onSourceAdded }: GoogleNewsRSSBuilderProp
         </div>
       </div>
 
-      {/* Search Terms */}
+      {/* Interests Input */}
       <div className="mb-4">
         <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
-          {t('googleNews.searchTerms')}
+          {t('googleNews.interests')}
         </label>
         <input
           type="text"
-          value={searchTerms}
-          onChange={(e) => setSearchTerms(e.target.value)}
-          placeholder={t('googleNews.searchTerms.placeholder')}
+          value={interests}
+          onChange={(e) => setInterests(e.target.value)}
+          placeholder={t('googleNews.interests.placeholder')}
           className="w-full bg-white dark:bg-slate-800 text-zinc-900 dark:text-zinc-100 placeholder-zinc-500 dark:placeholder-zinc-400 border border-zinc-300 dark:border-zinc-700 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-all"
         />
         <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
-          {t('googleNews.searchTerms.help')}
+          {t('googleNews.interests.help')}
         </p>
-      </div>
-
-      {/* Time Filter */}
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
-          {t('googleNews.timeFilter')}
-        </label>
-        <select
-          value={timeFilter}
-          onChange={(e) => setTimeFilter(e.target.value)}
-          className="w-full bg-white dark:bg-slate-800 text-zinc-900 dark:text-zinc-100 border border-zinc-300 dark:border-zinc-700 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-all"
-        >
-          {TIME_FILTER_OPTIONS.map((option) => (
-            <option key={option.value} value={option.value}>
-              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-              {t(option.label as any)}
-            </option>
-          ))}
-        </select>
       </div>
 
       {/* Language & Country */}
@@ -225,53 +231,61 @@ export const GoogleNewsRSSBuilder = ({ onSourceAdded }: GoogleNewsRSSBuilderProp
         </button>
         {showExamples && (
           <div className="mt-2 space-y-2">
-            {['googleNews.examples.1', 'googleNews.examples.2', 'googleNews.examples.3', 'googleNews.examples.4'].map((key) => (
+            {(['googleNews.examples.1', 'googleNews.examples.2', 'googleNews.examples.3', 'googleNews.examples.4'] as const).map((key) => (
               <button
                 key={key}
-                /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-                onClick={() => handleExampleClick(t(key as any))}
+                onClick={() => handleExampleClick(t(key))}
                 className="block w-full text-left text-xs text-zinc-600 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 bg-zinc-100 dark:bg-slate-800 rounded px-2 py-1 transition-colors"
               >
-                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                {t(key as any)}
+                {t(key)}
               </button>
             ))}
           </div>
         )}
       </div>
 
-      {/* Preview URL */}
-      {previewUrl && (
+      {/* Preview URLs */}
+      {previewUrls.length > 0 && (
         <div className="mb-4">
           <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
-            {t('googleNews.preview')}
+            {t('googleNews.preview')} ({previewUrls.length} {previewUrls.length === 1 ? t('googleNews.source') : t('googleNews.sources')})
           </label>
-          <div className="bg-zinc-100 dark:bg-slate-800 rounded-lg p-3 border border-zinc-300 dark:border-zinc-700">
-            <div className="flex items-center gap-2">
-              <p className="text-xs text-zinc-600 dark:text-zinc-400 font-mono break-all flex-1">
-                {previewUrl}
-              </p>
-              <a
-                href={previewUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors flex-shrink-0"
-              >
-                <ExternalLink className="w-4 h-4" />
-              </a>
-            </div>
+          <div className="space-y-2 max-h-32 overflow-y-auto">
+            {previewUrls.map(({ interest, url }, index) => (
+              <div key={index} className="bg-zinc-100 dark:bg-slate-800 rounded-lg p-3 border border-zinc-300 dark:border-zinc-700">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-sm font-medium text-zinc-800 dark:text-zinc-200">
+                    GN - {interest}
+                  </span>
+                  <a
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors flex-shrink-0"
+                  >
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+                <p className="text-xs text-zinc-600 dark:text-zinc-400 font-mono break-all">
+                  {url}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       )}
 
       {/* Add Button */}
       <button
-        onClick={handleAddSource}
-        disabled={!searchTerms.trim()}
+        onClick={handleAddSources}
+        disabled={!interests.trim()}
         className="w-full flex items-center justify-center gap-2 bg-blue-600 dark:bg-blue-500 text-white font-medium py-3 px-4 rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         <Plus className="w-4 h-4" />
-        {t('googleNews.addToSources')}
+        {previewUrls.length > 1 
+          ? `${t('googleNews.addToSources')} (${previewUrls.length})`
+          : t('googleNews.addToSources')
+        }
       </button>
     </div>
   );
