@@ -112,6 +112,14 @@ export const en: TranslationKeys = {
   'ftu.language': 'Language',
   'ftu.allLanguages': 'All languages',
   'ftu.filterByLanguage': 'Filter by language',
+  'ftu.googleNewsDescription': 'Create personalized news feeds by adding your interests. Each interest will generate a separate RSS feed from Google News.',
+  'ftu.sourcesAdded': 'Google News Sources Added',
+  'ftu.sourceAdded': 'source created',
+  'ftu.sourcesAddedPlural': 'sources created',
+  'ftu.noSourcesYet': 'Add your interests above to create Google News RSS feeds',
+  'ftu.sourceReady': 'source ready',
+  'ftu.sourcesReady': 'sources ready',
+  'ftu.addInterests': 'Add your interests to get started',
   
   // RSS Feed
   'rss.lastUpdated': 'Last updated',

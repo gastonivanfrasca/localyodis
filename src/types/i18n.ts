@@ -118,6 +118,14 @@ export type TranslationKeys = {
   'ftu.language': string;
   'ftu.allLanguages': string;
   'ftu.filterByLanguage': string;
+  'ftu.googleNewsDescription': string;
+  'ftu.sourcesAdded': string;
+  'ftu.sourceAdded': string;
+  'ftu.sourcesAddedPlural': string;
+  'ftu.noSourcesYet': string;
+  'ftu.sourceReady': string;
+  'ftu.sourcesReady': string;
+  'ftu.addInterests': string;
   
   // RSS Feed
   'rss.lastUpdated': string;

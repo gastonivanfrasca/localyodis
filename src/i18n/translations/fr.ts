@@ -112,6 +112,14 @@ export const fr: TranslationKeys = {
   'ftu.language': 'Langue',
   'ftu.allLanguages': 'Toutes les langues',
   'ftu.filterByLanguage': 'Filtrer par langue',
+  'ftu.googleNewsDescription': 'Créez des flux d\'actualités personnalisés en ajoutant vos intérêts. Chaque intérêt générera un flux RSS séparé de Google News.',
+  'ftu.sourcesAdded': 'Sources Google News Ajoutées',
+  'ftu.sourceAdded': 'source créée',
+  'ftu.sourcesAddedPlural': 'sources créées',
+  'ftu.noSourcesYet': 'Ajoutez vos intérêts ci-dessus pour créer des flux RSS Google News',
+  'ftu.sourceReady': 'source prête',
+  'ftu.sourcesReady': 'sources prêtes',
+  'ftu.addInterests': 'Ajoutez vos intérêts pour commencer',
   
   // RSS Feed
   'rss.lastUpdated': 'Dernière mise à jour',
