@@ -68,6 +68,14 @@ export type TranslationKeys = {
   'sources.alreadyExists': string;
   'sources.addedSuccessfully': string;
   'sources.noSourcesFound': string;
+  'sources.addCustom': string;
+  'sources.addCustomSubtitle': string;
+  'sources.url': string;
+  'sources.customName': string;
+  'sources.optional': string;
+  'sources.customNamePlaceholder': string;
+  'sources.customNameHelp': string;
+  'sources.addCustomSource': string;
   
   // Discover
   'discover.title': string;

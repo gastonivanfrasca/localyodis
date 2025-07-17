@@ -1,3 +1,4 @@
+import { AddCustomSourceSection } from "../../components/v2/AddCustomSourceSection";
 import { GoogleNewsRSSBuilder } from "../../components/v2/GoogleNewsRSSBuilder";
 import { Settings } from "lucide-react";
 import { useI18n } from "../../context/i18n";
@@ -20,8 +21,11 @@ export const FirstTimeUser = () => {
   );
   const googleNewsCount = googleNewsSources.length;
 
+  // Count total sources
+  const totalSources = state.sources.length;
+
   // Check if we have any sources to enable continue
-  const canContinue = googleNewsCount > 0;
+  const canContinue = totalSources > 0;
 
   return (
     <div className="w-full h-screen dark:bg-slate-950 flex flex-col">
@@ -29,7 +33,7 @@ export const FirstTimeUser = () => {
       <div className="flex-1 overflow-hidden flex flex-col">
         
         {/* Header */}
-        <div className="flex-shrink-0 px-6 py-8">
+        <div className="flex-shrink-0 px-6 py-6 border-b border-zinc-200 dark:border-zinc-800">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-2xl font-bold text-zinc-800 dark:text-white tracking-tight mb-3">
               {t('ftu.welcome')}
@@ -41,52 +45,93 @@ export const FirstTimeUser = () => {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 overflow-y-auto px-6 py-6">
-          <div className="max-w-4xl mx-auto">
+        <div className="flex-1 overflow-y-auto">
+          <div className="max-w-4xl mx-auto px-6 py-8 space-y-12">
             
             {/* Google News RSS Builder */}
-            <div className="mb-8">
+            <section>
               <GoogleNewsRSSBuilder />
-            </div>
+            </section>
+
+            {/* Divider */}
+            <div className="border-t border-zinc-200 dark:border-zinc-800"></div>
+
+            {/* Custom Source Section */}
+            <section>
+              <AddCustomSourceSection />
+            </section>
 
             {/* Added Sources Summary */}
-            {googleNewsCount > 0 && (
-              <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-xl p-6">
-                <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-2">
+            {totalSources > 0 && (
+              <section className="bg-zinc-50 dark:bg-slate-800/30 border border-zinc-200 dark:border-zinc-700 rounded-xl p-6">
+                <h3 className="text-lg font-semibold text-zinc-800 dark:text-zinc-200 mb-3">
                   {t('ftu.sourcesAdded')}
                 </h3>
-                <p className="text-blue-700 dark:text-blue-300 text-sm mb-4">
-                  {googleNewsCount} {googleNewsCount === 1 ? t('ftu.sourceAdded') : t('ftu.sourcesAddedPlural')}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {googleNewsSources.map((source, index) => (
-                    <span 
-                      key={index}
-                      className="inline-flex items-center gap-2 px-3 py-1 bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200 rounded-lg text-sm font-medium"
-                    >
-                      <div 
-                        className="w-4 h-4 rounded-full flex items-center justify-center text-xs font-bold"
-                        style={{ 
-                          backgroundColor: source.color, 
-                          color: source.textColor 
-                        }}
-                      >
-                        {source.initial}
+                <div className="space-y-3">
+                  {googleNewsCount > 0 && (
+                    <div>
+                      <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-2">
+                        📰 {googleNewsCount} Google News {googleNewsCount === 1 ? t('ftu.sourceAdded') : t('ftu.sourcesAddedPlural')}
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {googleNewsSources.map((source, index) => (
+                          <span 
+                            key={index}
+                            className="inline-flex items-center gap-2 px-3 py-1 bg-white dark:bg-slate-800 text-zinc-800 dark:text-zinc-200 rounded-lg text-sm font-medium border border-zinc-200 dark:border-zinc-600"
+                          >
+                            <div 
+                              className="w-4 h-4 rounded-full flex items-center justify-center text-xs font-bold"
+                              style={{ 
+                                backgroundColor: source.color, 
+                                color: source.textColor 
+                              }}
+                            >
+                              {source.initial}
+                            </div>
+                            {source.name}
+                          </span>
+                        ))}
                       </div>
-                      {source.name}
-                    </span>
-                  ))}
+                    </div>
+                  )}
+                  
+                  {state.sources.filter(s => !s.name?.startsWith('GN - ')).length > 0 && (
+                    <div>
+                      <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-2">
+                        🔗 {state.sources.filter(s => !s.name?.startsWith('GN - ')).length} Custom sources
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {state.sources.filter(s => !s.name?.startsWith('GN - ')).map((source, index) => (
+                          <span 
+                            key={index}
+                            className="inline-flex items-center gap-2 px-3 py-1 bg-white dark:bg-slate-800 text-zinc-800 dark:text-zinc-200 rounded-lg text-sm font-medium border border-zinc-200 dark:border-zinc-600"
+                          >
+                            <div 
+                              className="w-4 h-4 rounded-full flex items-center justify-center text-xs font-bold"
+                              style={{ 
+                                backgroundColor: source.color, 
+                                color: source.textColor 
+                              }}
+                            >
+                              {source.initial}
+                            </div>
+                            {source.name}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
-              </div>
+              </section>
             )}
 
             {/* Instructions */}
-            {googleNewsCount === 0 && (
-              <div className="text-center py-8">
+            {totalSources === 0 && (
+              <section className="text-center py-8">
                 <p className="text-zinc-500 dark:text-zinc-400 text-sm">
                   {t('ftu.noSourcesYet')}
                 </p>
-              </div>
+              </section>
             )}
 
           </div>
@@ -94,7 +139,7 @@ export const FirstTimeUser = () => {
       </div>
 
       {/* Footer */}
-      <div className="flex-shrink-0 px-6 py-6 border-t border-zinc-300 dark:border-zinc-800">
+      <div className="flex-shrink-0 px-6 py-6 border-t border-zinc-300 dark:border-zinc-800 bg-white dark:bg-slate-950">
         <div className="max-w-4xl mx-auto flex justify-between items-center">
           <button
             onClick={() => {
@@ -106,9 +151,9 @@ export const FirstTimeUser = () => {
           </button>
           <div className="flex items-center gap-4">
             <span className="text-sm text-zinc-600 dark:text-zinc-400">
-              {googleNewsCount > 0 ? (
-                <span className="text-blue-600 dark:text-blue-400">
-                  {googleNewsCount} {googleNewsCount === 1 ? t('ftu.sourceReady') : t('ftu.sourcesReady')}
+              {totalSources > 0 ? (
+                <span className="text-zinc-700 dark:text-zinc-300">
+                  {totalSources} {totalSources === 1 ? t('ftu.sourceReady') : t('ftu.sourcesReady')}
                 </span>
               ) : (
                 t('ftu.addInterests')
@@ -119,7 +164,7 @@ export const FirstTimeUser = () => {
               disabled={!canContinue}
               className="bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900 font-medium py-2.5 px-6 rounded-xl hover:bg-zinc-700 dark:hover:bg-zinc-300 transition disabled:opacity-50 disabled:cursor-not-allowed text-sm tracking-tight"
             >
-              {t('common.continue')} {googleNewsCount > 0 && `(${googleNewsCount})`}
+              {t('common.continue')} {totalSources > 0 && `(${totalSources})`}
             </button>
           </div>
         </div>

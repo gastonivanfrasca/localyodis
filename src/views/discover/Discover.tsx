@@ -1,12 +1,11 @@
 import { ActionTypes, useMainContext } from "../../context/main";
 import { PredefinedSource, SourceCategory } from "../../types/predefined-sources";
 
-import { AddRSSSourceModals } from "../../components/AddSourceModals";
+import { AddCustomSourceSection } from "../../components/v2/AddCustomSourceSection";
 import { CategoryPill } from "../../components/CategoryPill";
 import { DiscoverSourceCard } from "../../components/DiscoverSourceCard";
 import { GoogleNewsRSSBuilder } from "../../components/v2/GoogleNewsRSSBuilder";
 import { NavigationTitleWithBack } from "../../components/v2/NavigationTitleWithBack";
-import { Plus } from "lucide-react";
 import Snackbar from "../../components/Snackbar";
 import { SupportedLanguage } from "../../types/i18n";
 import { getPredefinedSources } from "../../utils/predefined-sources";
@@ -34,7 +33,6 @@ export const Discover = () => {
   const { t } = useI18n();
   const predefinedSourcesData = getPredefinedSources();
   const [selectedCategories, setSelectedCategories] = useState<Set<string>>(new Set());
-  const [isRSSModalOpen, setIsRSSModalOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState<SupportedLanguage | 'all'>('all');
 
   const handleCategorySelect = (categoryId: string) => {
@@ -137,11 +135,11 @@ export const Discover = () => {
       <div className="flex-1 overflow-hidden flex flex-col mt-16">
         
         {/* Main Content */}
-        <div className="flex-1 overflow-y-auto px-6 py-6">
-          <div className="max-w-4xl mx-auto">
+        <div className="flex-1 overflow-y-auto">
+          <div className="max-w-4xl mx-auto px-6 py-8 space-y-12">
             
             {/* Google News RSS Builder - Main Feature */}
-            <div className="mb-12">
+            <section>
               <div className="mb-6">
                 <h2 className="text-xl font-semibold text-zinc-800 dark:text-white tracking-tight mb-2">
                   {t('discover.googleNews.title')}
@@ -151,33 +149,33 @@ export const Discover = () => {
                 </p>
               </div>
               <GoogleNewsRSSBuilder />
-            </div>
+            </section>
+
+            {/* Divider */}
+            <div className="border-t border-zinc-200 dark:border-zinc-800"></div>
+
+            {/* Custom Source Section */}
+            <section>
+              <AddCustomSourceSection />
+            </section>
+
+            {/* Divider */}
+            <div className="border-t border-zinc-200 dark:border-zinc-800"></div>
 
             {/* Predefined Sources Section */}
-            <div className="border-t border-zinc-200 dark:border-zinc-800 pt-8">
-              <div className="flex justify-between items-start mb-6">
-                <div className="flex-1">
-                  <h2 className="text-lg font-semibold text-zinc-800 dark:text-white tracking-tight mb-1">
-                    {t('discover.predefinedSources')}
-                  </h2>
-                  <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-4">
-                    {t('discover.predefinedSourcesSubtitle')}
+            <section>
+              <div className="mb-6">
+                <h2 className="text-lg font-semibold text-zinc-800 dark:text-white tracking-tight mb-1">
+                  {t('discover.predefinedSources')}
+                </h2>
+                <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-4">
+                  {t('discover.predefinedSourcesSubtitle')}
+                </p>
+                {selectedCategories.size > 0 && (
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                    {addedSourcesInCategory} {t('discover.addedCount')} {filteredSources.length} {t('discover.added')}
                   </p>
-                  {selectedCategories.size > 0 && (
-                    <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                      {addedSourcesInCategory} {t('discover.addedCount')} {filteredSources.length} {t('discover.added')}
-                    </p>
-                  )}
-                </div>
-                <button
-                  onClick={() => setIsRSSModalOpen(true)}
-                  className="flex items-center gap-2 px-3 py-2 rounded-xl font-medium text-sm transition-all duration-200 border-2 bg-zinc-100 dark:bg-slate-900 text-zinc-700 dark:text-zinc-300 border-zinc-300 dark:border-zinc-900 hover:bg-zinc-200 dark:hover:bg-slate-800"
-                >
-                  <div className="bg-zinc-200 dark:bg-slate-800 p-1 rounded-lg">
-                    <Plus className="w-3 h-3" />
-                  </div>
-                  <span className="tracking-tight">{t('discover.addCustomSource')}</span>
-                </button>
+                )}
               </div>
               
               {/* Categories */}
@@ -268,16 +266,10 @@ export const Discover = () => {
                   </p>
                 </div>
               )}
-            </div>
+            </section>
           </div>
         </div>
       </div>
-
-      {/* RSS Modal */}
-      <AddRSSSourceModals
-        isOpen={isRSSModalOpen}
-        setIsModalOpen={setIsRSSModalOpen}
-      />
       
       {/* Snackbar */}
       <Snackbar />

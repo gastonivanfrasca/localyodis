@@ -62,6 +62,14 @@ export const fr: TranslationKeys = {
   'sources.alreadyExists': 'La source existe déjà !',
   'sources.addedSuccessfully': 'Source ajoutée avec succès !',
   'sources.noSourcesFound': 'Aucune source trouvée correspondant à',
+  'sources.addCustom': 'Ajouter une Source Personnalisée',
+  'sources.addCustomSubtitle': 'Ajoutez n\'importe quel flux RSS ou site web en saisissant son URL',
+  'sources.url': 'URL RSS',
+  'sources.customName': 'Nom Personnalisé',
+  'sources.optional': 'optionnel',
+  'sources.customNamePlaceholder': 'Entrez un nom personnalisé pour cette source',
+  'sources.customNameHelp': 'Si aucun nom n\'est fourni, nous utiliserons le domaine du site web',
+  'sources.addCustomSource': 'Ajouter une Source Personnalisée',
   
   // Discover
   'discover.title': 'Découvrir',
