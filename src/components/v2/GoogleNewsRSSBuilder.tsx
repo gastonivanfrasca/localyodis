@@ -166,25 +166,25 @@ export const GoogleNewsRSSBuilder = ({ onSourceAdded }: GoogleNewsRSSBuilderProp
   }));
 
   return (
-    <div className="bg-white dark:bg-slate-900 border border-zinc-300 dark:border-zinc-700 rounded-2xl p-6 shadow-sm">
+    <div className="bg-white dark:bg-slate-900 border-2 border-zinc-300 dark:border-zinc-700 rounded-2xl p-6 shadow-lg">
       {/* Header */}
-      <div className="flex items-start gap-3 mb-6">
-        <div className="bg-blue-100 dark:bg-blue-900/30 p-2 rounded-lg">
-          <Newspaper className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+      <div className="flex items-start gap-4 mb-6">
+        <div className="bg-zinc-200 dark:bg-slate-800 p-3 rounded-xl border border-zinc-300 dark:border-zinc-600">
+          <Newspaper className="w-6 h-6 text-zinc-700 dark:text-zinc-300" />
         </div>
         <div>
-          <h3 className="text-lg font-semibold text-zinc-800 dark:text-white tracking-tight">
+          <h3 className="text-xl font-bold text-zinc-800 dark:text-white tracking-tight">
             {t('googleNews.title')}
           </h3>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
+          <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1 leading-relaxed">
             {t('googleNews.subtitle')}
           </p>
         </div>
       </div>
 
       {/* Interests Input */}
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
+      <div className="mb-5">
+        <label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-3">
           {t('googleNews.interests')}
         </label>
         <input
@@ -192,16 +192,16 @@ export const GoogleNewsRSSBuilder = ({ onSourceAdded }: GoogleNewsRSSBuilderProp
           value={interests}
           onChange={(e) => setInterests(e.target.value)}
           placeholder={t('googleNews.interests.placeholder')}
-          className="w-full bg-white dark:bg-slate-800 text-zinc-900 dark:text-zinc-100 placeholder-zinc-500 dark:placeholder-zinc-400 border border-zinc-300 dark:border-zinc-700 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-all"
+          className="w-full bg-zinc-100 dark:bg-slate-800 text-zinc-900 dark:text-zinc-100 placeholder-zinc-500 dark:placeholder-zinc-400 border-2 border-zinc-300 dark:border-zinc-700 rounded-xl p-4 focus:outline-none focus:ring-4 focus:ring-zinc-500/20 focus:border-zinc-500 dark:focus:border-zinc-400 transition-all duration-200"
         />
-        <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
-          {t('googleNews.interests.help')}
+        <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 bg-zinc-50 dark:bg-slate-800/50 p-2 rounded-lg">
+          💡 {t('googleNews.interests.help')}
         </p>
       </div>
 
       {/* Language & Country */}
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
+      <div className="mb-5">
+        <label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-3">
           {t('googleNews.language')} & {t('googleNews.country')}
         </label>
         <select
@@ -210,7 +210,7 @@ export const GoogleNewsRSSBuilder = ({ onSourceAdded }: GoogleNewsRSSBuilderProp
             const selected = LANGUAGE_COUNTRY_OPTIONS.find(option => option.code === e.target.value);
             if (selected) setLanguageCountry(selected);
           }}
-          className="w-full bg-white dark:bg-slate-800 text-zinc-900 dark:text-zinc-100 border border-zinc-300 dark:border-zinc-700 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-all"
+          className="w-full bg-zinc-100 dark:bg-slate-800 text-zinc-900 dark:text-zinc-100 border-2 border-zinc-300 dark:border-zinc-700 rounded-xl p-4 focus:outline-none focus:ring-4 focus:ring-zinc-500/20 focus:border-zinc-500 dark:focus:border-zinc-400 transition-all duration-200"
         >
           {LANGUAGE_COUNTRY_OPTIONS.map((option) => (
             <option key={option.code} value={option.code}>
@@ -221,23 +221,23 @@ export const GoogleNewsRSSBuilder = ({ onSourceAdded }: GoogleNewsRSSBuilderProp
       </div>
 
       {/* Examples */}
-      <div className="mb-4">
+      <div className="mb-5">
         <button
           onClick={() => setShowExamples(!showExamples)}
-          className="flex items-center gap-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
+          className="flex items-center gap-2 text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-slate-800"
         >
           <HelpCircle className="w-4 h-4" />
           {t('googleNews.examples')}
         </button>
         {showExamples && (
-          <div className="mt-2 space-y-2">
+          <div className="mt-3 space-y-2 bg-zinc-50 dark:bg-slate-800/50 p-4 rounded-xl border border-zinc-200 dark:border-zinc-700">
             {(['googleNews.examples.1', 'googleNews.examples.2', 'googleNews.examples.3', 'googleNews.examples.4'] as const).map((key) => (
               <button
                 key={key}
                 onClick={() => handleExampleClick(t(key))}
-                className="block w-full text-left text-xs text-zinc-600 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 bg-zinc-100 dark:bg-slate-800 rounded px-2 py-1 transition-colors"
+                className="block w-full text-left text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 bg-white dark:bg-slate-800 rounded-lg px-3 py-2 transition-all duration-200 hover:bg-zinc-100 dark:hover:bg-slate-700 border border-zinc-200 dark:border-zinc-600"
               >
-                {t(key)}
+                📰 {t(key)}
               </button>
             ))}
           </div>
@@ -246,27 +246,33 @@ export const GoogleNewsRSSBuilder = ({ onSourceAdded }: GoogleNewsRSSBuilderProp
 
       {/* Preview URLs */}
       {previewUrls.length > 0 && (
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
+        <div className="mb-6">
+          <label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-3">
             {t('googleNews.preview')} ({previewUrls.length} {previewUrls.length === 1 ? t('googleNews.source') : t('googleNews.sources')})
           </label>
-          <div className="space-y-2 max-h-32 overflow-y-auto">
+          <div className="space-y-3 max-h-40 overflow-y-auto border border-zinc-200 dark:border-zinc-700 rounded-xl p-3 bg-zinc-50 dark:bg-slate-800/30">
             {previewUrls.map(({ interest, url }, index) => (
-              <div key={index} className="bg-zinc-100 dark:bg-slate-800 rounded-lg p-3 border border-zinc-300 dark:border-zinc-700">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-sm font-medium text-zinc-800 dark:text-zinc-200">
+              <div key={index} className="bg-white dark:bg-slate-800 rounded-lg p-4 border border-zinc-200 dark:border-zinc-600 shadow-sm">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-6 h-6 bg-zinc-200 dark:bg-slate-700 rounded-full flex items-center justify-center">
+                    <span className="text-xs font-bold text-zinc-700 dark:text-zinc-300">
+                      {interest[0].toUpperCase()}
+                    </span>
+                  </div>
+                  <span className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
                     GN - {interest}
                   </span>
                   <a
                     href={url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors flex-shrink-0"
+                    className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors flex-shrink-0 p-1 rounded-md hover:bg-zinc-100 dark:hover:bg-slate-700"
+                    title="Preview RSS feed"
                   >
-                    <ExternalLink className="w-3 h-3" />
+                    <ExternalLink className="w-4 h-4" />
                   </a>
                 </div>
-                <p className="text-xs text-zinc-600 dark:text-zinc-400 font-mono break-all">
+                <p className="text-xs text-zinc-500 dark:text-zinc-400 font-mono break-all bg-zinc-100 dark:bg-slate-700 p-2 rounded">
                   {url}
                 </p>
               </div>
@@ -279,13 +285,15 @@ export const GoogleNewsRSSBuilder = ({ onSourceAdded }: GoogleNewsRSSBuilderProp
       <button
         onClick={handleAddSources}
         disabled={!interests.trim()}
-        className="w-full flex items-center justify-center gap-2 bg-blue-600 dark:bg-blue-500 text-white font-medium py-3 px-4 rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full flex items-center justify-center gap-3 bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900 font-semibold py-4 px-6 rounded-xl hover:bg-zinc-700 dark:hover:bg-zinc-300 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:hover:transform-none"
       >
-        <Plus className="w-4 h-4" />
-        {previewUrls.length > 1 
-          ? `${t('googleNews.addToSources')} (${previewUrls.length})`
-          : t('googleNews.addToSources')
-        }
+        <Plus className="w-5 h-5" />
+        <span>
+          {previewUrls.length > 1 
+            ? `${t('googleNews.addToSources')} (${previewUrls.length})`
+            : t('googleNews.addToSources')
+          }
+        </span>
       </button>
     </div>
   );
