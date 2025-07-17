@@ -112,7 +112,7 @@ export const GoogleNewsRSSBuilder = ({ onSourceAdded }: GoogleNewsRSSBuilderProp
           id: sourceId,
           color: bgColor,
           textColor: textColor,
-          initial: "GN",
+          initial: interest[0].toUpperCase(),
         };
 
         newSources.push(newSource);
