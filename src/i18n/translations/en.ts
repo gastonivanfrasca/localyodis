@@ -75,6 +75,11 @@ export const en: TranslationKeys = {
   'discover.language': 'Language',
   'discover.allLanguages': 'All languages',
   'discover.filterByLanguage': 'Filter by language',
+  'discover.googleNews.title': 'Google News RSS Builder',
+  'discover.googleNews.subtitle': 'Create custom RSS feeds from Google News based on your interests',
+  'discover.predefinedSources': 'Community Sources',
+  'discover.predefinedSourcesSubtitle': 'Explore curated RSS sources suggested by the community',
+  'discover.selectCategories': 'Select categories above to browse community-suggested sources',
   
   // Menu
   'menu.title': 'Menu',

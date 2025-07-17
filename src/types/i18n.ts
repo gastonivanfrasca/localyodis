@@ -81,6 +81,11 @@ export type TranslationKeys = {
   'discover.language': string;
   'discover.allLanguages': string;
   'discover.filterByLanguage': string;
+  'discover.googleNews.title': string;
+  'discover.googleNews.subtitle': string;
+  'discover.predefinedSources': string;
+  'discover.predefinedSourcesSubtitle': string;
+  'discover.selectCategories': string;
   
   // Menu
   'menu.title': string;

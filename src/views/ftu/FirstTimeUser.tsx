@@ -4,7 +4,6 @@ import { PredefinedSource, SourceCategory } from "../../types/predefined-sources
 
 import { AddRSSSourceModals } from "../../components/AddSourceModals";
 import { CategoryPill } from "../../components/CategoryPill";
-import { GoogleNewsRSSBuilder } from "../../components/v2/GoogleNewsRSSBuilder";
 import { SourceCard } from "../../components/SourceCard";
 import { SupportedLanguage } from "../../types/i18n";
 import { getPredefinedSources } from "../../utils/predefined-sources";
@@ -130,15 +129,6 @@ export const FirstTimeUser = () => {
     )
   )).sort();
 
-  // Count Google News sources that have been added
-  const googleNewsSources = state.sources.filter(source => 
-    source.name && source.name.startsWith('GN - ')
-  );
-  const googleNewsCount = googleNewsSources.length;
-
-  // Total sources selected/added (predefined + Google News)
-  const totalSourcesReady = selectedSources.size + googleNewsCount;
-
   return (
     <div className="w-full h-screen dark:bg-slate-950 flex flex-col">
       {/* Content */}
@@ -154,11 +144,6 @@ export const FirstTimeUser = () => {
                 {selectedCategories.size > 0 && (
                   <p className="text-xs text-zinc-500 dark:text-zinc-400">
                     {selectedSources.size} {t('sources.selected')} {t('discover.addedCount')} {filteredSources.length}
-                    {googleNewsCount > 0 && (
-                      <span className="ml-2 text-blue-600 dark:text-blue-400">
-                        + {googleNewsCount} Google News
-                      </span>
-                    )}
                   </p>
                 )}
               </div>
@@ -238,13 +223,6 @@ export const FirstTimeUser = () => {
         {/* Sources Grid */}
         <div className="flex-1 overflow-y-auto px-6 py-6">
           <div className="max-w-4xl mx-auto">
-                          {/* Google News RSS Builder */}
-              <div className="mb-8">
-                <GoogleNewsRSSBuilder onSourceAdded={() => {
-                  // Force re-render to update button state
-                }} />
-              </div>
-
             {selectedCategories.size > 0 ? (
               <>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -289,25 +267,18 @@ export const FirstTimeUser = () => {
           </button>
           <div className="flex items-center gap-4">
             <span className="text-sm text-zinc-600 dark:text-zinc-400">
-              {totalSourcesReady > 0 ? (
-                <>
-                  {selectedSources.size} {t('sources.selected')}
-                  {googleNewsCount > 0 && (
-                    <span className="text-blue-600 dark:text-blue-400">
-                      {selectedSources.size > 0 ? ' + ' : ''}{googleNewsCount} Google News
-                    </span>
-                  )}
-                </>
+              {selectedSources.size > 0 ? (
+                `${selectedSources.size} ${t('sources.selected')}`
               ) : (
                 `0 ${t('sources.selected')}`
               )}
             </span>
             <button
               onClick={handleFinishSetup}
-              disabled={totalSourcesReady === 0}
+              disabled={selectedSources.size === 0}
               className="bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900 font-medium py-2.5 px-6 rounded-xl hover:bg-zinc-700 dark:hover:bg-zinc-300 transition disabled:opacity-50 disabled:cursor-not-allowed text-sm tracking-tight"
             >
-              {t('common.continue')} {totalSourcesReady > 0 && `(${totalSourcesReady})`}
+              {t('common.continue')} {selectedSources.size > 0 && `(${selectedSources.size})`}
             </button>
           </div>
         </div>
