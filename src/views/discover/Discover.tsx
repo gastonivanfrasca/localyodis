@@ -4,6 +4,7 @@ import { PredefinedSource, SourceCategory } from "../../types/predefined-sources
 import { AddRSSSourceModals } from "../../components/AddSourceModals";
 import { CategoryPill } from "../../components/CategoryPill";
 import { DiscoverSourceCard } from "../../components/DiscoverSourceCard";
+import { GoogleNewsRSSBuilder } from "../../components/v2/GoogleNewsRSSBuilder";
 import { NavigationTitleWithBack } from "../../components/v2/NavigationTitleWithBack";
 import { Plus } from "lucide-react";
 import Snackbar from "../../components/Snackbar";
@@ -224,6 +225,11 @@ export const Discover = () => {
         {/* Sources Grid */}
         <div className="flex-1 overflow-y-auto px-6 py-6">
           <div className="max-w-4xl mx-auto">
+            {/* Google News RSS Builder */}
+            <div className="mb-8">
+              <GoogleNewsRSSBuilder />
+            </div>
+
             {selectedCategories.size > 0 ? (
               <>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

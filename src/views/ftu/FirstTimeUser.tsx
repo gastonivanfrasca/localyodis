@@ -4,6 +4,7 @@ import { PredefinedSource, SourceCategory } from "../../types/predefined-sources
 
 import { AddRSSSourceModals } from "../../components/AddSourceModals";
 import { CategoryPill } from "../../components/CategoryPill";
+import { GoogleNewsRSSBuilder } from "../../components/v2/GoogleNewsRSSBuilder";
 import { SourceCard } from "../../components/SourceCard";
 import { SupportedLanguage } from "../../types/i18n";
 import { getPredefinedSources } from "../../utils/predefined-sources";
@@ -223,6 +224,13 @@ export const FirstTimeUser = () => {
         {/* Sources Grid */}
         <div className="flex-1 overflow-y-auto px-6 py-6">
           <div className="max-w-4xl mx-auto">
+            {/* Google News RSS Builder */}
+            <div className="mb-8">
+              <GoogleNewsRSSBuilder onSourceAdded={() => {
+                // Refresh the component state if needed
+              }} />
+            </div>
+
             {selectedCategories.size > 0 ? (
               <>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

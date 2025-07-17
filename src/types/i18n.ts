@@ -169,6 +169,38 @@ export type TranslationKeys = {
   'time.daysAgo': string;
   'time.dayAgo': string;
   
+  // Google News RSS Builder
+  'googleNews.title': string;
+  'googleNews.subtitle': string;
+  'googleNews.searchTerms': string;
+  'googleNews.searchTerms.placeholder': string;
+  'googleNews.searchTerms.help': string;
+  'googleNews.operators': string;
+  'googleNews.operators.and': string;
+  'googleNews.operators.or': string;
+  'googleNews.operators.exclude': string;
+  'googleNews.operators.exact': string;
+  'googleNews.operators.site': string;
+  'googleNews.operators.intitle': string;
+  'googleNews.timeFilter': string;
+  'googleNews.timeFilter.all': string;
+  'googleNews.timeFilter.1h': string;
+  'googleNews.timeFilter.12h': string;
+  'googleNews.timeFilter.1d': string;
+  'googleNews.timeFilter.7d': string;
+  'googleNews.timeFilter.30d': string;
+  'googleNews.language': string;
+  'googleNews.country': string;
+  'googleNews.preview': string;
+  'googleNews.generate': string;
+  'googleNews.addToSources': string;
+  'googleNews.examples': string;
+  'googleNews.examples.1': string;
+  'googleNews.examples.2': string;
+  'googleNews.examples.3': string;
+  'googleNews.examples.4': string;
+  'googleNews.help': string;
+
   // Accessibility
   'a11y.closeModal': string;
   'a11y.closeNotification': string;
