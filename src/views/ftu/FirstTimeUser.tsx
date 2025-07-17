@@ -130,6 +130,15 @@ export const FirstTimeUser = () => {
     )
   )).sort();
 
+  // Count Google News sources that have been added
+  const googleNewsSources = state.sources.filter(source => 
+    source.name && source.name.startsWith('GN - ')
+  );
+  const googleNewsCount = googleNewsSources.length;
+
+  // Total sources selected/added (predefined + Google News)
+  const totalSourcesReady = selectedSources.size + googleNewsCount;
+
   return (
     <div className="w-full h-screen dark:bg-slate-950 flex flex-col">
       {/* Content */}
@@ -145,6 +154,11 @@ export const FirstTimeUser = () => {
                 {selectedCategories.size > 0 && (
                   <p className="text-xs text-zinc-500 dark:text-zinc-400">
                     {selectedSources.size} {t('sources.selected')} {t('discover.addedCount')} {filteredSources.length}
+                    {googleNewsCount > 0 && (
+                      <span className="ml-2 text-blue-600 dark:text-blue-400">
+                        + {googleNewsCount} Google News
+                      </span>
+                    )}
                   </p>
                 )}
               </div>
@@ -224,12 +238,12 @@ export const FirstTimeUser = () => {
         {/* Sources Grid */}
         <div className="flex-1 overflow-y-auto px-6 py-6">
           <div className="max-w-4xl mx-auto">
-            {/* Google News RSS Builder */}
-            <div className="mb-8">
-              <GoogleNewsRSSBuilder onSourceAdded={() => {
-                // Refresh the component state if needed
-              }} />
-            </div>
+                          {/* Google News RSS Builder */}
+              <div className="mb-8">
+                <GoogleNewsRSSBuilder onSourceAdded={() => {
+                  // Force re-render to update button state
+                }} />
+              </div>
 
             {selectedCategories.size > 0 ? (
               <>
@@ -275,14 +289,25 @@ export const FirstTimeUser = () => {
           </button>
           <div className="flex items-center gap-4">
             <span className="text-sm text-zinc-600 dark:text-zinc-400">
-              {selectedSources.size} {t('sources.selected')}
+              {totalSourcesReady > 0 ? (
+                <>
+                  {selectedSources.size} {t('sources.selected')}
+                  {googleNewsCount > 0 && (
+                    <span className="text-blue-600 dark:text-blue-400">
+                      {selectedSources.size > 0 ? ' + ' : ''}{googleNewsCount} Google News
+                    </span>
+                  )}
+                </>
+              ) : (
+                `0 ${t('sources.selected')}`
+              )}
             </span>
             <button
               onClick={handleFinishSetup}
-              disabled={selectedSources.size === 0}
+              disabled={totalSourcesReady === 0}
               className="bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900 font-medium py-2.5 px-6 rounded-xl hover:bg-zinc-700 dark:hover:bg-zinc-300 transition disabled:opacity-50 disabled:cursor-not-allowed text-sm tracking-tight"
             >
-              {t('common.continue')} {selectedSources.size > 0 && `(${selectedSources.size})`}
+              {t('common.continue')} {totalSourcesReady > 0 && `(${totalSourcesReady})`}
             </button>
           </div>
         </div>
