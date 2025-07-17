@@ -1,9 +1,9 @@
 import { ActionTypes, useMainContext } from "../../context/main";
-import { ExternalLink, HelpCircle, Newspaper, Plus } from "lucide-react";
+import { ExternalLink, HelpCircle, Newspaper, Plus, X } from "lucide-react";
+import { KeyboardEvent, useState } from "react";
 
 import { useError } from "../../utils/useError";
 import { useI18n } from "../../context/i18n";
-import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 type GoogleNewsRSSBuilderProps = {
@@ -48,7 +48,8 @@ export const GoogleNewsRSSBuilder = ({ onSourceAdded }: GoogleNewsRSSBuilderProp
   const { dispatch, state } = useMainContext();
   const { showError } = useError();
 
-  const [interests, setInterests] = useState("");
+  const [interests, setInterests] = useState<string[]>([]);
+  const [currentInput, setCurrentInput] = useState("");
   const [languageCountry, setLanguageCountry] = useState(LANGUAGE_COUNTRY_OPTIONS[0]);
   const [showExamples, setShowExamples] = useState(false);
 
@@ -61,23 +62,61 @@ export const GoogleNewsRSSBuilder = ({ onSourceAdded }: GoogleNewsRSSBuilderProp
     return `https://news.google.com/rss/search?q=${encodedQuery}&hl=${languageCountry.hl}&gl=${languageCountry.gl}&ceid=${languageCountry.ceid}`;
   };
 
-  // Parse interests from input (comma-separated)
-  const parseInterests = () => {
-    return interests
-      .split(',')
-      .map(interest => interest.trim())
-      .filter(interest => interest.length > 0);
+  // Add interest as pill
+  const addInterest = (interest: string) => {
+    const trimmedInterest = interest.trim();
+    if (trimmedInterest && !interests.includes(trimmedInterest)) {
+      setInterests([...interests, trimmedInterest]);
+    }
+    setCurrentInput("");
+  };
+
+  // Remove interest pill
+  const removeInterest = (indexToRemove: number) => {
+    setInterests(interests.filter((_, index) => index !== indexToRemove));
+  };
+
+  // Handle input changes and comma/enter separation
+  const handleInputChange = (value: string) => {
+    if (value.includes(',')) {
+      const parts = value.split(',');
+      const lastPart = parts.pop() || '';
+      
+      // Add all complete parts as interests
+      parts.forEach(part => {
+        const trimmed = part.trim();
+        if (trimmed) addInterest(trimmed);
+      });
+      
+      setCurrentInput(lastPart);
+    } else {
+      setCurrentInput(value);
+    }
+  };
+
+  // Handle keyboard events
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' || e.key === ',') {
+      e.preventDefault();
+      if (currentInput.trim()) {
+        addInterest(currentInput);
+      }
+    } else if (e.key === 'Backspace' && !currentInput && interests.length > 0) {
+      // Remove last interest when backspace is pressed on empty input
+      removeInterest(interests.length - 1);
+    }
+  };
+
+  // Handle input blur
+  const handleInputBlur = () => {
+    if (currentInput.trim()) {
+      addInterest(currentInput);
+    }
   };
 
   const handleAddSources = async () => {
-    if (!interests.trim()) {
+    if (interests.length === 0) {
       showError("Please enter at least one interest", "warning");
-      return;
-    }
-
-    const interestList = parseInterests();
-    if (interestList.length === 0) {
-      showError("Please enter valid interests separated by commas", "warning");
       return;
     }
 
@@ -87,7 +126,7 @@ export const GoogleNewsRSSBuilder = ({ onSourceAdded }: GoogleNewsRSSBuilderProp
       let addedCount = 0;
       let skippedCount = 0;
 
-      for (const interest of interestList) {
+      for (const interest of interests) {
         const rssUrl = generateRSSUrlForInterest(interest);
         
         // Check if source already exists
@@ -143,7 +182,8 @@ export const GoogleNewsRSSBuilder = ({ onSourceAdded }: GoogleNewsRSSBuilderProp
         showError(message, "success");
         
         // Reset form
-        setInterests("");
+        setInterests([]);
+        setCurrentInput("");
         
         onSourceAdded?.();
       } else {
@@ -155,12 +195,15 @@ export const GoogleNewsRSSBuilder = ({ onSourceAdded }: GoogleNewsRSSBuilderProp
   };
 
   const handleExampleClick = (example: string) => {
-    setInterests(example);
+    // Parse example and add as pills
+    const exampleInterests = example.split(',').map(i => i.trim()).filter(i => i);
+    setInterests(exampleInterests);
+    setCurrentInput("");
     setShowExamples(false);
   };
 
   // Generate preview URLs for current interests
-  const previewUrls = parseInterests().map(interest => ({
+  const previewUrls = interests.map(interest => ({
     interest,
     url: generateRSSUrlForInterest(interest)
   }));
@@ -184,18 +227,45 @@ export const GoogleNewsRSSBuilder = ({ onSourceAdded }: GoogleNewsRSSBuilderProp
 
       {/* Form Grid - Responsive layout */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Interests Input */}
+        {/* Interests Input with Pills */}
         <div className="lg:col-span-2">
           <label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-3">
             {t('googleNews.interests')}
           </label>
-          <input
-            type="text"
-            value={interests}
-            onChange={(e) => setInterests(e.target.value)}
-            placeholder={t('googleNews.interests.placeholder')}
-            className="w-full bg-zinc-100 dark:bg-slate-800 text-zinc-900 dark:text-zinc-100 placeholder-zinc-500 dark:placeholder-zinc-400 border-2 border-zinc-300 dark:border-zinc-700 rounded-xl p-4 focus:outline-none focus:ring-4 focus:ring-zinc-500/20 focus:border-zinc-500 dark:focus:border-zinc-400 transition-all duration-200"
-          />
+          
+          {/* Pills Container */}
+          <div className="min-h-[56px] w-full bg-zinc-100 dark:bg-slate-800 border-2 border-zinc-300 dark:border-zinc-700 rounded-xl p-3 focus-within:ring-4 focus-within:ring-zinc-500/20 focus-within:border-zinc-500 dark:focus-within:border-zinc-400 transition-all duration-200">
+            <div className="flex flex-wrap gap-2 items-center">
+              {/* Interest Pills */}
+              {interests.map((interest, index) => (
+                <div
+                  key={index}
+                  className="flex items-center gap-1.5 px-2.5 py-1.5 bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900 rounded-lg text-sm font-medium border border-zinc-700 dark:border-zinc-300"
+                >
+                  <span className="truncate max-w-32">{interest}</span>
+                  <button
+                    onClick={() => removeInterest(index)}
+                    className="flex-shrink-0 p-0.5 hover:bg-zinc-700 dark:hover:bg-zinc-300 rounded transition-colors"
+                    aria-label={`Remove ${interest}`}
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </div>
+              ))}
+              
+              {/* Input Field */}
+              <input
+                type="text"
+                value={currentInput}
+                onChange={(e) => handleInputChange(e.target.value)}
+                onKeyDown={handleKeyDown}
+                onBlur={handleInputBlur}
+                placeholder={interests.length === 0 ? t('googleNews.interests.placeholder') : "Add another interest..."}
+                className="flex-1 min-w-32 bg-transparent text-zinc-900 dark:text-zinc-100 placeholder-zinc-500 dark:placeholder-zinc-400 outline-none"
+              />
+            </div>
+          </div>
+          
           <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 bg-zinc-50 dark:bg-slate-800/50 p-2 rounded-lg">
             💡 {t('googleNews.interests.help')}
           </p>
@@ -291,7 +361,7 @@ export const GoogleNewsRSSBuilder = ({ onSourceAdded }: GoogleNewsRSSBuilderProp
       <div className="flex flex-col sm:flex-row gap-3">
         <button
           onClick={handleAddSources}
-          disabled={!interests.trim()}
+          disabled={interests.length === 0}
           className="flex-1 flex items-center justify-center gap-3 bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900 font-semibold py-4 px-6 rounded-xl hover:bg-zinc-700 dark:hover:bg-zinc-300 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:hover:transform-none"
         >
           <Plus className="w-5 h-5" />
