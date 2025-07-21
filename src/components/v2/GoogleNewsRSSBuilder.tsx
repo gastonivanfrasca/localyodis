@@ -86,10 +86,10 @@ export const GoogleNewsRSSBuilder = ({ onSourceAdded }: GoogleNewsRSSBuilderProp
       ceid = languageCountry.ceid;
     }
     
-    // Add date constraint for last 7 days
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-    const dateString = sevenDaysAgo.toISOString().split('T')[0]; // YYYY-MM-DD format
+    // Add date constraint for last 2 days
+    const twoDaysAgo = new Date();
+    twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+    const dateString = twoDaysAgo.toISOString().split('T')[0]; // YYYY-MM-DD format
     
     // Build URL with date filter
     let url = `https://news.google.com/rss/search?q=${encodedQuery} after:${dateString}`;
@@ -238,7 +238,7 @@ export const GoogleNewsRSSBuilder = ({ onSourceAdded }: GoogleNewsRSSBuilderProp
             {t('googleNews.title')}
           </h3>
           <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1 leading-relaxed">
-            Create a single RSS feed combining all your interests (last 7 days)
+            Create a single RSS feed combining all your interests (last 2 days)
           </p>
         </div>
       </div>
@@ -285,7 +285,7 @@ export const GoogleNewsRSSBuilder = ({ onSourceAdded }: GoogleNewsRSSBuilderProp
           </div>
           
           <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 bg-zinc-50 dark:bg-slate-800/50 p-2 rounded-lg">
-            💡 All interests will be combined into a single RSS feed with articles from the last 7 days
+            💡 All interests will be combined into a single RSS feed with articles from the last 2 days
           </p>
         </div>
 
@@ -362,9 +362,9 @@ export const GoogleNewsRSSBuilder = ({ onSourceAdded }: GoogleNewsRSSBuilderProp
                       : interests.join(', ')
                     }
                   </h4>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                    {interests.length} interests • Last 7 days • {languageCountry.name}
-                  </p>
+                                     <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                     {interests.length} interests • Last 2 days • {languageCountry.name}
+                   </p>
                 </div>
                 <a
                   href={previewUrl}
