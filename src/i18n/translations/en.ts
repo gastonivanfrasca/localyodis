@@ -83,12 +83,15 @@ export const en: TranslationKeys = {
   'discover.language': 'Language',
   'discover.allLanguages': 'All languages',
   'discover.filterByLanguage': 'Filter by language',
-  'discover.googleNews.title': 'Google News RSS Builder',
-  'discover.googleNews.subtitle': 'Create custom RSS feeds from Google News based on your interests',
+
   'discover.predefinedSources': 'Community Sources',
   'discover.predefinedSourcesSubtitle': 'Explore curated RSS sources suggested by the community',
   'discover.selectCategories': 'Select categories above to browse community-suggested sources',
   
+
+  'discover.tabs.recommended': 'Recommended',
+  'discover.tabs.custom': 'Custom RSS',
+
   // Menu
   'menu.title': 'Menu',
   'menu.about': 'About',
@@ -120,13 +123,14 @@ export const en: TranslationKeys = {
   'ftu.language': 'Language',
   'ftu.allLanguages': 'All languages',
   'ftu.filterByLanguage': 'Filter by language',
-  'ftu.googleNewsDescription': 'Create personalized news feeds by adding your interests. Each interest will generate a separate RSS feed from Google News.',
-  'ftu.sourcesAdded': 'Google News Sources Added',
-  'ftu.sourceAdded': 'source created',
-  'ftu.sourcesAddedPlural': 'sources created',
-  'ftu.noSourcesYet': 'Add your interests above to create Google News RSS feeds',
-  'ftu.sourceReady': 'source ready',
-  'ftu.sourcesReady': 'sources ready',
+
+  'ftu.sourcesAdded': 'Interests Added',
+  'ftu.sourceAdded': 'Interest added',
+  'ftu.sourcesAddedPlural': 'Interests added',
+  'ftu.interestsAdded': 'Interests Added',
+  'ftu.noSourcesYet': 'Add your interests above to get started.',
+  'ftu.sourceReady': 'interest ready',
+  'ftu.sourcesReady': 'interests ready',
   'ftu.addInterests': 'Add your interests to get started',
   
   // RSS Feed
@@ -184,39 +188,7 @@ export const en: TranslationKeys = {
   'time.daysAgo': 'days ago',
   'time.dayAgo': 'day ago',
   
-  // Google News RSS Builder
-  'googleNews.title': 'Google News RSS Builder',
-  'googleNews.subtitle': 'Create custom RSS feeds from Google News',
-  'googleNews.interests': 'Interests',
-  'googleNews.interests.placeholder': 'Enter interests separated by commas (e.g., technology, sports, politics)',
-  'googleNews.interests.help': 'Each interest will create a separate RSS feed. Use advanced operators like "exact phrases", site:domain.com, or -exclude',
-  'googleNews.source': 'source',
-  'googleNews.sources': 'sources',
-  'googleNews.operators': 'Search Operators',
-  'googleNews.operators.and': 'AND (default)',
-  'googleNews.operators.or': 'OR',
-  'googleNews.operators.exclude': 'Exclude (-)',
-  'googleNews.operators.exact': 'Exact phrase ("")',
-  'googleNews.operators.site': 'Specific site (site:)',
-  'googleNews.operators.intitle': 'In title (intitle:)',
-  'googleNews.timeFilter': 'Time Filter',
-  'googleNews.timeFilter.all': 'All time',
-  'googleNews.timeFilter.1h': 'Last hour',
-  'googleNews.timeFilter.12h': 'Last 12 hours',
-  'googleNews.timeFilter.1d': 'Last day',
-  'googleNews.timeFilter.7d': 'Last week',
-  'googleNews.timeFilter.30d': 'Last month',
-  'googleNews.language': 'Language',
-  'googleNews.country': 'Country',
-  'googleNews.preview': 'Preview URL',
-  'googleNews.generate': 'Generate RSS Feed',
-  'googleNews.addToSources': 'Add to Sources',
-  'googleNews.examples': 'Examples',
-  'googleNews.examples.1': 'technology, sports, politics',
-  'googleNews.examples.2': '"artificial intelligence", climate change',
-  'googleNews.examples.3': 'site:reuters.com finance, entertainment',
-  'googleNews.examples.4': 'health, science, business',
-  'googleNews.help': 'Build custom Google News RSS feeds using advanced search operators',
+
 
   // Accessibility
   'a11y.closeModal': 'Close modal',

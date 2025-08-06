@@ -89,11 +89,13 @@ export type TranslationKeys = {
   'discover.language': string;
   'discover.allLanguages': string;
   'discover.filterByLanguage': string;
-  'discover.googleNews.title': string;
-  'discover.googleNews.subtitle': string;
+
   'discover.predefinedSources': string;
   'discover.predefinedSourcesSubtitle': string;
   'discover.selectCategories': string;
+
+  'discover.tabs.recommended': string;
+  'discover.tabs.custom': string;
   
   // Menu
   'menu.title': string;
@@ -126,8 +128,9 @@ export type TranslationKeys = {
   'ftu.language': string;
   'ftu.allLanguages': string;
   'ftu.filterByLanguage': string;
-  'ftu.googleNewsDescription': string;
+
   'ftu.sourcesAdded': string;
+  'ftu.interestsAdded': string;
   'ftu.sourceAdded': string;
   'ftu.sourcesAddedPlural': string;
   'ftu.noSourcesYet': string;
@@ -190,39 +193,7 @@ export type TranslationKeys = {
   'time.daysAgo': string;
   'time.dayAgo': string;
   
-  // Google News RSS Builder
-  'googleNews.title': string;
-  'googleNews.subtitle': string;
-  'googleNews.interests': string;
-  'googleNews.interests.placeholder': string;
-  'googleNews.interests.help': string;
-  'googleNews.source': string;
-  'googleNews.sources': string;
-  'googleNews.operators': string;
-  'googleNews.operators.and': string;
-  'googleNews.operators.or': string;
-  'googleNews.operators.exclude': string;
-  'googleNews.operators.exact': string;
-  'googleNews.operators.site': string;
-  'googleNews.operators.intitle': string;
-  'googleNews.timeFilter': string;
-  'googleNews.timeFilter.all': string;
-  'googleNews.timeFilter.1h': string;
-  'googleNews.timeFilter.12h': string;
-  'googleNews.timeFilter.1d': string;
-  'googleNews.timeFilter.7d': string;
-  'googleNews.timeFilter.30d': string;
-  'googleNews.language': string;
-  'googleNews.country': string;
-  'googleNews.preview': string;
-  'googleNews.generate': string;
-  'googleNews.addToSources': string;
-  'googleNews.examples': string;
-  'googleNews.examples.1': string;
-  'googleNews.examples.2': string;
-  'googleNews.examples.3': string;
-  'googleNews.examples.4': string;
-  'googleNews.help': string;
+
 
   // Accessibility
   'a11y.closeModal': string;

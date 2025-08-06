@@ -83,12 +83,15 @@ export const fr: TranslationKeys = {
   'discover.language': 'Langue',
   'discover.allLanguages': 'Toutes les langues',
   'discover.filterByLanguage': 'Filtrer par langue',
-  'discover.googleNews.title': 'Constructeur RSS Google News',
-  'discover.googleNews.subtitle': 'Créez des flux RSS personnalisés à partir de Google News basés sur vos intérêts',
+
   'discover.predefinedSources': 'Sources de la Communauté',
-  'discover.predefinedSourcesSubtitle': 'Explorez des sources RSS organisées et suggérées par la communauté',
+  'discover.predefinedSourcesSubtitle': 'Explorez les sources RSS organisées et suggérées par la communauté',
   'discover.selectCategories': 'Sélectionnez des catégories ci-dessus pour parcourir les sources suggérées par la communauté',
-  
+
+
+  'discover.tabs.recommended': 'Recommandées',
+  'discover.tabs.custom': 'RSS Personnalisé',
+
   // Menu
   'menu.title': 'Menu',
   'menu.about': 'À propos',
@@ -120,15 +123,16 @@ export const fr: TranslationKeys = {
   'ftu.language': 'Langue',
   'ftu.allLanguages': 'Toutes les langues',
   'ftu.filterByLanguage': 'Filtrer par langue',
-  'ftu.googleNewsDescription': 'Créez des flux d\'actualités personnalisés en ajoutant vos intérêts. Chaque intérêt générera un flux RSS séparé de Google News.',
-  'ftu.sourcesAdded': 'Sources Google News Ajoutées',
-  'ftu.sourceAdded': 'source créée',
-  'ftu.sourcesAddedPlural': 'sources créées',
-  'ftu.noSourcesYet': 'Ajoutez vos intérêts ci-dessus pour créer des flux RSS Google News',
-  'ftu.sourceReady': 'source prête',
-  'ftu.sourcesReady': 'sources prêtes',
+
+  'ftu.sourcesAdded': 'Intérêts Ajoutés',
+  'ftu.sourceAdded': 'Intérêt ajouté',
+  'ftu.sourcesAddedPlural': 'Intérêts ajoutés',
+  'ftu.interestsAdded': 'Intérêts Ajoutés',
+  'ftu.noSourcesYet': 'Ajoutez vos intérêts ci-dessus pour commencer.',
+  'ftu.sourceReady': 'intérêt prêt',
+  'ftu.sourcesReady': 'intérêts prêts',
   'ftu.addInterests': 'Ajoutez vos intérêts pour commencer',
-  
+
   // RSS Feed
   'rss.lastUpdated': 'Dernière mise à jour',
   'rss.noItems': 'Aucun élément disponible',
@@ -184,42 +188,10 @@ export const fr: TranslationKeys = {
   'time.daysAgo': 'jours passés',
   'time.dayAgo': 'jour passé',
   
-  // Google News RSS Builder
-  'googleNews.title': 'Générateur RSS Google Actualités',
-  'googleNews.subtitle': 'Créez des flux RSS personnalisés depuis Google Actualités',
-  'googleNews.interests': 'Centres d\'intérêt',
-  'googleNews.interests.placeholder': 'Entrez les centres d\'intérêt séparés par des virgules (ex: technologie, sport, politique)',
-  'googleNews.interests.help': 'Chaque centre d\'intérêt créera un flux RSS séparé. Utilisez des opérateurs avancés comme "phrases exactes", site:domaine.com, ou -exclure',
-  'googleNews.source': 'source',
-  'googleNews.sources': 'sources',
-  'googleNews.operators': 'Opérateurs de recherche',
-  'googleNews.operators.and': 'ET (par défaut)',
-  'googleNews.operators.or': 'OU',
-  'googleNews.operators.exclude': 'Exclure (-)',
-  'googleNews.operators.exact': 'Phrase exacte ("")',
-  'googleNews.operators.site': 'Site spécifique (site:)',
-  'googleNews.operators.intitle': 'Dans le titre (intitle:)',
-  'googleNews.timeFilter': 'Filtre temporel',
-  'googleNews.timeFilter.all': 'Tout le temps',
-  'googleNews.timeFilter.1h': 'Dernière heure',
-  'googleNews.timeFilter.12h': 'Dernières 12 heures',
-  'googleNews.timeFilter.1d': 'Dernier jour',
-  'googleNews.timeFilter.7d': 'Dernière semaine',
-  'googleNews.timeFilter.30d': 'Dernier mois',
-  'googleNews.language': 'Langue',
-  'googleNews.country': 'Pays',
-  'googleNews.preview': 'Aperçu URL',
-  'googleNews.generate': 'Générer le flux RSS',
-  'googleNews.addToSources': 'Ajouter aux sources',
-  'googleNews.examples': 'Exemples',
-  'googleNews.examples.1': 'technologie, sport, politique',
-  'googleNews.examples.2': '"intelligence artificielle", changement climatique',
-  'googleNews.examples.3': 'site:lemonde.fr économie, divertissement',
-  'googleNews.examples.4': 'santé, science, business',
-  'googleNews.help': 'Construisez des flux RSS personnalisés de Google Actualités en utilisant des opérateurs de recherche avancés',
+
 
   // Accessibility
-  'a11y.closeModal': 'Fermer le modal',
+  'a11y.closeModal': 'Fermer la modale',
   'a11y.closeNotification': 'Fermer la notification',
   'a11y.switchTheme': 'Changer le thème',
   'a11y.logo': 'logo',

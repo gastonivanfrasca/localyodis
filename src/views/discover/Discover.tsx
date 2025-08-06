@@ -4,9 +4,8 @@ import { PredefinedSource, SourceCategory } from "../../types/predefined-sources
 import { AddCustomSourceSection } from "../../components/v2/AddCustomSourceSection";
 import { CategoryPill } from "../../components/CategoryPill";
 import { DiscoverSourceCard } from "../../components/DiscoverSourceCard";
-import { GoogleNewsRSSBuilder } from "../../components/v2/GoogleNewsRSSBuilder";
+
 import { NavigationTitleWithBack } from "../../components/v2/NavigationTitleWithBack";
-import Snackbar from "../../components/Snackbar";
 import { SupportedLanguage } from "../../types/i18n";
 import { getPredefinedSources } from "../../utils/predefined-sources";
 import { useError } from "../../utils/useError";
@@ -27,10 +26,14 @@ const generateTextColorForBackground = (bgColor: string) => {
   return brightness > 125 ? "#000000" : "#ffffff";
 };
 
+type Tab = 'recommended' | 'custom';
+
 export const Discover = () => {
+  const { t } = useI18n();
   const { dispatch, state } = useMainContext();
   const { showError } = useError();
-  const { t } = useI18n();
+  const [activeTab, setActiveTab] = useState<Tab>('recommended');
+
   const predefinedSourcesData = getPredefinedSources();
   const [selectedCategories, setSelectedCategories] = useState<Set<string>>(new Set());
   const [selectedLanguage, setSelectedLanguage] = useState<SupportedLanguage | 'all'>('all');
@@ -50,14 +53,12 @@ export const Discover = () => {
   };
 
   const handleAddSource = (sourceUrl: string) => {
-    // Check if source is already added
     const existingSource = state.sources.find(source => source.url === sourceUrl);
     if (existingSource) {
       showError("Source already exists!", "warning");
       return;
     }
 
-    // Find the source details from predefined data
     const sourceDetails = predefinedSourcesData.categories
       .flatMap(cat => cat.sources)
       .find(source => source.url === sourceUrl);
@@ -78,32 +79,19 @@ export const Discover = () => {
         initial: sourceDetails.name[0],
       };
 
-      // Add to sources
-      dispatch({
-        type: ActionTypes.SET_SOURCES,
-        payload: [...state.sources, newSource],
-      });
-
-      // Add to active sources
-      dispatch({
-        type: ActionTypes.SET_ACTIVE_SOURCES,
-        payload: [...state.activeSources, sourceId],
-      });
+      dispatch({ type: ActionTypes.SET_SOURCES, payload: [...state.sources, newSource] });
+      dispatch({ type: ActionTypes.SET_ACTIVE_SOURCES, payload: [...state.activeSources, sourceId] });
 
       showError("Source added successfully!", "success");
     }
   };
 
-
-
-  // Get sources from all selected categories
   const allSelectedSources = selectedCategories.size === 0 
     ? [] 
     : predefinedSourcesData.categories
         .filter(cat => selectedCategories.has(cat.id))
         .flatMap(cat => cat.sources);
 
-  // Filter sources by language and remove duplicates
   const filteredSources = Array.from(
     new Map(
       allSelectedSources
@@ -112,167 +100,159 @@ export const Discover = () => {
     ).values()
   );
 
-  // Get unique languages from all sources
   const availableLanguages = Array.from(new Set(
     predefinedSourcesData.categories.flatMap(cat => 
       cat.sources.map(source => source.language)
     )
   )).sort();
 
-  // Get added sources URLs for comparison
   const addedSourceUrls = new Set(state.sources.map(source => source.url));
 
-  // Count added sources in current selection (filtered)
   const addedSourcesInCategory = filteredSources.filter(source => 
     addedSourceUrls.has(source.url)
   ).length || 0;
+
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case 'recommended':
+        return (
+          <section>
+            <div className="mb-6">
+              <h2 className="text-lg font-semibold text-zinc-800 dark:text-white tracking-tight mb-1">
+                {t('discover.predefinedSources')}
+              </h2>
+              <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-4">
+                {t('discover.predefinedSourcesSubtitle')}
+              </p>
+              {selectedCategories.size > 0 && (
+                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  {addedSourcesInCategory} {t('discover.addedCount')} {filteredSources.length} {t('discover.added')}
+                </p>
+              )}
+            </div>
+            
+            <div className="relative mb-6">
+              <div className="overflow-x-auto hide-scrollbar">
+                <div className="flex gap-2 pb-2 pr-8">
+                  {predefinedSourcesData.categories.map((category: SourceCategory) => (
+                    <CategoryPill
+                      key={category.id}
+                      category={category}
+                      isSelected={selectedCategories.has(category.id)}
+                      onSelect={handleCategorySelect}
+                    />
+                  ))}
+                </div>
+              </div>
+              <div className="absolute right-0 top-0 bottom-2 w-8 bg-gradient-to-l from-white dark:from-slate-950 to-transparent pointer-events-none"></div>
+            </div>
+
+            {selectedCategories.size > 0 && (
+              <div className="mb-6">
+                <div className="flex items-center gap-4">
+                  <h3 className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                    {t('discover.language')}:
+                  </h3>
+                  <div className="relative flex-1">
+                    <div className="overflow-x-auto hide-scrollbar">
+                      <div className="flex gap-2 pr-8">
+                        <button
+                          onClick={() => handleLanguageSelect('all')}
+                          className={`px-3 py-1 rounded-lg text-sm font-medium transition-all duration-200 text-nowrap flex-shrink-0 ${
+                            selectedLanguage === 'all'
+                              ? 'bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900'
+                              : 'bg-zinc-200 dark:bg-slate-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-slate-700'
+                          }`}
+                        >
+                          {t('discover.allLanguages')}
+                        </button>
+                        {availableLanguages.map((lang) => (
+                          <button
+                            key={lang}
+                            onClick={() => handleLanguageSelect(lang as SupportedLanguage)}
+                            className={`px-3 py-1 rounded-lg text-sm font-medium transition-all duration-200 text-nowrap flex-shrink-0 ${
+                              selectedLanguage === lang
+                                ? 'bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900'
+                                : 'bg-zinc-200 dark:bg-slate-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-slate-700'
+                            }`}
+                          >
+                            {lang.toUpperCase()}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-white dark:from-slate-950 to-transparent pointer-events-none"></div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {selectedCategories.size > 0 ? (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {filteredSources.map((source: PredefinedSource) => (
+                    <DiscoverSourceCard
+                      key={source.url}
+                      source={source}
+                      isAdded={addedSourceUrls.has(source.url)}
+                      onAdd={() => handleAddSource(source.url)}
+                    />
+                  ))}
+                </div>
+                {filteredSources.length === 0 && (
+                  <div className="text-center py-12">
+                    <p className="text-zinc-500 dark:text-zinc-400">
+                      {t('sources.noSourcesFound')}
+                    </p>
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="text-center py-8">
+                <p className="text-zinc-500 dark:text-zinc-400 text-sm">
+                  {t('discover.selectCategories')}
+                </p>
+              </div>
+            )}
+          </section>
+        );
+      case 'custom':
+        return <AddCustomSourceSection />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="w-full h-screen dark:bg-slate-950 flex flex-col">
       <NavigationTitleWithBack label={t('discover.title')} />
       
-      {/* Content */}
       <div className="flex-1 overflow-hidden flex flex-col mt-16">
-        
-        {/* Main Content */}
+        <div className="px-6 border-b border-zinc-200 dark:border-zinc-800">
+          <div className="max-w-4xl mx-auto flex space-x-6">
+            {(['recommended', 'custom'] as Tab[]).map(tab => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`py-3 font-semibold text-sm transition-colors duration-200 ${
+                  activeTab === tab 
+                    ? 'text-zinc-800 dark:text-white border-b-2 border-zinc-800 dark:border-white'
+                    : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200'
+                }`}
+              >
+                {t(`discover.tabs.${tab}` as const)}
+              </button>
+            ))}
+          </div>
+        </div>
+
         <div className="flex-1 overflow-y-auto">
-          <div className="max-w-4xl mx-auto px-6 py-8 space-y-12">
-            
-            {/* Google News RSS Builder - Main Feature */}
-            <section>
-              <div className="mb-6">
-                <h2 className="text-xl font-semibold text-zinc-800 dark:text-white tracking-tight mb-2">
-                  {t('discover.googleNews.title')}
-                </h2>
-                <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                  {t('discover.googleNews.subtitle')}
-                </p>
-              </div>
-              <GoogleNewsRSSBuilder />
-            </section>
-
-            {/* Divider */}
-            <div className="border-t border-zinc-200 dark:border-zinc-800"></div>
-
-            {/* Custom Source Section */}
-            <section>
-              <AddCustomSourceSection />
-            </section>
-
-            {/* Divider */}
-            <div className="border-t border-zinc-200 dark:border-zinc-800"></div>
-
-            {/* Predefined Sources Section */}
-            <section>
-              <div className="mb-6">
-                <h2 className="text-lg font-semibold text-zinc-800 dark:text-white tracking-tight mb-1">
-                  {t('discover.predefinedSources')}
-                </h2>
-                <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-4">
-                  {t('discover.predefinedSourcesSubtitle')}
-                </p>
-                {selectedCategories.size > 0 && (
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                    {addedSourcesInCategory} {t('discover.addedCount')} {filteredSources.length} {t('discover.added')}
-                  </p>
-                )}
-              </div>
-              
-              {/* Categories */}
-              <div className="relative mb-6">
-                <div className="overflow-x-auto hide-scrollbar">
-                  <div className="flex gap-2 pb-2 pr-8">
-                    {predefinedSourcesData.categories.map((category: SourceCategory) => (
-                      <CategoryPill
-                        key={category.id}
-                        category={category}
-                        isSelected={selectedCategories.has(category.id)}
-                        onSelect={handleCategorySelect}
-                      />
-                    ))}
-                  </div>
-                </div>
-                {/* Subtle gradient fade */}
-                <div className="absolute right-0 top-0 bottom-2 w-8 bg-gradient-to-l from-white dark:from-slate-950 to-transparent pointer-events-none"></div>
-              </div>
-
-              {/* Language Filter */}
-              {selectedCategories.size > 0 && (
-                <div className="mb-6">
-                  <div className="flex items-center gap-4">
-                    <h3 className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-                      {t('discover.language')}:
-                    </h3>
-                    <div className="relative flex-1">
-                      <div className="overflow-x-auto hide-scrollbar">
-                        <div className="flex gap-2 pr-8">
-                          <button
-                            onClick={() => handleLanguageSelect('all')}
-                            className={`px-3 py-1 rounded-lg text-sm font-medium transition-all duration-200 text-nowrap flex-shrink-0 ${
-                              selectedLanguage === 'all'
-                                ? 'bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900'
-                                : 'bg-zinc-200 dark:bg-slate-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-slate-700'
-                            }`}
-                          >
-                            {t('discover.allLanguages')}
-                          </button>
-                          {availableLanguages.map((lang) => (
-                            <button
-                              key={lang}
-                              onClick={() => handleLanguageSelect(lang)}
-                              className={`px-3 py-1 rounded-lg text-sm font-medium transition-all duration-200 text-nowrap flex-shrink-0 ${
-                                selectedLanguage === lang
-                                  ? 'bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900'
-                                  : 'bg-zinc-200 dark:bg-slate-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-slate-700'
-                              }`}
-                            >
-                              {lang.toUpperCase()}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                      {/* Subtle gradient fade */}
-                      <div className="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-white dark:from-slate-950 to-transparent pointer-events-none"></div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Sources Grid */}
-              {selectedCategories.size > 0 ? (
-                <>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {filteredSources.map((source: PredefinedSource) => (
-                      <DiscoverSourceCard
-                        key={source.url}
-                        source={source}
-                        isAdded={addedSourceUrls.has(source.url)}
-                        onAdd={handleAddSource}
-                      />
-                    ))}
-                  </div>
-                  {filteredSources.length === 0 && (
-                    <div className="text-center py-12">
-                      <p className="text-zinc-500 dark:text-zinc-400">
-                        {t('sources.noSourcesFound')} {selectedLanguage === 'all' ? t('discover.categories') : selectedLanguage.toUpperCase()}
-                      </p>
-                    </div>
-                  )}
-                </>
-              ) : (
-                <div className="text-center py-8">
-                  <p className="text-zinc-500 dark:text-zinc-400 text-sm">
-                    {t('discover.selectCategories')}
-                  </p>
-                </div>
-              )}
-            </section>
+          <div className="max-w-4xl mx-auto px-6 py-8">
+            {renderContent()}
           </div>
         </div>
       </div>
-      
-      {/* Snackbar */}
-      <Snackbar />
     </div>
   );
 }; 
