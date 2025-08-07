@@ -28,7 +28,7 @@ function App() {
 
   // Show normal app if sources exist
   return (
-    <div className="w-full h-screen dark:bg-slate-950 bg-white max-h-screen">
+    <div className="w-full h-dvh dark:bg-slate-950 bg-white max-h-screen">
       <AdaptiveNavigation>
         {state.navigation === Navigations.SEARCH && <SearchInput />}
         <SectionIndicator />

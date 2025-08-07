@@ -104,6 +104,18 @@ export const es: TranslationKeys = {
   'history.emptyDescription': 'Los enlaces que visites aparecerán aquí para que puedas acceder a ellos más tarde.',
   'history.startReading': 'Comienza a leer artículos y tu historial se mostrará aquí',
   
+  // Statistics
+  'statistics.title': 'Estadísticas de Uso',
+  'statistics.empty': 'No hay estadísticas disponibles aún',
+  'statistics.emptyDescription': 'Comienza a leer artículos para ver tus estadísticas de uso',
+  'statistics.totalVisits': 'Visitas Totales',
+  'statistics.uniqueSources': 'Fuentes',
+  'statistics.lastSevenDays': 'Últimos 7 Días',
+  'statistics.sourceRankings': 'Ranking de Fuentes',
+  'statistics.mostActiveSource': 'Fuente Más Activa',
+  'statistics.lastVisit': 'Última visita',
+  'statistics.visits': 'visitas',
+  
   // Bookmarks
   'bookmarks.title': 'Favoritos',
   'bookmarks.empty': 'No hay favoritos aún',

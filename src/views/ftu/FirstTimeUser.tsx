@@ -4,7 +4,6 @@ import { ActionTypes } from "../../context/main";
 import { AddCustomSourceSection } from "../../components/v2/AddCustomSourceSection";
 import { CategoryPill } from "../../components/CategoryPill";
 import { DiscoverSourceCard } from "../../components/DiscoverSourceCard";
-
 import { Settings } from "lucide-react";
 import { SupportedLanguage } from "../../types/i18n";
 import { getPredefinedSources } from "../../utils/predefined-sources";
@@ -235,7 +234,7 @@ export const FirstTimeUser = () => {
   };
 
   return (
-    <div className="w-full h-screen dark:bg-slate-950 flex flex-col">
+    <div className="w-full h-dvh dark:bg-slate-950 flex flex-col">
       <div className="flex-shrink-0 px-6 py-6 border-b border-zinc-200 dark:border-zinc-800">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-2xl font-bold text-zinc-800 dark:text-white tracking-tight mb-3">
@@ -267,7 +266,7 @@ export const FirstTimeUser = () => {
         </div>
 
         <div className="flex-1 overflow-y-auto">
-          <div className="max-w-4xl mx-auto px-6 py-8">
+          <div className="max-w-4xl mx-auto px-6 py-8 pb-20 md:pb-8">
             {renderContent()}
           </div>
         </div>

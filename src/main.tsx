@@ -9,6 +9,7 @@ import { Menu } from "./views/menu/Menu.tsx";
 import { Settings } from "./views/settings/Settings.tsx";
 import { SourceProfile } from "./views/sources/SourceProfile.tsx";
 import { Sources } from "./views/sources/Sources.tsx";
+import { Statistics } from "./views/statistics/Statistics.tsx";
 import { StrictMode } from "react";
 import { ThemeLayout } from "./layouts/ThemeLayout.tsx";
 import { createRoot } from "react-dom/client";
@@ -27,6 +28,7 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/sources/:id" element={<SourceProfile />} />
               <Route path="/discover" element={<Discover />} />
               <Route path="/settings" element={<Settings />} />
+              <Route path="/statistics" element={<Statistics />} />
             </Route>
           </Routes>
         </BrowserRouter>

@@ -20,7 +20,7 @@ export const Settings = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-950 text-black dark:text-white font-sans flex flex-col">
+    <div className="min-h-dvh bg-white dark:bg-slate-950 text-black dark:text-white font-sans flex flex-col">
       <NavigationTitleWithBack label={t('settings.title')} />
       
       {/* Main Content Container - Centered on Desktop */}

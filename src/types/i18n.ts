@@ -109,6 +109,18 @@ export type TranslationKeys = {
   'history.emptyDescription': string;
   'history.startReading': string;
   
+  // Statistics
+  'statistics.title': string;
+  'statistics.empty': string;
+  'statistics.emptyDescription': string;
+  'statistics.totalVisits': string;
+  'statistics.uniqueSources': string;
+  'statistics.lastSevenDays': string;
+  'statistics.sourceRankings': string;
+  'statistics.mostActiveSource': string;
+  'statistics.lastVisit': string;
+  'statistics.visits': string;
+  
   // Bookmarks
   'bookmarks.title': string;
   'bookmarks.empty': string;

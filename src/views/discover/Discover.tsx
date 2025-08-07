@@ -4,7 +4,6 @@ import { PredefinedSource, SourceCategory } from "../../types/predefined-sources
 import { AddCustomSourceSection } from "../../components/v2/AddCustomSourceSection";
 import { CategoryPill } from "../../components/CategoryPill";
 import { DiscoverSourceCard } from "../../components/DiscoverSourceCard";
-
 import { NavigationTitleWithBack } from "../../components/v2/NavigationTitleWithBack";
 import { SupportedLanguage } from "../../types/i18n";
 import { getPredefinedSources } from "../../utils/predefined-sources";
@@ -225,7 +224,7 @@ export const Discover = () => {
   };
 
   return (
-    <div className="w-full h-screen dark:bg-slate-950 flex flex-col">
+    <div className="w-full h-dvh dark:bg-slate-950 flex flex-col">
       <NavigationTitleWithBack label={t('discover.title')} />
       
       <div className="flex-1 overflow-hidden flex flex-col mt-16">
@@ -248,7 +247,7 @@ export const Discover = () => {
         </div>
 
         <div className="flex-1 overflow-y-auto">
-          <div className="max-w-4xl mx-auto px-6 py-8">
+          <div className="max-w-4xl mx-auto px-6 py-8 pb-20 md:pb-8">
             {renderContent()}
           </div>
         </div>

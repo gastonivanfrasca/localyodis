@@ -1,12 +1,12 @@
-import { Clock, Rss, Settings } from "lucide-react";
-
+import { ActionTypes, useMainContext } from "../../context/main";
+import { BarChart3, Clock, Rss, Settings } from "lucide-react";
 import { Link, useNavigate } from "react-router";
+
 import { MenuItem } from "../../components/v2/MenuItem";
 import { NavigationTitleWithBack } from "../../components/v2/NavigationTitleWithBack";
+import { Navigations } from "../../types/navigation";
 import Snackbar from "../../components/Snackbar";
 import { ThemeSwitcher } from "../../components/ThemeSwitcher";
-import { ActionTypes, useMainContext } from "../../context/main";
-import { Navigations } from "../../types/navigation";
 import { useI18n } from "../../context/i18n";
 
 export const Menu = () => {
@@ -23,7 +23,7 @@ export const Menu = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-950 text-black dark:text-white font-sans flex flex-col">
+    <div className="min-h-dvh bg-white dark:bg-slate-950 text-black dark:text-white font-sans flex flex-col">
       <NavigationTitleWithBack label={t('menu.title')} />
       
       {/* Main Content Container - Centered on Desktop */}
@@ -35,6 +35,9 @@ export const Menu = () => {
           <button onClick={handleHistoryClick} className="cursor-pointer">
             <MenuItem icon={<Clock />} label={t('history.title')} />
           </button>
+          <Link to={"/statistics"} className="cursor-pointer">
+            <MenuItem icon={<BarChart3 />} label={t('statistics.title')} />
+          </Link>
           <Link to={"/settings"} className="cursor-pointer">
             <MenuItem icon={<Settings />} label={t('settings.title')} />
           </Link>

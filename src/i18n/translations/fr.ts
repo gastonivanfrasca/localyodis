@@ -104,6 +104,18 @@ export const fr: TranslationKeys = {
   'history.emptyDescription': 'Les liens que vous visitez apparaîtront ici pour que vous puissiez y accéder plus tard.',
   'history.startReading': 'Commencez à lire des articles et votre historique s\'affichera ici',
   
+  // Statistics
+  'statistics.title': 'Statistiques d\'Utilisation',
+  'statistics.empty': 'Aucune statistique disponible encore',
+  'statistics.emptyDescription': 'Commencez à lire des articles pour voir vos statistiques d\'utilisation',
+  'statistics.totalVisits': 'Visites Totales',
+  'statistics.uniqueSources': 'Sources',
+  'statistics.lastSevenDays': 'Les 7 Derniers Jours',
+  'statistics.sourceRankings': 'Classement des Sources',
+  'statistics.mostActiveSource': 'Source la Plus Active',
+  'statistics.lastVisit': 'Dernière visite',
+  'statistics.visits': 'visites',
+  
   // Bookmarks
   'bookmarks.title': 'Favoris',
   'bookmarks.empty': 'Aucun favori pour le moment',

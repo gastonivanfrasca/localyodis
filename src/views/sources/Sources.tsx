@@ -31,7 +31,7 @@ export const Sources = () => {
   };
 
   return (
-    <div className="w-full h-screen dark:bg-slate-950 bg-white">
+    <div className="w-full h-dvh dark:bg-slate-950 bg-white">
       <div className="flex flex-col h-full w-full">
         <NavigationTitleWithBack label={t('sources.title')} />
         
