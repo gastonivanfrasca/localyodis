@@ -85,7 +85,7 @@ export const Statistics = () => {
             </div>
             
             <div className="flex items-end justify-between gap-2 h-32">
-              {statistics.lastSevenDays.map((day, index) => (
+              {statistics.lastSevenDays.map((day) => (
                 <div key={day.date} className="flex flex-col items-center gap-2 flex-1">
                   <div className="flex flex-col items-center justify-end h-20">
                     {day.visits > 0 && (
@@ -130,6 +130,7 @@ export const Statistics = () => {
                         color={source.color || '#6B7280'}
                         textColor={source.textColor || '#FFFFFF'}
                         initial={source.initial || source.sourceName[0]?.toUpperCase() || '?'}
+                        video={false}
                       />
                     </div>
                     <div>
@@ -170,6 +171,7 @@ export const Statistics = () => {
                   color={statistics.mostActiveSource.color || '#3B82F6'}
                   textColor={statistics.mostActiveSource.textColor || '#FFFFFF'}
                   initial={statistics.mostActiveSource.initial || statistics.mostActiveSource.sourceName[0]?.toUpperCase() || '?'}
+                  video={false}
                 />
                 <div>
                   <p className="font-semibold text-blue-900 dark:text-blue-100">
