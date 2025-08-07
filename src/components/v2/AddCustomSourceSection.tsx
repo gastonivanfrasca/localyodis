@@ -1,11 +1,13 @@
 import { ActionTypes, useMainContext } from "../../context/main";
-import { Link, Plus } from "lucide-react";
+import { Link, Plus, Search } from "lucide-react";
 
 import { isValidHttpUrl } from "../../utils/validations";
 import { useError } from "../../utils/useError";
 import { useI18n } from "../../context/i18n";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { discoverFeedsFromSite } from "../../utils/rss";
+import type { DiscoveredFeed } from "../../types/rss-discovery";
 
 type AddCustomSourceSectionProps = {
   onSourceAdded?: () => void;
@@ -31,6 +33,13 @@ export const AddCustomSourceSection = ({ onSourceAdded }: AddCustomSourceSection
 
   const [rssUrl, setRssUrl] = useState("");
   const [customName, setCustomName] = useState("");
+  const [isDiscovering, setIsDiscovering] = useState(false);
+  const [discoveredFeeds, setDiscoveredFeeds] = useState<DiscoveredFeed[]>([]);
+
+  const isLikelyFeedUrl = (url: string): boolean => {
+    if (!isValidHttpUrl(url)) return false;
+    return /(\/feed(\/)?$|\.(xml|rss|atom)(\?|$))/i.test(url);
+  };
 
   const handleAddSource = () => {
     if (!rssUrl.trim() || !isValidHttpUrl(rssUrl)) {
@@ -85,6 +94,28 @@ export const AddCustomSourceSection = ({ onSourceAdded }: AddCustomSourceSection
     onSourceAdded?.();
   };
 
+  const handleDiscover = async () => {
+    if (!rssUrl.trim() || !isValidHttpUrl(rssUrl)) {
+      showError("Please enter a valid website URL", "warning");
+      return;
+    }
+    setIsDiscovering(true);
+    setDiscoveredFeeds([]);
+    try {
+      const feeds = await discoverFeedsFromSite(rssUrl.trim());
+      setDiscoveredFeeds(feeds);
+      if (feeds.length === 0) {
+        showError("No feeds found for this site", "warning");
+      }
+    } catch {
+      showError("Failed to discover feeds", "error");
+    } finally {
+      setIsDiscovering(false);
+    }
+  };
+
+  
+
   return (
     <div className="space-y-6">
       <div className="flex items-start gap-4">
@@ -113,6 +144,17 @@ export const AddCustomSourceSection = ({ onSourceAdded }: AddCustomSourceSection
             placeholder="https://example.com/feed.xml"
             className="w-full bg-zinc-100 dark:bg-slate-800 text-zinc-900 dark:text-zinc-100 border-2 border-zinc-300 dark:border-zinc-700 rounded-xl p-3 focus:outline-none focus:ring-4 focus:ring-zinc-500/20 focus:border-zinc-500 dark:focus:border-zinc-400 transition-all duration-200"
           />
+          <div className="flex gap-2 mt-3">
+            <button
+              type="button"
+              onClick={handleDiscover}
+              disabled={!rssUrl.trim() || isDiscovering}
+              className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-zinc-200 dark:bg-slate-800 text-zinc-800 dark:text-zinc-200 hover:bg-zinc-300 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
+            >
+              <Search className="w-4 h-4" />
+              {isDiscovering ? t('common.loading') : t('sources.discoverFeeds')}
+            </button>
+          </div>
         </div>
 
         <div>
@@ -132,10 +174,40 @@ export const AddCustomSourceSection = ({ onSourceAdded }: AddCustomSourceSection
         </div>
       </div>
 
+      {discoveredFeeds.length > 0 && (
+        <div className="pt-2">
+          <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-2">{t('sources.discoveredFeeds')}</p>
+          <ul className="space-y-2">
+            {discoveredFeeds.map((feed) => {
+              const exists = state.sources.some((s) => s.url === feed.url);
+              return (
+                <li key={feed.url} className="flex items-center justify-between gap-3 bg-zinc-100 dark:bg-slate-800 border border-zinc-200 dark:border-zinc-700 rounded-xl p-3">
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-zinc-800 dark:text-zinc-100 truncate">{feed.title || feed.url}</p>
+                    <p className="text-xs text-zinc-500 dark:text-zinc-400 truncate">{feed.url}</p>
+                  </div>
+                  <button
+                    type="button"
+                    disabled={exists}
+                    onClick={() => {
+                      setRssUrl(feed.url);
+                      setCustomName((prev) => prev || (feed.title ?? ""));
+                    }}
+                    className="px-3 py-2 text-xs font-semibold rounded-lg bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900 disabled:opacity-50"
+                  >
+                    {exists ? t('sources.alreadyExists') : t('common.continue')}
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
+
       <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-zinc-200 dark:border-zinc-800">
         <button
           onClick={handleAddSource}
-          disabled={!rssUrl.trim()}
+          disabled={!rssUrl.trim() || !(isLikelyFeedUrl(rssUrl) || discoveredFeeds.length > 0)}
           className="flex-1 flex items-center justify-center gap-3 bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900 font-semibold py-3 px-5 rounded-xl hover:bg-zinc-700 dark:hover:bg-zinc-300 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <Plus className="w-5 h-5" />

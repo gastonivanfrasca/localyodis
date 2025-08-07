@@ -76,6 +76,8 @@ export type TranslationKeys = {
   'sources.customNamePlaceholder': string;
   'sources.customNameHelp': string;
   'sources.addCustomSource': string;
+  'sources.discoverFeeds': string;
+  'sources.discoveredFeeds': string;
   
   // Discover
   'discover.title': string;

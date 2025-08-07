@@ -70,6 +70,8 @@ export const en: TranslationKeys = {
   'sources.customNamePlaceholder': 'Enter a custom name for this source',
   'sources.customNameHelp': 'If no name is provided, we\'ll use the website domain',
   'sources.addCustomSource': 'Add Custom Source',
+  'sources.discoverFeeds': 'Discover feeds',
+  'sources.discoveredFeeds': 'Discovered feeds',
   
   // Discover
   'discover.title': 'Discover',
