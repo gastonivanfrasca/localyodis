@@ -92,15 +92,13 @@ export const Statistics = () => {
               {statistics.lastSevenDays.map((day) => (
                 <div key={day.date} className="flex flex-col items-center gap-2 flex-1">
                   <div className="flex flex-col items-center justify-end h-20">
-                    {day.visits > 0 && (
-                      <div 
-                        className="bg-blue-500 dark:bg-blue-400 rounded-t-sm w-full min-h-[4px] transition-all duration-200"
-                        style={{ 
-                          height: `${(day.visits / maxVisitsInWeek) * 100}%`,
-                          minHeight: day.visits > 0 ? '8px' : '0px'
-                        }}
-                      />
-                    )}
+                    <div 
+                      className="bg-blue-500 dark:bg-blue-400 rounded-t-sm w-full transition-all duration-200"
+                      style={{ 
+                        height: `${(day.visits / maxVisitsInWeek) * 100}%`,
+                        minHeight: '8px'
+                      }}
+                    />
                   </div>
                   <div className="text-center">
                     <p className="text-xs font-medium text-gray-900 dark:text-white">{day.visits}</p>
