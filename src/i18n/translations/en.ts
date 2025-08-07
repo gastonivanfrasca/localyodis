@@ -115,6 +115,8 @@ export const en: TranslationKeys = {
   'statistics.mostActiveSource': 'Most Active Source',
   'statistics.lastVisit': 'Last visit',
   'statistics.visits': 'visits',
+  'statistics.mostBookmarkedSource': 'Most Bookmarked Source',
+  'statistics.bookmarks': 'bookmarks',
   
   // Bookmarks
   'bookmarks.title': 'Bookmarks',

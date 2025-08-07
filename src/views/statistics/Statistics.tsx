@@ -1,11 +1,11 @@
-import { BarChart3, Calendar, Clock, TrendingUp } from "lucide-react";
-import { useMemo } from "react";
+import { BarChart3, Calendar, Clock, Heart, TrendingUp } from "lucide-react";
+import { calculateBookmarksStatistics, calculateSourceStatistics, formatDate, formatDayOfWeek } from "../../utils/statistics";
 
 import { NavigationTitleWithBack } from "../../components/v2/NavigationTitleWithBack";
 import { RoundedIdentifier } from "../../components/v2/RoundedIdentifier";
-import { calculateSourceStatistics, formatDate, formatDayOfWeek } from "../../utils/statistics";
 import { useI18n } from "../../context/i18n";
 import { useMainContext } from "../../context/main";
+import { useMemo } from "react";
 
 export const Statistics = () => {
   const { state } = useMainContext();
@@ -14,6 +14,10 @@ export const Statistics = () => {
   const statistics = useMemo(() => {
     return calculateSourceStatistics(state.history, state.sources);
   }, [state.history, state.sources]);
+
+  const bookmarkStats = useMemo(() => {
+    return calculateBookmarksStatistics(state.bookmarks, state.sources);
+  }, [state.bookmarks, state.sources]);
 
   const maxVisitsInWeek = Math.max(...statistics.lastSevenDays.map(day => day.visits), 1);
 
@@ -155,6 +159,35 @@ export const Statistics = () => {
               ))}
             </div>
           </div>
+
+          {/* Most Bookmarked Source */}
+          {bookmarkStats.mostBookmarkedSource && (
+            <div className="bg-gradient-to-r from-pink-50 to-rose-50 dark:from-pink-900/20 dark:to-rose-900/20 border border-pink-200 dark:border-pink-700 rounded-xl p-6">
+              <div className="flex items-center gap-2 mb-3">
+                <Heart className="w-5 h-5 text-pink-600 dark:text-pink-400" />
+                <h3 className="text-lg font-semibold text-pink-900 dark:text-pink-100">
+                  {t('statistics.mostBookmarkedSource')}
+                </h3>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <RoundedIdentifier
+                  color={bookmarkStats.mostBookmarkedSource.color || '#EC4899'}
+                  textColor={bookmarkStats.mostBookmarkedSource.textColor || '#FFFFFF'}
+                  initial={bookmarkStats.mostBookmarkedSource.initial || bookmarkStats.mostBookmarkedSource.sourceName[0]?.toUpperCase() || '?'}
+                  video={false}
+                />
+                <div>
+                  <p className="font-semibold text-pink-900 dark:text-pink-100">
+                    {bookmarkStats.mostBookmarkedSource.sourceName}
+                  </p>
+                  <p className="text-sm text-pink-700 dark:text-pink-300">
+                    {bookmarkStats.mostBookmarkedSource.totalBookmarks} {t('statistics.bookmarks')}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Most Active Source */}
           {statistics.mostActiveSource && (

@@ -1,4 +1,4 @@
-import type { HistoryItem, Source } from "../types/storage";
+import type { HistoryItem, Items, Source } from "../types/storage";
 
 export type SourceStatistics = {
   sourceId: string;
@@ -21,6 +21,21 @@ export type StatisticsSummary = {
     date: string;
     visits: number;
   }[];
+};
+
+export type BookmarkSourceStats = {
+  sourceId: string;
+  sourceName: string;
+  totalBookmarks: number;
+  color?: string;
+  textColor?: string;
+  initial?: string;
+};
+
+export type BookmarkStatisticsSummary = {
+  totalBookmarks: number;
+  mostBookmarkedSource: BookmarkSourceStats | null;
+  sourceStats: BookmarkSourceStats[];
 };
 
 /**
@@ -123,6 +138,58 @@ function generateLastSevenDays(history: HistoryItem[]) {
 
   return days;
 }
+
+/**
+ * Calculates bookmark statistics from bookmarks data
+ */
+export const calculateBookmarksStatistics = (
+  bookmarks: Items[],
+  sources: Source[]
+): BookmarkStatisticsSummary => {
+  if (!bookmarks || bookmarks.length === 0) {
+    return {
+      totalBookmarks: 0,
+      mostBookmarkedSource: null,
+      sourceStats: [],
+    };
+  }
+
+  const sourceGroups = new Map<string, Items[]>();
+
+  bookmarks.forEach((item) => {
+    const sourceId = item.source || "unknown";
+    if (!sourceGroups.has(sourceId)) {
+      sourceGroups.set(sourceId, []);
+    }
+    sourceGroups.get(sourceId)!.push(item);
+  });
+
+  const sourceStats: BookmarkSourceStats[] = [];
+
+  sourceGroups.forEach((items, sourceId) => {
+    const source = sources.find((s) => s.id === sourceId);
+    const stat: BookmarkSourceStats = {
+      sourceId,
+      sourceName: source?.name || "Unknown Source",
+      totalBookmarks: items.length,
+      color: source?.color,
+      textColor: source?.textColor,
+      initial: source?.initial,
+    };
+    sourceStats.push(stat);
+  });
+
+  // Sort by total bookmarks (descending)
+  sourceStats.sort((a, b) => b.totalBookmarks - a.totalBookmarks);
+
+  const mostBookmarkedSource = sourceStats[0] || null;
+
+  return {
+    totalBookmarks: bookmarks.length,
+    mostBookmarkedSource,
+    sourceStats,
+  };
+};
 
 /**
  * Formats a date for display

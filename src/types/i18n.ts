@@ -120,6 +120,8 @@ export type TranslationKeys = {
   'statistics.mostActiveSource': string;
   'statistics.lastVisit': string;
   'statistics.visits': string;
+  'statistics.mostBookmarkedSource': string;
+  'statistics.bookmarks': string;
   
   // Bookmarks
   'bookmarks.title': string;
