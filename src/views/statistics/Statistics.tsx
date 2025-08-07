@@ -91,7 +91,7 @@ export const Statistics = () => {
             <div className="flex items-end justify-between gap-2 h-32">
               {statistics.lastSevenDays.map((day) => (
                 <div key={day.date} className="flex flex-col items-center gap-2 flex-1">
-                  <div className="flex flex-col items-center justify-end h-20">
+                  <div className="flex flex-col justify-end h-20 w-full">
                     <div 
                       className="bg-blue-500 dark:bg-blue-400 rounded-t-sm w-full transition-all duration-200"
                       style={{ 
