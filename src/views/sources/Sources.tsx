@@ -5,7 +5,6 @@ import { AddRSSSourceModals } from "../../components/AddSourceModals";
 import { BackgroundedButtonWithIcon } from "../../components/v2/AddSourceButton";
 import { NavigationTitleWithBack } from "../../components/v2/NavigationTitleWithBack";
 import { Rss } from "lucide-react";
-import Snackbar from "../../components/Snackbar";
 import { Source } from "../../types/storage";
 import { SourcesList } from "../../components/SourcesList";
 import { useI18n } from "../../context/i18n";
@@ -68,7 +67,7 @@ export const Sources = () => {
           setIsModalOpen={setIsRSSModalOpen}
         />
       </div>
-      <Snackbar />
+      
     </div>
   );
 };

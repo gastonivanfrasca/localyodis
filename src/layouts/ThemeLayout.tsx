@@ -1,4 +1,5 @@
 import { Outlet } from "react-router";
+import Snackbar from "../components/Snackbar";
 import { getLocallyStoredData } from "../utils/storage";
 import { useLayoutEffect } from "react";
 
@@ -11,6 +12,7 @@ export const ThemeLayout = () => {
   return (
     <div className="theme-layout">
       <Outlet />
+      <Snackbar />
     </div>
   );
 };

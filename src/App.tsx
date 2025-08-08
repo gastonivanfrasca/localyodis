@@ -5,7 +5,6 @@ import { Navigations } from "./types/navigation";
 import { PubsList } from "./components/PubList";
 import { SearchInput } from "./components/v2/SearchInput";
 import { SectionIndicator } from "./components/v2/SectionIndicator";
-import Snackbar from "./components/Snackbar";
 import { useEffect } from "react";
 import { useMainContext } from "./context/main";
 import { useNavigate } from "react-router";
@@ -36,7 +35,7 @@ function App() {
           <PubsList />
         </div>
       </AdaptiveNavigation>
-      <Snackbar />
+      
     </div>
   );
 }
