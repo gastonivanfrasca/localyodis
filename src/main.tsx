@@ -6,6 +6,8 @@ import { FirstTimeUser } from "./views/ftu/FirstTimeUser.tsx";
 import { I18nProvider } from "./context/i18n/index.tsx";
 import { MainProvider } from "./context/main/provider.tsx";
 import { Menu } from "./views/menu/Menu.tsx";
+import { PrivacyPolicy } from "./views/legal/PrivacyPolicy.tsx";
+import { TermsOfUse } from "./views/legal/TermsOfUse.tsx";
 import { Settings } from "./views/settings/Settings.tsx";
 import { SourceProfile } from "./views/sources/SourceProfile.tsx";
 import { Sources } from "./views/sources/Sources.tsx";
@@ -29,6 +31,8 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/discover" element={<Discover />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/statistics" element={<Statistics />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms-of-use" element={<TermsOfUse />} />
             </Route>
           </Routes>
         </BrowserRouter>

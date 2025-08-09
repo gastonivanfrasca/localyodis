@@ -98,6 +98,8 @@ export const en: TranslationKeys = {
   'menu.title': 'Menu',
   'menu.about': 'About',
   'menu.support': 'Support',
+  'menu.privacy': 'Privacy Policy',
+  'menu.terms': 'Terms of Use',
   
   // History
   'history.title': 'History',
@@ -211,4 +213,10 @@ export const en: TranslationKeys = {
   'a11y.closeNotification': 'Close notification',
   'a11y.switchTheme': 'Switch theme',
   'a11y.logo': 'logo',
+  
+  // Legal
+  'legal.privacy.title': 'Privacy Policy',
+  'legal.privacy.lastUpdated': 'Last updated',
+  'legal.terms.title': 'Terms of Use',
+  'legal.terms.lastUpdated': 'Last updated',
 }; 

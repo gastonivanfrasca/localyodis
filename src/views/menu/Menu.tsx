@@ -1,5 +1,5 @@
 import { ActionTypes, useMainContext } from "../../context/main";
-import { BarChart3, Clock, Rss, Settings } from "lucide-react";
+import { BarChart3, Clock, FileText, Shield, Rss, Settings } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 
 import { MenuItem } from "../../components/v2/MenuItem";
@@ -40,6 +40,12 @@ export const Menu = () => {
           </Link>
           <Link to={"/settings"} className="cursor-pointer">
             <MenuItem icon={<Settings />} label={t('settings.title')} />
+          </Link>
+          <Link to={"/privacy-policy"} className="cursor-pointer">
+            <MenuItem icon={<Shield />} label={t('menu.privacy')} />
+          </Link>
+          <Link to={"/terms-of-use"} className="cursor-pointer">
+            <MenuItem icon={<FileText />} label={t('menu.terms')} />
           </Link>
           <ThemeSwitcher />
           <Snackbar />

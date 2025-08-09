@@ -103,6 +103,8 @@ export type TranslationKeys = {
   'menu.title': string;
   'menu.about': string;
   'menu.support': string;
+  'menu.privacy': string;
+  'menu.terms': string;
   
   // History
   'history.title': string;
@@ -216,6 +218,12 @@ export type TranslationKeys = {
   'a11y.closeNotification': string;
   'a11y.switchTheme': string;
   'a11y.logo': string;
+
+  // Legal
+  'legal.privacy.title': string;
+  'legal.privacy.lastUpdated': string;
+  'legal.terms.title': string;
+  'legal.terms.lastUpdated': string;
 };
 
 export type Translations = {

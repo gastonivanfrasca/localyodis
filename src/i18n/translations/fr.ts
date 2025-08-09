@@ -98,6 +98,8 @@ export const fr: TranslationKeys = {
   'menu.title': 'Menu',
   'menu.about': 'À propos',
   'menu.support': 'Support',
+  'menu.privacy': 'Politique de Confidentialité',
+  'menu.terms': 'Conditions d’Utilisation',
   
   // History
   'history.title': 'Historique',
@@ -211,4 +213,10 @@ export const fr: TranslationKeys = {
   'a11y.closeNotification': 'Fermer la notification',
   'a11y.switchTheme': 'Changer le thème',
   'a11y.logo': 'logo',
+  
+  // Legal
+  'legal.privacy.title': 'Politique de Confidentialité',
+  'legal.privacy.lastUpdated': 'Dernière mise à jour',
+  'legal.terms.title': 'Conditions d’Utilisation',
+  'legal.terms.lastUpdated': 'Dernière mise à jour',
 }; 
