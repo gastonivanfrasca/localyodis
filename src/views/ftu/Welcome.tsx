@@ -136,8 +136,6 @@ export const Welcome = ({ onContinue }: WelcomeProps) => {
                 <span className="transform group-open:rotate-90 transition-transform">›</span>
               </summary>
               <div className="text-xs text-zinc-500 dark:text-zinc-500 space-y-1 ml-4 mb-4">
-                <p>{t('welcome.developerInfo') || 'Desarrollado con ❤️ para la comunidad de código abierto.'}</p>
-                <p>{t('welcome.openSource') || 'Proyecto de código abierto'}</p>
                 <p>{t('welcome.permissions') || 'No requiere permisos especiales del sistema'}</p>
                 <a 
                   href="mailto:localyodissupport@gmail.com"
