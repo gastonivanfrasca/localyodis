@@ -27,6 +27,7 @@ const defaultLocallyStoredData = {
   error: null,
   hiddenItems: [], // Initialize empty array for hidden items
   history: [], // Initialize empty array for history
+  hasSeenWelcome: false, // Track if user has seen the welcome screen
 } as LocallyStoredData;
 
 export const storeDataLocally = (data: LocallyStoredData) => {
@@ -129,6 +130,11 @@ export const getLocallyStoredData = (): LocallyStoredData => {
   // Ensure language exists (for backward compatibility)
   if (!parsedStoredData.language) {
     parsedStoredData.language = getBrowserLanguage();
+  }
+
+  // Ensure hasSeenWelcome exists (for backward compatibility)
+  if (parsedStoredData.hasSeenWelcome === undefined) {
+    parsedStoredData.hasSeenWelcome = false;
   }
 
   parsedStoredData.sources.forEach((source) => {
@@ -302,4 +308,18 @@ export const removeFromHistory = (linkToRemove: string) => {
   const history = localData.history || [];
   const updatedHistory = history.filter(item => item.link !== linkToRemove);
   storeDataLocally({ ...localData, history: updatedHistory });
+};
+
+// Welcome screen management functions
+
+// Check if user has seen the welcome screen
+export const hasSeenWelcome = (): boolean => {
+  const localData = getLocallyStoredData();
+  return localData.hasSeenWelcome || false;
+};
+
+// Mark welcome screen as seen
+export const markWelcomeAsSeen = () => {
+  const localData = getLocallyStoredData();
+  storeDataLocally({ ...localData, hasSeenWelcome: true });
 };

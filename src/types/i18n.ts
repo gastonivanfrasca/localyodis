@@ -155,6 +155,25 @@ export type TranslationKeys = {
   'ftu.sourceReady': string;
   'ftu.sourcesReady': string;
   'ftu.addInterests': string;
+
+  // Welcome Screen
+  'welcome.subtitle': string;
+  'welcome.whatIsThis': string;
+  'welcome.description1': string;
+  'welcome.description2': string;
+  'welcome.features': string;
+  'welcome.feature1': string;
+  'welcome.feature2': string;
+  'welcome.feature3': string;
+  'welcome.feature4': string;
+  'welcome.developer': string;
+  'welcome.developerInfo': string;
+  'welcome.openSource': string;
+  'welcome.permissions': string;
+  'welcome.legal': string;
+  'welcome.version': string;
+  'welcome.getStarted': string;
+  'welcome.agreementText': string;
   
   // RSS Feed
   'rss.lastUpdated': string;

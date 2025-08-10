@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router";
 
 import App from "./App.tsx";
 import { Discover } from "./views/discover/Discover.tsx";
-import { FirstTimeUser } from "./views/ftu/FirstTimeUser.tsx";
+import { FTUFlow } from "./views/ftu/FTUFlow.tsx";
 import { I18nProvider } from "./context/i18n/index.tsx";
 import { MainProvider } from "./context/main/provider.tsx";
 import { Menu } from "./views/menu/Menu.tsx";
@@ -24,7 +24,7 @@ createRoot(document.getElementById("root")!).render(
           <Routes>
             <Route element={<ThemeLayout />}>
               <Route path="/" element={<App />} />
-              <Route path="/ftu" element={<FirstTimeUser />} />
+              <Route path="/ftu" element={<FTUFlow />} />
               <Route path="/menu" element={<Menu />} />
               <Route path="/sources" element={<Sources />} />
               <Route path="/sources/:id" element={<SourceProfile />} />

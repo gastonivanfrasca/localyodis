@@ -26,6 +26,7 @@ const initialState: LocallyStoredData = {
   error: null,
   hiddenItems: localData.hiddenItems || [],
   history: localData.history || [],
+  hasSeenWelcome: localData.hasSeenWelcome || false,
 };
 
 

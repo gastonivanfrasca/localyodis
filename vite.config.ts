@@ -17,12 +17,12 @@ export default defineConfig(() => {
         },
         includeAssets: ["logo.png", "maskable-icon-512x512.png", "apple-touch-icon-180x180.png"],
         manifest: {
-          name: 'Localyodis',
-          short_name: 'Localyodis',
+          name: 'LocalYodis - RSS Reader',
+          short_name: 'LocalYodis',
           background_color: '#020618',
           categories: ["rss", "reader", "news"],
           display: 'standalone',
-          description: 'A local RSS reader',
+          description: 'A privacy-focused local RSS reader that aggregates news and content from your favorite websites. All data stored locally on your device for maximum privacy.',
           theme_color: '#020618',
           icons: [
             {
