@@ -1,4 +1,4 @@
-import { FileText, Globe, Mail, Shield } from "lucide-react";
+import { FileText, Globe, Mail, Shield, Sparkles } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { Link } from "react-router";
@@ -120,25 +120,27 @@ export const Welcome = ({ onContinue }: WelcomeProps) => {
 
               {/* Features */}
               <div className="mb-10">
-                <h3 className="text-lg lg:text-xl font-semibold text-zinc-800 dark:text-white mb-6">
+                <div className="h-1 w-16 bg-gradient-to-r from-indigo-500 via-sky-500 to-emerald-500 rounded-full mb-3" />
+                <h3 className="flex items-center gap-2 text-lg lg:text-xl font-semibold text-zinc-800 dark:text-white mb-6">
+                  <Sparkles className="w-5 h-5 text-indigo-500" />
                   {t('welcome.features') || 'Características principales'}
                 </h3>
                 <div className="space-y-4 lg:space-y-6">
-                  <div className="flex items-start lg:p-4 lg:bg-zinc-50 lg:dark:bg-slate-900 lg:rounded-lg">
-                    <span className="text-zinc-400 mr-3 mt-1 text-lg">•</span>
-                    <span className="text-zinc-600 dark:text-zinc-400 lg:text-base">
+                  <div className="group flex items-center gap-4 p-4 lg:p-5 rounded-xl bg-zinc-100/70 dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-white/80 dark:hover:bg-zinc-900/60 shadow-sm hover:shadow transition-all">
+                    <span className="h-1.5 w-1.5 rounded-full bg-zinc-400 dark:bg-zinc-500 flex-shrink-0" />
+                    <span className="text-zinc-700 dark:text-zinc-300 lg:text-base font-medium tracking-tight">
                       {t('welcome.feature1') || 'Rápido y responsive - carga instantánea'}
                     </span>
                   </div>
-                  <div className="flex items-start lg:p-4 lg:bg-zinc-50 lg:dark:bg-slate-900 lg:rounded-lg">
-                    <span className="text-zinc-400 mr-3 mt-1 text-lg">•</span>
-                    <span className="text-zinc-600 dark:text-zinc-400 lg:text-base">
+                  <div className="group flex items-center gap-4 p-4 lg:p-5 rounded-xl bg-zinc-100/70 dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-white/80 dark:hover:bg-zinc-900/60 shadow-sm hover:shadow transition-all">
+                    <span className="h-1.5 w-1.5 rounded-full bg-zinc-400 dark:bg-zinc-500 flex-shrink-0" />
+                    <span className="text-zinc-700 dark:text-zinc-300 lg:text-base font-medium tracking-tight">
                       {t('welcome.feature2') || 'Interfaz moderna y fácil de usar'}
                     </span>
                   </div>
-                  <div className="flex items-start lg:p-4 lg:bg-zinc-50 lg:dark:bg-slate-900 lg:rounded-lg">
-                    <span className="text-zinc-400 mr-3 mt-1 text-lg">•</span>
-                    <span className="text-zinc-600 dark:text-zinc-400 lg:text-base">
+                  <div className="group flex items-center gap-4 p-4 lg:p-5 rounded-xl bg-zinc-100/70 dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover;border-zinc-700 hover:bg-white/80 dark:hover:bg-zinc-900/60 shadow-sm hover:shadow transition-all">
+                    <span className="h-1.5 w-1.5 rounded-full bg-zinc-400 dark:bg-zinc-500 flex-shrink-0" />
+                    <span className="text-zinc-700 dark:text-zinc-300 lg:text-base font-medium tracking-tight">
                       {t('welcome.feature3') || 'Estadísticas de uso locales para seguir tu actividad'}
                     </span>
                   </div>
