@@ -174,6 +174,8 @@ export type TranslationKeys = {
   'welcome.version': string;
   'welcome.getStarted': string;
   'welcome.agreementText': string;
+  'welcome.changeLanguage': string;
+  'welcome.selectLanguage': string;
   
   // RSS Feed
   'rss.lastUpdated': string;

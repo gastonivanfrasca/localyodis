@@ -154,13 +154,13 @@ export const fr: TranslationKeys = {
   // Welcome Screen
   'welcome.subtitle': 'Votre lecteur de nouvelles RSS local',
   'welcome.whatIsThis': 'Qu\'est-ce que LocalYodis ?',
-  'welcome.description1': 'LocalYodis est un lecteur de nouvelles RSS qui vous permet de suivre vos sites web préférés en un seul endroit.',
-  'welcome.description2': 'Préservez votre vie privée : toutes vos données sont stockées localement sur votre appareil.',
+  'welcome.description1': 'LocalYodis est un lecteur de nouvelles RSS local-first qui ne nécessite aucun enregistrement ni compte. Tout fonctionne directement sur votre appareil.',
+  'welcome.description2': 'Commencez à lire immédiatement en ajoutant vos sources préférées. Votre vie privée est garantie avec le stockage local.',
   'welcome.features': 'Fonctionnalités principales',
-  'welcome.feature1': 'Agrégation de sources RSS du monde entier',
-  'welcome.feature2': 'Interface propre et facile à utiliser',
-  'welcome.feature3': 'Stockage local - votre vie privée protégée',
-  'welcome.feature4': 'Fonctionne hors ligne une fois chargé',
+  'welcome.feature1': 'Rapide et réactif - chargement instantané',
+  'welcome.feature2': 'Vie privée totale - aucun suivi ni compte',
+  'welcome.feature3': 'Interface moderne et facile à utiliser',
+  'welcome.feature4': 'Statistiques d\'utilisation pour suivre votre activité',
   'welcome.developer': 'Informations sur le développeur',
   'welcome.developerInfo': 'Développé avec ❤️ pour la communauté open source.',
   'welcome.openSource': 'Projet open source',
@@ -169,6 +169,8 @@ export const fr: TranslationKeys = {
   'welcome.version': 'Version',
   'welcome.getStarted': 'Commencer à utiliser LocalYodis',
   'welcome.agreementText': 'En continuant, vous acceptez nos conditions d\'utilisation et notre politique de confidentialité',
+  'welcome.changeLanguage': 'Changer de langue',
+  'welcome.selectLanguage': 'Sélectionnez votre langue',
 
   // RSS Feed
   'rss.lastUpdated': 'Dernière mise à jour',

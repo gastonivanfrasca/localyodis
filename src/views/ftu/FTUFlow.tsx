@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
 import { hasSeenWelcome, markWelcomeAsSeen } from "../../utils/storage";
-import { Welcome } from "./Welcome";
+import { useEffect, useState } from "react";
+
 import { FirstTimeUser } from "./FirstTimeUser";
+import { Welcome } from "./Welcome";
 
 export const FTUFlow = () => {
   const [showWelcome, setShowWelcome] = useState(true);

@@ -1,18 +1,72 @@
-import { Shield, FileText, Mail, ExternalLink } from "lucide-react";
-import { useI18n } from "../../context/i18n";
+import { FileText, Mail, Shield, Globe } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router";
+import { useI18n } from "../../context/i18n";
 
 interface WelcomeProps {
   onContinue: () => void;
 }
 
 export const Welcome = ({ onContinue }: WelcomeProps) => {
-  const { t } = useI18n();
+  const { t, language, setLanguage, languages } = useI18n();
+  const [showLanguageSelector, setShowLanguageSelector] = useState(false);
+  const languageSelectorRef = useRef<HTMLDivElement>(null);
+
+  // Close language selector when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (languageSelectorRef.current && !languageSelectorRef.current.contains(event.target as Node)) {
+        setShowLanguageSelector(false);
+      }
+    };
+
+    if (showLanguageSelector) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [showLanguageSelector]);
 
   return (
     <div className="w-full h-dvh dark:bg-slate-950 bg-white flex flex-col">
+      {/* Language selector */}
+      <div className="flex-shrink-0 px-6 py-4 border-b border-zinc-200 dark:border-zinc-800">
+        <div className="max-w-md mx-auto flex justify-between items-center">
+          <div></div> {/* Spacer */}
+          <div className="relative" ref={languageSelectorRef}>
+            <button
+              onClick={() => setShowLanguageSelector(!showLanguageSelector)}
+              className="flex items-center gap-2 px-3 py-2 text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+            >
+              <Globe className="w-4 h-4" />
+              <span>{languages.find(l => l.code === language)?.nativeName}</span>
+            </button>
+            
+            {showLanguageSelector && (
+              <div className="absolute top-full right-0 mt-2 bg-white dark:bg-slate-800 border border-zinc-200 dark:border-zinc-700 rounded-lg shadow-lg min-w-32 z-10">
+                {languages.map((lang) => (
+                  <button
+                    key={lang.code}
+                    onClick={() => {
+                      setLanguage(lang.code);
+                      setShowLanguageSelector(false);
+                    }}
+                    className={`w-full text-left px-3 py-2 text-sm hover:bg-zinc-100 dark:hover:bg-slate-700 first:rounded-t-lg last:rounded-b-lg transition-colors ${
+                      language === lang.code 
+                        ? 'bg-zinc-100 dark:bg-slate-700 text-zinc-900 dark:text-white font-medium' 
+                        : 'text-zinc-700 dark:text-zinc-300'
+                    }`}
+                  >
+                    {lang.nativeName}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
       {/* Header with logo/title */}
-      <div className="flex-shrink-0 px-6 py-8 text-center">
+      <div className="flex-shrink-0 px-6 py-6 text-center">
         <div className="max-w-md mx-auto">
           <div className="mb-6">
             <img 
@@ -73,65 +127,51 @@ export const Welcome = ({ onContinue }: WelcomeProps) => {
             </ul>
           </div>
 
-          {/* Developer info */}
-          <div className="mb-8 p-4 bg-zinc-100 dark:bg-slate-800 rounded-lg">
-            <h3 className="text-sm font-semibold text-zinc-800 dark:text-white mb-2">
-              {t('welcome.developer') || 'Información del desarrollador'}
-            </h3>
-            <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-3">
-              {t('welcome.developerInfo') || 'Desarrollado con ❤️ para la comunidad de código abierto.'}
-            </p>
-            <div className="space-y-2">
-              <a 
-                href="mailto:support@localyodis.app"
-                className="inline-flex items-center text-sm text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
-              >
-                <Mail className="w-4 h-4 mr-1" />
-                support@localyodis.app
-              </a>
-              <div className="text-xs text-zinc-500 dark:text-zinc-500">
-                <p className="mb-1">{t('welcome.openSource') || 'Proyecto de código abierto'}</p>
+          {/* Additional info section - more compact */}
+          <div className="mb-6">
+            <details className="group">
+              <summary className="cursor-pointer text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 mb-2 flex items-center gap-2">
+                <span>{t('welcome.developer') || 'Información del desarrollador'}</span>
+                <span className="transform group-open:rotate-90 transition-transform">›</span>
+              </summary>
+              <div className="text-xs text-zinc-500 dark:text-zinc-500 space-y-1 ml-4 mb-4">
+                <p>{t('welcome.developerInfo') || 'Desarrollado con ❤️ para la comunidad de código abierto.'}</p>
+                <p>{t('welcome.openSource') || 'Proyecto de código abierto'}</p>
                 <p>{t('welcome.permissions') || 'No requiere permisos especiales del sistema'}</p>
+                <a 
+                  href="mailto:support@localyodis.app"
+                  className="inline-flex items-center text-zinc-600 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors"
+                >
+                  <Mail className="w-3 h-3 mr-1" />
+                  support@localyodis.app
+                </a>
               </div>
-            </div>
+            </details>
           </div>
 
-          {/* Legal links */}
-          <div className="mb-8">
-            <h3 className="text-lg font-semibold text-zinc-800 dark:text-white mb-4">
-              {t('welcome.legal') || 'Información legal'}
-            </h3>
-            <div className="space-y-3">
+          {/* Legal links - more compact */}
+          <div className="mb-6">
+            <div className="flex gap-4 justify-center text-xs">
               <Link 
                 to="/privacy-policy"
-                className="flex items-center justify-between p-3 bg-zinc-50 dark:bg-slate-800 rounded-lg hover:bg-zinc-100 dark:hover:bg-slate-700 transition-colors"
+                className="flex items-center text-zinc-500 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors"
               >
-                <div className="flex items-center">
-                  <Shield className="w-5 h-5 text-zinc-500 mr-3" />
-                  <span className="text-zinc-700 dark:text-zinc-300">
-                    {t('legal.privacy.title') || 'Política de privacidad'}
-                  </span>
-                </div>
-                <ExternalLink className="w-4 h-4 text-zinc-400" />
+                <Shield className="w-3 h-3 mr-1" />
+                {t('legal.privacy.title') || 'Privacidad'}
               </Link>
               
               <Link 
                 to="/terms-of-use"
-                className="flex items-center justify-between p-3 bg-zinc-50 dark:bg-slate-800 rounded-lg hover:bg-zinc-100 dark:hover:bg-slate-700 transition-colors"
+                className="flex items-center text-zinc-500 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors"
               >
-                <div className="flex items-center">
-                  <FileText className="w-5 h-5 text-zinc-500 mr-3" />
-                  <span className="text-zinc-700 dark:text-zinc-300">
-                    {t('legal.terms.title') || 'Términos de uso'}
-                  </span>
-                </div>
-                <ExternalLink className="w-4 h-4 text-zinc-400" />
+                <FileText className="w-3 h-3 mr-1" />
+                {t('legal.terms.title') || 'Términos'}
               </Link>
             </div>
           </div>
 
           {/* App version */}
-          <div className="mb-8 text-center">
+          <div className="mb-6 text-center">
             <p className="text-xs text-zinc-500 dark:text-zinc-500">
               {t('welcome.version') || 'Versión'} 1.0.0
             </p>
