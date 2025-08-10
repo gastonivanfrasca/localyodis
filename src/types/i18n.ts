@@ -180,7 +180,14 @@ export type TranslationKeys = {
   'mobile.landing.title': string;
   'mobile.landing.subtitle': string;
   'mobile.landing.downloadOpen': string;
-  'mobile.landing.openDesktop': string;
+  'mobile.landing.desktopInfo': string;
+  'mobile.landing.openDesktopLink': string;
+  'mobile.landing.highlight1.title': string;
+  'mobile.landing.highlight1.desc': string;
+  'mobile.landing.highlight2.title': string;
+  'mobile.landing.highlight2.desc': string;
+  'mobile.landing.highlight3.title': string;
+  'mobile.landing.highlight3.desc': string;
   
   // RSS Feed
   'rss.lastUpdated': string;

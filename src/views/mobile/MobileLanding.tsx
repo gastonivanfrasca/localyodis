@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { useI18n } from "../../context/i18n";
 
@@ -8,48 +7,60 @@ export const MobileLanding = () => {
   const navigate = useNavigate();
   const { t } = useI18n();
 
-  useEffect(() => {
-    // Mark that user has seen/visited mobile landing to avoid loops when choosing desktop
-  }, []);
-
   const handleOpenPlayStore = () => {
     window.location.href = PLAY_STORE_URL;
   };
 
-  const handleOpenOnDesktop = () => {
-    localStorage.setItem('skipMobileLanding', '1');
-    navigate("/", { replace: true });
-  };
-
   return (
-    <div className="min-h-dvh bg-white dark:bg-slate-950 text-black dark:text-white font-sans flex items-center justify-center px-6">
-      <div className="w-full max-w-md flex flex-col items-center gap-6 text-center">
-        <img src="/logo.png" alt="LocalYodis" className="w-16 h-16" />
-        <h1 className="text-2xl font-semibold">{t('mobile.landing.title')}</h1>
-        <p className="text-zinc-600 dark:text-zinc-400">{t('mobile.landing.subtitle')}</p>
+    <div className="relative min-h-dvh overflow-hidden bg-gradient-to-b from-emerald-500 via-emerald-600 to-emerald-800 text-white">
+      {/* Decorative background */}
+      <div className="absolute inset-0 opacity-25 pointer-events-none" style={{backgroundImage: 'radial-gradient(circle at 10% 10%, rgba(255,255,255,0.4), transparent 25%), radial-gradient(circle at 90% 20%, rgba(255,255,255,0.25), transparent 30%), radial-gradient(circle at 20% 80%, rgba(255,255,255,0.2), transparent 30%)'}} />
 
-        <div className="w-full flex flex-col gap-3 mt-4">
+      {/* Content */}
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-dvh px-7 py-10 text-center">
+        <img src="/logo.png" alt="LocalYodis" className="w-20 h-20 drop-shadow-lg" />
+        <h1 className="mt-6 text-3xl font-extrabold tracking-tight">
+          {t('mobile.landing.title')}
+        </h1>
+        <p className="mt-2 text-emerald-50/90 max-w-md">
+          {t('mobile.landing.subtitle')}
+        </p>
+
+        {/* Feature highlights */}
+        <div className="mt-8 grid grid-cols-1 gap-3 w-full max-w-sm">
+          <div className="rounded-xl bg-white/10 backdrop-blur px-4 py-3 text-left">
+            <div className="text-sm font-semibold">{t('mobile.landing.highlight1.title')}</div>
+            <div className="text-emerald-50/90 text-xs">{t('mobile.landing.highlight1.desc')}</div>
+          </div>
+          <div className="rounded-xl bg-white/10 backdrop-blur px-4 py-3 text-left">
+            <div className="text-sm font-semibold">{t('mobile.landing.highlight2.title')}</div>
+            <div className="text-emerald-50/90 text-xs">{t('mobile.landing.highlight2.desc')}</div>
+          </div>
+          <div className="rounded-xl bg-white/10 backdrop-blur px-4 py-3 text-left">
+            <div className="text-sm font-semibold">{t('mobile.landing.highlight3.title')}</div>
+            <div className="text-emerald-50/90 text-xs">{t('mobile.landing.highlight3.desc')}</div>
+          </div>
+        </div>
+
+        {/* CTA */}
+        <div className="mt-8 w-full max-w-sm">
           <button
             onClick={handleOpenPlayStore}
-            className="w-full py-3 rounded-md bg-green-600 text-white font-medium hover:bg-green-700 active:bg-green-800"
+            className="w-full py-3 rounded-xl bg-white text-emerald-700 font-semibold shadow-lg shadow-emerald-900/20 active:scale-[0.99]"
           >
             {t('mobile.landing.downloadOpen')}
           </button>
 
+          <div className="mt-5 text-xs text-emerald-50/80">
+            {t('mobile.landing.desktopInfo')}
+          </div>
           <button
-            onClick={handleOpenOnDesktop}
-            className="w-full py-3 rounded-md bg-zinc-200 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 font-medium hover:bg-zinc-300 dark:hover:bg-zinc-700"
+            onClick={() => navigate('/')}
+            className="mt-2 text-xs underline underline-offset-4 text-emerald-50/90"
           >
-            {t('mobile.landing.openDesktop')}
+            {t('mobile.landing.openDesktopLink')}
           </button>
         </div>
-
-        <button
-          onClick={() => navigate(-1)}
-          className="text-sm text-zinc-500 hover:underline mt-2"
-        >
-          {t('common.back')}
-        </button>
       </div>
     </div>
   );

@@ -173,9 +173,16 @@ export const fr: TranslationKeys = {
 
   // Mobile landing
   'mobile.landing.title': 'LocalYodis sur votre téléphone',
-  'mobile.landing.subtitle': 'Choisissez comment continuer',
+  'mobile.landing.subtitle': 'Profitez de la meilleure expérience LocalYodis sur votre appareil Android.',
   'mobile.landing.downloadOpen': 'Ouvrir ou télécharger sur Google Play',
-  'mobile.landing.openDesktop': 'Ouvrir la version bureau',
+  'mobile.landing.desktopInfo': 'Vous pouvez aussi essayer LocalYodis gratuitement depuis votre ordinateur à tout moment.',
+  'mobile.landing.openDesktopLink': 'Aller à la version bureau',
+  'mobile.landing.highlight1.title': 'Rapide et fluide',
+  'mobile.landing.highlight1.desc': 'Optimisé pour un usage quotidien et une lecture ininterrompue.',
+  'mobile.landing.highlight2.title': 'Confidentiel par conception',
+  'mobile.landing.highlight2.desc': 'Vos données restent localement sur votre appareil.',
+  'mobile.landing.highlight3.title': 'Sans compte',
+  'mobile.landing.highlight3.desc': 'Commencez à lire en quelques secondes, sans inscription.',
 
   // RSS Feed
   'rss.lastUpdated': 'Dernière mise à jour',

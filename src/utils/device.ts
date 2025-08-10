@@ -1,9 +1,9 @@
-export const isAndroidChrome = (): boolean => {
+export const isAndroidMobileBrowser = (): boolean => {
   if (typeof navigator === 'undefined') return false;
   const userAgent = navigator.userAgent || (navigator as any).vendor || (window as any).opera || '';
   const isAndroid = /Android/i.test(userAgent);
-  const isChrome = /Chrome/i.test(userAgent) && !/Edg/i.test(userAgent) && !/OPR/i.test(userAgent);
-  return isAndroid && isChrome;
+  const isMobile = /Mobile/i.test(userAgent);
+  return isAndroid && isMobile;
 };
 
 export const isStandalonePWA = (): boolean => {
@@ -15,8 +15,7 @@ export const isStandalonePWA = (): boolean => {
 
 export const shouldShowMobileLanding = (): boolean => {
   if (typeof window === 'undefined') return false;
-  const skip = localStorage.getItem('skipMobileLanding') === '1';
-  return !skip && isAndroidChrome() && !isStandalonePWA();
+  return isAndroidMobileBrowser() && !isStandalonePWA();
 };
 
 
