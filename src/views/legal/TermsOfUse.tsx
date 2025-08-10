@@ -66,7 +66,7 @@ export const TermsOfUse = () => {
 
               <h2 className="text-lg font-semibold">Contacto</h2>
               <p>
-                Para consultas sobre estos Términos, contáctanos en: legal@localyodis.app
+                Para consultas sobre estos Términos, contáctanos en: localyodissupport@gmail.com
               </p>
             </div>
           ) : (
@@ -120,7 +120,7 @@ export const TermsOfUse = () => {
 
               <h2 className="text-lg font-semibold">Contact</h2>
               <p>
-                For questions about these Terms, contact us at: legal@localyodis.app
+                For questions about these Terms, contact us at: localyodissupport@gmail.com
               </p>
             </div>
           )}

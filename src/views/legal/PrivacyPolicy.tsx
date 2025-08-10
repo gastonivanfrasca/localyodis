@@ -69,7 +69,7 @@ export const PrivacyPolicy = () => {
 
               <h2 className="text-lg font-semibold">Contacto</h2>
               <p>
-                Si tienes preguntas sobre esta Política, puedes contactarnos en: privacy@localyodis.app
+                Si tienes preguntas sobre esta Política, puedes contactarnos en: localyodissupport@gmail.com
               </p>
             </div>
           ) : (
@@ -126,7 +126,7 @@ export const PrivacyPolicy = () => {
 
               <h2 className="text-lg font-semibold">Contact</h2>
               <p>
-                If you have questions about this Policy, contact us at: privacy@localyodis.app
+                If you have questions about this Policy, contact us at: localyodissupport@gmail.com
               </p>
             </div>
           )}

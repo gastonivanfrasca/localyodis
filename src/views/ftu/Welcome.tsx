@@ -1,5 +1,6 @@
-import { FileText, Mail, Shield, Globe } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
+import { FileText, Globe, Mail, Shield } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+
 import { Link } from "react-router";
 import { useI18n } from "../../context/i18n";
 
@@ -139,11 +140,11 @@ export const Welcome = ({ onContinue }: WelcomeProps) => {
                 <p>{t('welcome.openSource') || 'Proyecto de código abierto'}</p>
                 <p>{t('welcome.permissions') || 'No requiere permisos especiales del sistema'}</p>
                 <a 
-                  href="mailto:support@localyodis.app"
+                  href="mailto:localyodissupport@gmail.com"
                   className="inline-flex items-center text-zinc-600 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors"
                 >
                   <Mail className="w-3 h-3 mr-1" />
-                  support@localyodis.app
+                  localyodissupport@gmail.com
                 </a>
               </div>
             </details>
