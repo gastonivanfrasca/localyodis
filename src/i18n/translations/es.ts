@@ -171,6 +171,12 @@ export const es: TranslationKeys = {
   'welcome.changeLanguage': 'Cambiar idioma',
   'welcome.selectLanguage': 'Selecciona tu idioma',
   
+  // Mobile landing
+  'mobile.landing.title': 'LocalYodis en tu móvil',
+  'mobile.landing.subtitle': 'Elige cómo quieres continuar',
+  'mobile.landing.downloadOpen': 'Abrir o descargar en Google Play',
+  'mobile.landing.openDesktop': 'Abrir la versión de escritorio',
+  
   // RSS Feed
   'rss.lastUpdated': 'Última actualización',
   'rss.noItems': 'No hay elementos disponibles',

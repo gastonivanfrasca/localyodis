@@ -170,6 +170,12 @@ export const en: TranslationKeys = {
   'welcome.agreementText': 'By continuing, you agree to our terms of use and privacy policy',
   'welcome.changeLanguage': 'Change language',
   'welcome.selectLanguage': 'Select your language',
+
+  // Mobile landing
+  'mobile.landing.title': 'LocalYodis on your phone',
+  'mobile.landing.subtitle': 'Choose how you want to continue',
+  'mobile.landing.downloadOpen': 'Open or download on Google Play',
+  'mobile.landing.openDesktop': 'Open desktop version',
   
   // RSS Feed
   'rss.lastUpdated': 'Last updated',

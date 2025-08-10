@@ -15,6 +15,7 @@ import { Statistics } from "./views/statistics/Statistics.tsx";
 import { StrictMode } from "react";
 import { ThemeLayout } from "./layouts/ThemeLayout.tsx";
 import { createRoot } from "react-dom/client";
+import MobileLanding from "./views/mobile/MobileLanding.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -24,6 +25,7 @@ createRoot(document.getElementById("root")!).render(
           <Routes>
             <Route element={<ThemeLayout />}>
               <Route path="/" element={<App />} />
+              <Route path="/mobile" element={<MobileLanding />} />
               <Route path="/ftu" element={<FTUFlow />} />
               <Route path="/menu" element={<Menu />} />
               <Route path="/sources" element={<Sources />} />

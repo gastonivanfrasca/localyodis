@@ -175,6 +175,12 @@ export type TranslationKeys = {
   'welcome.agreementText': string;
   'welcome.changeLanguage': string;
   'welcome.selectLanguage': string;
+
+  // Mobile landing
+  'mobile.landing.title': string;
+  'mobile.landing.subtitle': string;
+  'mobile.landing.downloadOpen': string;
+  'mobile.landing.openDesktop': string;
   
   // RSS Feed
   'rss.lastUpdated': string;
