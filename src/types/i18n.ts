@@ -165,7 +165,6 @@ export type TranslationKeys = {
   'welcome.feature1': string;
   'welcome.feature2': string;
   'welcome.feature3': string;
-  'welcome.feature4': string;
   'welcome.developer': string;
   'welcome.developerInfo': string;
   'welcome.openSource': string;

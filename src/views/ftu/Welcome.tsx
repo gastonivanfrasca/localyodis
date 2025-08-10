@@ -123,29 +123,23 @@ export const Welcome = ({ onContinue }: WelcomeProps) => {
                 <h3 className="text-lg lg:text-xl font-semibold text-zinc-800 dark:text-white mb-6">
                   {t('welcome.features') || 'Características principales'}
                 </h3>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+                <div className="space-y-4 lg:space-y-6">
                   <div className="flex items-start lg:p-4 lg:bg-zinc-50 lg:dark:bg-slate-900 lg:rounded-lg">
                     <span className="text-zinc-400 mr-3 mt-1 text-lg">•</span>
                     <span className="text-zinc-600 dark:text-zinc-400 lg:text-base">
-                      {t('welcome.feature1') || 'Agregación de fuentes RSS de todo el mundo'}
+                      {t('welcome.feature1') || 'Rápido y responsive - carga instantánea'}
                     </span>
                   </div>
                   <div className="flex items-start lg:p-4 lg:bg-zinc-50 lg:dark:bg-slate-900 lg:rounded-lg">
                     <span className="text-zinc-400 mr-3 mt-1 text-lg">•</span>
                     <span className="text-zinc-600 dark:text-zinc-400 lg:text-base">
-                      {t('welcome.feature2') || 'Interfaz limpia y fácil de usar'}
+                      {t('welcome.feature2') || 'Interfaz moderna y fácil de usar'}
                     </span>
                   </div>
                   <div className="flex items-start lg:p-4 lg:bg-zinc-50 lg:dark:bg-slate-900 lg:rounded-lg">
                     <span className="text-zinc-400 mr-3 mt-1 text-lg">•</span>
                     <span className="text-zinc-600 dark:text-zinc-400 lg:text-base">
-                      {t('welcome.feature3') || 'Almacenamiento local - tu privacidad protegida'}
-                    </span>
-                  </div>
-                  <div className="flex items-start lg:p-4 lg:bg-zinc-50 lg:dark:bg-slate-900 lg:rounded-lg">
-                    <span className="text-zinc-400 mr-3 mt-1 text-lg">•</span>
-                    <span className="text-zinc-600 dark:text-zinc-400 lg:text-base">
-                      {t('welcome.feature4') || 'Funciona sin conexión una vez cargado'}
+                      {t('welcome.feature3') || 'Estadísticas de uso locales para seguir tu actividad'}
                     </span>
                   </div>
                 </div>
