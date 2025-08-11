@@ -22,6 +22,11 @@ export default defineConfig(() => {
           background_color: '#020618',
           categories: ["rss", "reader", "news"],
           display: 'standalone',
+          start_url: '/',
+          scope: '/',
+          orientation: 'portrait',
+          lang: 'en',
+          prefer_related_applications: false,
           description: 'A privacy-focused local RSS reader that aggregates news and content from your favorite websites. All data stored locally on your device for maximum privacy.',
           theme_color: '#020618',
           icons: [
@@ -34,6 +39,12 @@ export default defineConfig(() => {
               src: 'pwa-512x512.png',
               sizes: '512x512',
               type: 'image/png'
+              },
+              {
+                src: 'maskable-icon-512x512.png',
+                sizes: '512x512',
+                type: 'image/png',
+                purpose: 'any maskable'
             }
           ]
         }
