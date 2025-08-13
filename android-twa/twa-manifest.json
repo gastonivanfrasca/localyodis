@@ -19,8 +19,8 @@
     "path": "/Users/gastonfrasca/Documents/projects/localyodis/android-twa/android.keystore",
     "alias": "android"
   },
-  "appVersionName": "1",
-  "appVersionCode": 1,
+  "appVersionName": "3",
+  "appVersionCode": 3,
   "shortcuts": [],
   "generatorApp": "bubblewrap-cli",
   "webManifestUrl": "https://localyodis.vercel.app/manifest.webmanifest",
@@ -41,5 +41,5 @@
   "protocolHandlers": [],
   "fileHandlers": [],
   "launchHandlerClientMode": "",
-  "appVersion": "1"
+  "appVersion": "3"
 }
