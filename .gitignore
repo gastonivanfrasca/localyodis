@@ -31,3 +31,54 @@ dev-dist/registerSW.js
 test.json
 view.json
 NOTIFICATION_SETUP.md
+
+# --- Added: Android TWA / Gradle / Secrets ---
+# Android local SDK config
+android-twa/local.properties
+
+# Gradle caches/build outputs
+android-twa/.gradle/
+android-twa/build/
+android-twa/app/build/
+android-twa/.cxx/
+android-twa/.externalNativeBuild/
+
+# IDE project files (scoped, global rules already exist)
+android-twa/.idea/
+android-twa/*.iml
+
+# Keystores and signing configs
+android-twa/**/*.keystore
+android-twa/**/*.jks
+android-twa/**/keystore.properties
+
+# Generated release artifacts
+android-twa/*-release*.apk
+android-twa/*-release*.aab
+android-twa/app-release-unsigned-aligned.apk
+
+# Vite dev build dir (ignore entire folder)
+dev-dist/
+
+# Env files (additional)
+.env
+.env.*
+.env.local
+.env.*.local
+.envrc
+
+# --- Added: Root Android/Gradle artifacts (accidentally generated at repo root) ---
+/.gradle/
+/build/
+/app/
+/gradle/
+/gradlew
+/gradlew.bat
+/build.gradle
+/settings.gradle
+/gradle.properties
+/manifest-checksum.txt
+/store_icon.png
+
+# Bubblewrap checksum inside android-twa
+android-twa/manifest-checksum.txt
