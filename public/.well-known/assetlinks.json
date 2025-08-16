@@ -1,16 +1,11 @@
 [
   {
-    "relation": [
-      "delegate_permission/common.handle_all_urls",
-      "delegate_permission/common.get_login_creds",
-      "delegate_permission/common.use_as_origin"
-    ],
+    "relation": ["delegate_permission/common.handle_all_urls"],
     "target": {
       "namespace": "android_app",
-      "package_name": "app.localyodis.twa",
-      "sha256_cert_fingerprints": [
-        "REPLACE_WITH_SHA256"
-      ]
+      "package_name": "app.vercel.localyodis.twa",
+      "sha256_cert_fingerprints":
+        ["96:23:00:6B:E6:82:4D:B0:A0:50:0B:8D:9A:4E:C2:5B:72:FF:ED:19:F4:7A:5B:1B:D0:27:92:DC:85:E8:E9:AB"]
     }
   }
 ]

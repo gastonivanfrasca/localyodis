@@ -1,7 +1,7 @@
-import { useNavigate } from "react-router";
 import { useI18n } from "../../context/i18n";
+import { useNavigate } from "react-router";
 
-const PLAY_STORE_URL = import.meta.env.VITE_PLAY_STORE_URL || "https://play.google.com/store/apps/details?id=com.localyodis";
+const PLAY_STORE_URL = import.meta.env.VITE_PLAY_STORE_URL || "https://play.google.com/store/apps/details?id=app.vercel.localyodis.twa";
 
 export const MobileLanding = () => {
   const navigate = useNavigate();

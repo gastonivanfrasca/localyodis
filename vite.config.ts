@@ -15,6 +15,76 @@ export default defineConfig(() => {
         devOptions: {
           enabled: true,
         },
+        workbox: {
+          globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+          cleanupOutdatedCaches: true,
+          skipWaiting: true,
+          clientsClaim: true,
+          runtimeCaching: [
+            {
+              urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
+              handler: 'CacheFirst',
+              options: {
+                cacheName: 'google-fonts-cache',
+                expiration: {
+                  maxEntries: 10,
+                  maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
+                }
+              }
+            },
+            {
+              urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
+              handler: 'CacheFirst',
+              options: {
+                cacheName: 'gstatic-fonts-cache',
+                expiration: {
+                  maxEntries: 10,
+                  maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
+                }
+              }
+            },
+            {
+              urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp)$/,
+              handler: 'CacheFirst',
+              options: {
+                cacheName: 'images-cache',
+                expiration: {
+                  maxEntries: 60,
+                  maxAgeSeconds: 60 * 60 * 24 * 30 // <== 30 days
+                }
+              }
+            },
+            {
+              urlPattern: ({ request }) => request.destination === 'document',
+              handler: 'NetworkFirst',
+              options: {
+                cacheName: 'pages-cache',
+                expiration: {
+                  maxEntries: 50,
+                  maxAgeSeconds: 60 * 60 * 24 * 7 // <== 7 days
+                }
+              }
+            },
+            {
+              urlPattern: /\/api\/.*$/,
+              handler: 'NetworkFirst',
+              options: {
+                cacheName: 'api-cache',
+                expiration: {
+                  maxEntries: 100,
+                  maxAgeSeconds: 60 * 60 * 24 // <== 1 day
+                },
+                networkTimeoutSeconds: 10,
+                backgroundSync: {
+                  name: 'api-queue',
+                  options: {
+                    maxRetentionTime: 24 * 60 // 24 hours
+                  }
+                }
+              }
+            }
+          ]
+        },
         includeAssets: ["logo.png", "maskable-icon-512x512.png", "apple-touch-icon-180x180.png"],
         manifest: {
           id: '/localyodis/',
@@ -28,7 +98,16 @@ export default defineConfig(() => {
           scope: '/',
           orientation: 'portrait',
           lang: 'en',
-          prefer_related_applications: false,
+          dir: 'ltr',
+          iarc_rating_id: 'e58c174a-81d2-5c3c-32cc-34b8de4a52e8',
+          prefer_related_applications: true,
+          related_applications: [
+            {
+              platform: 'play',
+              url: 'https://play.google.com/store/apps/details?id=app.vercel.localyodis.twa',
+              id: 'app.vercel.localyodis.twa'
+            }
+          ],
           description: 'A privacy-focused local RSS reader that aggregates news and content from your favorite websites. All data stored locally on your device for maximum privacy.',
           theme_color: '#020618',
           launch_handler: {
