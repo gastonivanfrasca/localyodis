@@ -11,6 +11,8 @@ export const MobileLanding = () => {
     window.location.href = PLAY_STORE_URL;
   };
 
+
+
   return (
     <div className="relative min-h-dvh overflow-hidden bg-gradient-to-b from-emerald-500 via-emerald-600 to-emerald-800 text-white">
       {/* Decorative background */}
@@ -61,6 +63,14 @@ export const MobileLanding = () => {
             {t('mobile.landing.openDesktopLink')}
           </button>
         </div>
+      </div>
+      <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-4 text-xs text-white/80">
+        <a href="/privacy-policy" className="underline">
+          {t('mobile.landing.privacy')}
+        </a>
+        <a href="/terms-of-use" className="underline">
+          {t('mobile.landing.terms')}
+        </a>
       </div>
     </div>
   );

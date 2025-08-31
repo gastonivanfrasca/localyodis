@@ -183,6 +183,8 @@ export const fr: TranslationKeys = {
   'mobile.landing.highlight2.desc': 'Vos données restent localement sur votre appareil.',
   'mobile.landing.highlight3.title': 'Sans compte',
   'mobile.landing.highlight3.desc': 'Commencez à lire en quelques secondes, sans inscription.',
+  'mobile.landing.privacy': 'Politique de Confidentialité',
+  'mobile.landing.terms': 'Conditions d’Utilisation',
 
   // RSS Feed
   'rss.lastUpdated': 'Dernière mise à jour',

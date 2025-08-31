@@ -1,6 +1,10 @@
 import "./App.css";
 
-import { getAppContext, isInstalledAndroidApp, logAppContext } from "./utils/device";
+import {
+  getAppContext,
+  isInstalledAndroidApp,
+  shouldShowMobileLanding,
+} from "./utils/device";
 
 import { AdaptiveNavigation } from "./components/AdaptiveNavigation";
 import DebugContext from "./components/DebugContext";
@@ -23,27 +27,29 @@ function App() {
     }
   }, [state.sources.length, navigate]);
 
-  // Initialize app context detection
+  // Verify app installation context
   useEffect(() => {
-    // Log detailed app context for debugging
-    logAppContext();
+    const checkInstallation = async () => {
+      const isAndroidApp = isInstalledAndroidApp();
+      const context = getAppContext();
+      
+      console.log('LocalYodis installation context:', {
+        context,
+        isValidInstallation: isAndroidApp
+      });
+    };
     
-    // Check if running as installed Android app
-    const isAndroidApp = isInstalledAndroidApp();
-    const context = getAppContext();
-    
-    console.log('LocalYodis App Context:', {
-      context,
-      isAndroidApp,
-      shouldAllowApp: isAndroidApp
-    });
-    
-    // If not running as installed Android app, user should be redirected to /mobile
-    // This is handled by ThemeLayout, but we can track it here
-    if (!isAndroidApp && window.location.pathname !== '/mobile') {
-      console.log('Non-Android app access detected - should redirect to /mobile');
-    }
+    checkInstallation();
   }, []);
+
+  useEffect(() => {
+    if (shouldShowMobileLanding()) {
+      const { pathname } = window.location;
+      if (pathname !== "/privacy-policy" && pathname !== "/terms-of-use") {
+        navigate("/mobile");
+      }
+    }
+  }, [navigate]);
 
   // Don't render anything if redirecting to FTU
   if (state.sources.length === 0) {

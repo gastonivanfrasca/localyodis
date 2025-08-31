@@ -183,6 +183,8 @@ export const en: TranslationKeys = {
   'mobile.landing.highlight2.desc': 'Your data stays locally on your device.',
   'mobile.landing.highlight3.title': 'No accounts',
   'mobile.landing.highlight3.desc': 'Start reading in seconds, no sign-ups needed.',
+  'mobile.landing.privacy': 'Privacy Policy',
+  'mobile.landing.terms': 'Terms of Use',
   
   // RSS Feed
   'rss.lastUpdated': 'Last updated',

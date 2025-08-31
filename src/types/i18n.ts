@@ -188,6 +188,8 @@ export type TranslationKeys = {
   'mobile.landing.highlight2.desc': string;
   'mobile.landing.highlight3.title': string;
   'mobile.landing.highlight3.desc': string;
+  'mobile.landing.privacy': string;
+  'mobile.landing.terms': string;
   
   // RSS Feed
   'rss.lastUpdated': string;
