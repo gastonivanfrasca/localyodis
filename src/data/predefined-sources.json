@@ -18,12 +18,6 @@
           "language": "en"
         },
         {
-          "name": "The Verge",
-          "url": "https://www.theverge.com/rss/index.xml",
-          "description": "Technology, art, science, and culture",
-          "language": "en"
-        },
-        {
           "name": "Wired",
           "url": "https://www.wired.com/feed/rss",
           "description": "Ideas that matter in technology",
@@ -52,12 +46,6 @@
           "name": "BBC News",
           "url": "http://feeds.bbci.co.uk/news/rss.xml",
           "description": "International news from the BBC",
-          "language": "en"
-        },
-        {
-          "name": "Reuters",
-          "url": "https://feeds.reuters.com/reuters/topNews",
-          "description": "World news and business",
           "language": "en"
         },
         {
