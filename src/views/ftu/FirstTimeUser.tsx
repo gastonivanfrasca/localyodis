@@ -275,29 +275,29 @@ export const FirstTimeUser = () => {
       </div>
 
       <div className="flex-shrink-0 px-6 py-6 border-t border-zinc-300 dark:border-zinc-800 bg-white dark:bg-slate-950">
-        <div className="max-w-4xl mx-auto flex justify-between items-center">
-          <button
-            onClick={() => {
-              navigate("/settings");
-            }}
-            className="bg-zinc-200 dark:bg-slate-800 p-2.5 rounded-xl hover:bg-zinc-300 dark:hover:bg-slate-700 transition-all duration-200"
-          >
-            <Settings className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
-          </button>
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-zinc-600 dark:text-zinc-400">
-              {totalSources > 0 ? (
-                <span className="text-zinc-700 dark:text-zinc-300">
-                  {totalSources} {totalSources === 1 ? t('ftu.sourceReady') : t('ftu.sourcesReady')}
-                </span>
-              ) : (
-                t('ftu.addInterests')
-              )}
-            </span>
+        <div className="max-w-4xl mx-auto flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <span className="order-1 text-sm text-zinc-600 dark:text-zinc-400 md:order-2 md:text-right">
+            {totalSources > 0 ? (
+              <span className="text-zinc-700 dark:text-zinc-300">
+                {totalSources} {totalSources === 1 ? t('ftu.sourceReady') : t('ftu.sourcesReady')}
+              </span>
+            ) : (
+              t('ftu.addInterests')
+            )}
+          </span>
+          <div className="order-2 flex items-center justify-between gap-4 md:order-1 md:justify-start">
+            <button
+              onClick={() => {
+                navigate("/settings");
+              }}
+              className="bg-zinc-200 dark:bg-slate-800 p-2.5 rounded-xl hover:bg-zinc-300 dark:hover:bg-slate-700 transition-all duration-200"
+            >
+              <Settings className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
+            </button>
             <button
               onClick={handleFinishSetup}
               disabled={!canContinue}
-              className="bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900 font-medium py-2.5 px-6 rounded-xl hover:bg-zinc-700 dark:hover:bg-zinc-300 transition disabled:opacity-50 disabled:cursor-not-allowed text-sm tracking-tight"
+              className="flex-1 bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900 font-medium py-2.5 px-6 rounded-xl hover:bg-zinc-700 dark:hover:bg-zinc-300 transition disabled:opacity-50 disabled:cursor-not-allowed text-sm tracking-tight md:flex-none"
             >
               {t('common.continue')} {totalSources > 0 && `(${totalSources})`}
             </button>
