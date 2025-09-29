@@ -45,7 +45,9 @@ export const FirstTimeUser = () => {
   const canContinue = totalSources > 0;
 
   const predefinedSourcesData = getPredefinedSources();
-  const [selectedCategories, setSelectedCategories] = useState<Set<string>>(new Set());
+  const [selectedCategories, setSelectedCategories] = useState<Set<string>>(
+    () => new Set(['news'])
+  );
   const [selectedLanguage, setSelectedLanguage] = useState<SupportedLanguage | 'all'>('all');
 
   const handleCategorySelect = (categoryId: string) => {
