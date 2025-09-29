@@ -67,6 +67,7 @@ export type TranslationKeys = {
   'sources.selected': string;
   'sources.alreadyExists': string;
   'sources.addedSuccessfully': string;
+  'sources.removedSuccessfully': string;
   'sources.noSourcesFound': string;
   'sources.addCustom': string;
   'sources.addCustomSubtitle': string;
