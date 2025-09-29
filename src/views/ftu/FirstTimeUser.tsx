@@ -98,6 +98,23 @@ export const FirstTimeUser = () => {
     }
   };
 
+  const handleRemoveSource = (sourceUrl: string) => {
+    const existingSource = state.sources.find(source => source.url === sourceUrl);
+
+    if (!existingSource) {
+      showError("Source not found!", "warning");
+      return;
+    }
+
+    const updatedSources = state.sources.filter(source => source.url !== sourceUrl);
+    const updatedActiveSources = state.activeSources.filter(id => id !== existingSource.id);
+
+    dispatch({ type: ActionTypes.SET_SOURCES, payload: updatedSources });
+    dispatch({ type: ActionTypes.SET_ACTIVE_SOURCES, payload: updatedActiveSources });
+
+    showError("Source removed successfully!", "success");
+  };
+
   const allSelectedSources = selectedCategories.size === 0 
     ? [] 
     : predefinedSourcesData.categories
@@ -208,6 +225,7 @@ export const FirstTimeUser = () => {
                       source={source}
                       isAdded={addedSourceUrls.has(source.url)}
                       onAdd={() => handleAddSource(source.url)}
+                      onRemove={() => handleRemoveSource(source.url)}
                     />
                   ))}
                 </div>
