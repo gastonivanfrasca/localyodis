@@ -64,10 +64,17 @@ export const FirstTimeUser = () => {
     setSelectedLanguage(language);
   };
 
-  const handleAddSource = (sourceUrl: string) => {
+  const handleToggleSource = (sourceUrl: string) => {
     const existingSource = state.sources.find(source => source.url === sourceUrl);
+
     if (existingSource) {
-      showError("Source already exists!", "warning");
+      const updatedSources = state.sources.filter(source => source.url !== sourceUrl);
+      const updatedActiveSources = state.activeSources.filter(id => id !== existingSource.id);
+
+      dispatch({ type: ActionTypes.SET_SOURCES, payload: updatedSources });
+      dispatch({ type: ActionTypes.SET_ACTIVE_SOURCES, payload: updatedActiveSources });
+
+      showError(t('sources.removedSuccessfully'), 'info');
       return;
     }
 
@@ -94,7 +101,7 @@ export const FirstTimeUser = () => {
       dispatch({ type: ActionTypes.SET_SOURCES, payload: [...state.sources, newSource] });
       dispatch({ type: ActionTypes.SET_ACTIVE_SOURCES, payload: [...state.activeSources, sourceId] });
 
-      showError("Source added successfully!", "success");
+      showError(t('sources.addedSuccessfully'), 'success');
     }
   };
 
@@ -207,7 +214,7 @@ export const FirstTimeUser = () => {
                       key={source.url}
                       source={source}
                       isAdded={addedSourceUrls.has(source.url)}
-                      onAdd={() => handleAddSource(source.url)}
+                      onToggle={handleToggleSource}
                     />
                   ))}
                 </div>

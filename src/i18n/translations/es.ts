@@ -61,6 +61,7 @@ export const es: TranslationKeys = {
   'sources.selected': 'fuentes seleccionadas',
   'sources.alreadyExists': '¡La fuente ya existe!',
   'sources.addedSuccessfully': '¡Fuente agregada exitosamente!',
+  'sources.removedSuccessfully': 'Fuente deseleccionada correctamente.',
   'sources.noSourcesFound': 'No se encontraron fuentes que coincidan con',
   'sources.addCustom': 'Agregar Fuente Personalizada',
   'sources.addCustomSubtitle': 'Agrega cualquier feed RSS o sitio web ingresando su URL',

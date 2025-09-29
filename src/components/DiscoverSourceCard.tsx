@@ -1,14 +1,14 @@
-import { Check, Plus, Rss } from "lucide-react";
+import { Check, Minus, Plus, Rss } from "lucide-react";
 
 import { PredefinedSource } from "../types/predefined-sources";
 
 type DiscoverSourceCardProps = {
   source: PredefinedSource;
   isAdded: boolean;
-  onAdd: (sourceUrl: string) => void;
+  onToggle: (sourceUrl: string) => void;
 };
 
-export const DiscoverSourceCard = ({ source, isAdded, onAdd }: DiscoverSourceCardProps) => {
+export const DiscoverSourceCard = ({ source, isAdded, onToggle }: DiscoverSourceCardProps) => {
   return (
     <div
       className={`
@@ -21,26 +21,31 @@ export const DiscoverSourceCard = ({ source, isAdded, onAdd }: DiscoverSourceCar
       `}
     >
       {/* Action indicator */}
-      <div className={`
-        absolute top-3 right-3 w-8 h-8 rounded-full border-2 transition-all duration-200 flex items-center justify-center
-        ${
-          isAdded
-            ? 'border-green-500 dark:border-green-400 bg-green-500 dark:bg-green-400'
-            : 'border-zinc-400 dark:border-zinc-600 bg-transparent group-hover:border-zinc-500 dark:group-hover:border-zinc-500 cursor-pointer'
-        }
-      `}>
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          onToggle(source.url);
+        }}
+        className={`
+          absolute top-3 right-3 w-8 h-8 rounded-full border-2 transition-all duration-200 flex items-center justify-center cursor-pointer
+          ${
+            isAdded
+              ? 'border-green-500 dark:border-green-400 bg-green-500 dark:bg-green-400 hover:bg-green-600 dark:hover:bg-green-300'
+              : 'border-zinc-400 dark:border-zinc-600 bg-transparent group-hover:border-zinc-500 dark:group-hover:border-zinc-500 hover:bg-zinc-200 dark:hover:bg-slate-800'
+          }
+          focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-zinc-500 dark:focus-visible:ring-zinc-300 dark:focus-visible:ring-offset-slate-950
+        `}
+        aria-pressed={isAdded}
+        aria-label={isAdded ? 'Remove source' : 'Add source'}
+        title={isAdded ? 'Remove source' : 'Add source'}
+      >
         {isAdded ? (
-          <Check className="w-4 h-4 text-white dark:text-zinc-900" />
+          <Minus className="w-4 h-4 text-white dark:text-zinc-900" />
         ) : (
-          <Plus
-            className="w-4 h-4 text-zinc-700 dark:text-zinc-300 group-hover:text-zinc-800 dark:group-hover:text-zinc-200"
-            onClick={(e) => {
-              e.stopPropagation();
-              onAdd(source.url);
-            }}
-          />
+          <Plus className="w-4 h-4 text-zinc-700 dark:text-zinc-300" />
         )}
-      </div>
+      </button>
 
       {/* Source info */}
       <div className="pr-10 flex items-start gap-3">
