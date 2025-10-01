@@ -44,6 +44,8 @@ export type LocallyStoredData = {
   scrollPosition: number;
   loading: boolean;
   lastUpdated: string;
+  newItemsCount: number;
+  latestFetchStatus: 'idle' | 'new' | 'upToDate';
   searchQuery: string | null;
   activeItems: RSSItem[];
   error: ErrorState;

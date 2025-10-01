@@ -18,6 +18,8 @@ const initialState: LocallyStoredData = {
   bookmarks: localData.bookmarks,
   navigation: localData.navigation || null,
   lastUpdated: localData.lastUpdated,
+  newItemsCount: localData.newItemsCount ?? 0,
+  latestFetchStatus: localData.latestFetchStatus ?? 'idle',
   activeSources: localData.activeSources || localData.sources.map((source) => source.id),
   scrollPosition: localData.scrollPosition,
   loading: localData.loading,
@@ -91,9 +93,15 @@ const reducer = (state: LocallyStoredData, action: Action) => {
     case ActionTypes.CLEAR_HISTORY:
       return { ...state, history: [] };
     case ActionTypes.REMOVE_FROM_HISTORY:
-      return { 
-        ...state, 
+      return {
+        ...state,
         history: state.history.filter(item => item.link !== action.payload)
+      };
+    case ActionTypes.SET_NEW_ITEMS_STATUS:
+      return {
+        ...state,
+        newItemsCount: action.payload.count,
+        latestFetchStatus: action.payload.status,
       };
     default:
       return state;

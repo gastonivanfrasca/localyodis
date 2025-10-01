@@ -147,7 +147,12 @@ export const es: TranslationKeys = {
   'ftu.sourceReady': 'interés listo',
   'ftu.sourcesReady': 'intereses listos',
   'ftu.addInterests': 'Añade tus intereses para empezar',
-  
+
+  // Feed
+  'feed.newItems': 'nuevos ítems',
+  'feed.newItem': 'nuevo ítem',
+  'feed.upToDate': 'Al día',
+
   // RSS Feed
   'rss.lastUpdated': 'Última actualización',
   'rss.noItems': 'No hay elementos disponibles',
