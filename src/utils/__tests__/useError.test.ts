@@ -24,6 +24,7 @@ vi.mock("../../context/main", async () => {
         error: null,
         hiddenItems: [],
         history: [],
+        newItemsCount: 0,
       } as LocallyStoredData,
       dispatch: dispatchMock,
     }),

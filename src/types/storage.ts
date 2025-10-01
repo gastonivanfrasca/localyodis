@@ -49,4 +49,5 @@ export type LocallyStoredData = {
   error: ErrorState;
   hiddenItems: string[]; // Array of hidden item IDs
   history: HistoryItem[]; // Array of visited links
+  newItemsCount: number;
 };

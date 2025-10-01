@@ -27,6 +27,7 @@ const defaultLocallyStoredData = {
   error: null,
   hiddenItems: [], // Initialize empty array for hidden items
   history: [], // Initialize empty array for history
+  newItemsCount: 0,
 } as LocallyStoredData;
 
 export const storeDataLocally = (data: LocallyStoredData) => {
@@ -129,6 +130,10 @@ export const getLocallyStoredData = (): LocallyStoredData => {
   // Ensure language exists (for backward compatibility)
   if (!parsedStoredData.language) {
     parsedStoredData.language = getBrowserLanguage();
+  }
+
+  if (typeof parsedStoredData.newItemsCount !== "number") {
+    parsedStoredData.newItemsCount = 0;
   }
 
   parsedStoredData.sources.forEach((source) => {

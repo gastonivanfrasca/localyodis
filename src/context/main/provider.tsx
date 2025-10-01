@@ -26,6 +26,7 @@ const initialState: LocallyStoredData = {
   error: null,
   hiddenItems: localData.hiddenItems || [],
   history: localData.history || [],
+  newItemsCount: localData.newItemsCount || 0,
 };
 
 
@@ -66,6 +67,8 @@ const reducer = (state: LocallyStoredData, action: Action) => {
       return { ...state, searchQuery: null };
     case ActionTypes.SET_ACTIVE_ITEMS:
       return { ...state, activeItems: action.payload };
+    case ActionTypes.SET_NEW_ITEMS_COUNT:
+      return { ...state, newItemsCount: action.payload };
     case ActionTypes.SET_ERROR:
       return { ...state, error: action.payload };
     case ActionTypes.CLEAR_ERROR:

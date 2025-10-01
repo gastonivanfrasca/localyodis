@@ -24,6 +24,7 @@ const createState = (overrides: Partial<LocallyStoredData> = {}): LocallyStoredD
   error: null,
   hiddenItems: [],
   history: [],
+  newItemsCount: 0,
   ...overrides,
 });
 

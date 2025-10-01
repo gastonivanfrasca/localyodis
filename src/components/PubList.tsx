@@ -48,6 +48,10 @@ export const PubsList = () => {
         payload: state.bookmarks,
       });
       dispatch({
+        type: ActionTypes.SET_NEW_ITEMS_COUNT,
+        payload: 0,
+      });
+      dispatch({
         type: ActionTypes.SET_LOADING,
         payload: false,
       });
@@ -70,6 +74,10 @@ export const PubsList = () => {
         payload: historyAsRSSItems,
       });
       dispatch({
+        type: ActionTypes.SET_NEW_ITEMS_COUNT,
+        payload: 0,
+      });
+      dispatch({
         type: ActionTypes.SET_LOADING,
         payload: false,
       });
@@ -85,6 +93,10 @@ export const PubsList = () => {
         });
       }
       dispatch({
+        type: ActionTypes.SET_NEW_ITEMS_COUNT,
+        payload: 0,
+      });
+      dispatch({
         type: ActionTypes.SET_LOADING,
         payload: false,
       });
@@ -95,7 +107,13 @@ export const PubsList = () => {
       const sourcesToFetch = state.sources.filter((source) =>
         state.activeSources.includes(source.id)
       );
-      if (sourcesToFetch.length < 1) return;
+      if (sourcesToFetch.length < 1) {
+        dispatch({
+          type: ActionTypes.SET_NEW_ITEMS_COUNT,
+          payload: 0,
+        });
+        return;
+      }
       const sourcesURL = sourcesToFetch.map((source) => {
         return {
           id: source.id,
@@ -113,15 +131,21 @@ export const PubsList = () => {
         
         // Filter out hidden items before saving to localStorage
         const filteredItems = filterHiddenItems(limitedItems, state.hiddenItems);
-        
+
+        const newItemsCount = calculateNewItemsCount(state.items, filteredItems);
+
         dispatch({
           type: ActionTypes.SET_ITEMS,
           payload: filteredItems,
         });
-        
+
         dispatch({
           type: ActionTypes.SET_ACTIVE_ITEMS,
           payload: filteredItems,
+        });
+        dispatch({
+          type: ActionTypes.SET_NEW_ITEMS_COUNT,
+          payload: newItemsCount,
         });
         dispatch({
           type: ActionTypes.SET_LAST_UPDATED,
@@ -419,6 +443,46 @@ export const SearchEmpty = () => {
       </div>
     </div>
   );
+};
+
+const calculateNewItemsCount = (previousItems: RSSItem[], nextItems: RSSItem[]) => {
+  if (!previousItems || previousItems.length === 0) {
+    return 0;
+  }
+
+  const previousKeys = new Set(
+    previousItems
+      .map((item) => getItemUniqueKey(item))
+      .filter((key): key is string => Boolean(key))
+  );
+
+  return nextItems.reduce((count, item) => {
+    const key = getItemUniqueKey(item);
+    if (!key) {
+      return count;
+    }
+    return previousKeys.has(key) ? count : count + 1;
+  }, 0);
+};
+
+const getItemUniqueKey = (item: RSSItem): string => {
+  const link = extractLink(item);
+  if (link) {
+    return link;
+  }
+
+  if (typeof item.id === "string" && item.id) {
+    return item.id;
+  }
+
+  if (Array.isArray(item.guid) && item.guid.length > 0) {
+    const guidCandidate = item.guid.find((value) => typeof value === "string");
+    if (typeof guidCandidate === "string" && guidCandidate) {
+      return guidCandidate;
+    }
+  }
+
+  return extractItemTitle(item);
 };
 
 const extractLink = (item: RSSItem): string => {
