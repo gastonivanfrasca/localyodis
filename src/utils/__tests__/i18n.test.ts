@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest";
+import type { LanguageOption } from "../../types/i18n";
 
 const modulePath = "../../i18n";
 
@@ -13,7 +14,7 @@ describe("i18n utilities", () => {
     expect(getBrowserLanguage()).toBe(DEFAULT_LANGUAGE);
 
     Object.defineProperty(navigator, "language", { value: originalLanguage, configurable: true });
-    expect(SUPPORTED_LANGUAGES.map((lang) => lang.code)).toContain("en");
+    expect(SUPPORTED_LANGUAGES.map((lang: LanguageOption) => lang.code)).toContain("en");
   });
 
   it("returns translations and language options", async () => {

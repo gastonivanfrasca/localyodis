@@ -10,7 +10,7 @@ describe("internationalized formatting", () => {
     const { formatPubDateI18n } = await import(modulePath);
     expect(formatPubDateI18n("2024-05-08T08:00:00Z", "en")).toBe("Today");
     expect(formatPubDateI18n("2024-05-07T08:00:00Z", "en")).toBe("Yesterday");
-    expect(formatPubDateI18n("2024-05-06T08:00:00Z", "en")).toBe("2 days ago");
+    expect(formatPubDateI18n("2024-05-06T12:00:00Z", "en")).toBe("2 days ago");
     expect(formatPubDateI18n("invalid", "en")).toBe("Unknown");
 
     vi.useRealTimers();

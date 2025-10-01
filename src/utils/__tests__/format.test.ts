@@ -1,4 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
+import type { ItemWithSeparator } from "../format";
 
 const modulePath = "../format";
 
@@ -56,7 +57,7 @@ describe("format utilities", () => {
     ];
 
     const grouped = groupItemsByDateWithSeparators(items);
-    expect(grouped.map((entry) => entry.type)).toEqual(["item", "separator", "item", "separator", "item"]);
+    expect(grouped.map((entry: ItemWithSeparator) => entry.type)).toEqual(["item", "separator", "item", "separator", "item"]);
     expect(grouped[1].category).toBe("yesterday");
 
     vi.useRealTimers();

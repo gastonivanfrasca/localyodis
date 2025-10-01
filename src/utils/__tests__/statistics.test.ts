@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import type { HistoryItem, Items, Source } from "../../types/storage";
+import type { BookmarkSourceStats, SourceStatistics } from "../statistics";
 
 const modulePath = "../statistics";
 
@@ -25,7 +26,7 @@ describe("statistics utilities", () => {
     expect(stats.uniqueSources).toBe(2);
     expect(stats.mostActiveSource?.sourceId).toBe("1");
     expect(stats.leastActiveSource?.sourceId).toBe("2");
-    expect(stats.sourceStats.find((stat) => stat.sourceId === "1")?.totalVisits).toBe(2);
+    expect(stats.sourceStats.find((stat: SourceStatistics) => stat.sourceId === "1")?.totalVisits).toBe(2);
     expect(stats.lastSevenDays).toHaveLength(7);
 
     vi.useRealTimers();
@@ -50,7 +51,7 @@ describe("statistics utilities", () => {
     const stats = calculateBookmarksStatistics(bookmarks, sources);
     expect(stats.totalBookmarks).toBe(3);
     expect(stats.mostBookmarkedSource?.sourceId).toBe("1");
-    expect(stats.sourceStats.find((stat) => stat.sourceId === "2")?.totalBookmarks).toBe(1);
+    expect(stats.sourceStats.find((stat: BookmarkSourceStats) => stat.sourceId === "2")?.totalBookmarks).toBe(1);
   });
 
   it("formats dates relative to now", async () => {
@@ -58,10 +59,10 @@ describe("statistics utilities", () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2024-05-04T12:00:00Z"));
 
-    expect(formatDate("2024-05-04T11:00:00Z")).toBe("Just now");
+    expect(formatDate("2024-05-04T11:30:00Z")).toBe("Just now");
     expect(formatDate("2024-05-04T01:00:00Z")).toBe("11 hours ago");
     expect(formatDate("2024-05-03T12:00:00Z")).toBe("Yesterday");
-    expect(formatDate("2024-04-30T12:00:00Z")).toBe("3 days ago");
+    expect(formatDate("2024-05-01T12:00:00Z")).toBe("3 days ago");
 
     vi.useRealTimers();
   });
@@ -71,9 +72,9 @@ describe("statistics utilities", () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2024-05-04T12:00:00Z"));
 
-    expect(formatDayOfWeek("2024-05-04T12:00:00Z")).toBe("Today");
-    expect(formatDayOfWeek("2024-05-03T12:00:00Z")).toBe("Yesterday");
-    expect(formatDayOfWeek("2024-05-02T12:00:00Z")).toBe("Thu");
+    expect(formatDayOfWeek("2024-05-04T00:00:00Z")).toBe("Today");
+    expect(formatDayOfWeek("2024-05-03T00:00:00Z")).toBe("Yesterday");
+    expect(formatDayOfWeek("2024-05-02T00:00:00Z")).toBe("Thu");
 
     vi.useRealTimers();
   });

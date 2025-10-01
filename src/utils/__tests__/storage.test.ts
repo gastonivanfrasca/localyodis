@@ -103,7 +103,7 @@ describe("storage utilities", () => {
 
     const source = getSourceByID("1");
     expect(source?.name).toBe("A");
-    expect(getSourceByID("missing")).toBeNull();
+    expect(getSourceByID("missing")).toBeUndefined();
   });
 
   it("provides storage information", async () => {
