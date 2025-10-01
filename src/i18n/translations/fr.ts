@@ -148,6 +148,11 @@ export const fr: TranslationKeys = {
   'ftu.sourcesReady': 'intérêts prêts',
   'ftu.addInterests': 'Ajoutez vos intérêts pour commencer',
 
+  // Feed
+  'feed.newItems': 'nouveaux articles',
+  'feed.newItem': 'nouvel article',
+  'feed.upToDate': 'À jour',
+
   // RSS Feed
   'rss.lastUpdated': 'Dernière mise à jour',
   'rss.noItems': 'Aucun élément disponible',

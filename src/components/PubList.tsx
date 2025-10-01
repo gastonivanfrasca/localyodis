@@ -110,10 +110,28 @@ export const PubsList = () => {
         
         // Aplicar límites de storage automáticamente
         const limitedItems = applyStorageLimits(newItems);
-        
+
         // Filter out hidden items before saving to localStorage
         const filteredItems = filterHiddenItems(limitedItems, state.hiddenItems);
-        
+
+        const previousItems = state.items || [];
+        const hasExistingItems = previousItems.length > 0;
+        const previousItemLinks = new Set(previousItems.map(extractLink));
+        const newItemsCount = hasExistingItems
+          ? filteredItems.reduce((count, item) => {
+              const link = extractLink(item);
+              return previousItemLinks.has(link) ? count : count + 1;
+            }, 0)
+          : 0;
+
+        dispatch({
+          type: ActionTypes.SET_NEW_ITEMS_STATUS,
+          payload: {
+            count: newItemsCount,
+            status: newItemsCount > 0 ? 'new' : 'upToDate',
+          },
+        });
+
         dispatch({
           type: ActionTypes.SET_ITEMS,
           payload: filteredItems,

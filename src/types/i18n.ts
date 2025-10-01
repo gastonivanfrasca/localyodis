@@ -152,7 +152,12 @@ export type TranslationKeys = {
   'ftu.sourceReady': string;
   'ftu.sourcesReady': string;
   'ftu.addInterests': string;
-  
+
+  // Feed
+  'feed.newItems': string;
+  'feed.newItem': string;
+  'feed.upToDate': string;
+
   // RSS Feed
   'rss.lastUpdated': string;
   'rss.noItems': string;
