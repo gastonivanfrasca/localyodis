@@ -5,6 +5,7 @@ import { Navigations } from "./types/navigation";
 import { PubsList } from "./components/PubList";
 import { SearchInput } from "./components/v2/SearchInput";
 import { SectionIndicator } from "./components/v2/SectionIndicator";
+import { NewItemsPill } from "./components/v2/NewItemsPill";
 import Snackbar from "./components/Snackbar";
 import { useEffect } from "react";
 import { useMainContext } from "./context/main";
@@ -33,6 +34,7 @@ function App() {
         {state.navigation === Navigations.SEARCH && <SearchInput />}
         <SectionIndicator />
         <div className="px-8 md:px-6 pt-2 flex flex-col gap-8 max-h-full overflow-scroll items-center bg-white dark:bg-slate-950 hide-scrollbar">
+          <NewItemsPill />
           <PubsList />
         </div>
       </AdaptiveNavigation>

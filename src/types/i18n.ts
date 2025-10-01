@@ -159,6 +159,8 @@ export type TranslationKeys = {
   'rss.refresh': string;
   'rss.link': string;
   'rss.example': string;
+  'feed.newItems': string;
+  'feed.upToDate': string;
   
   // YouTube
   'youtube.channelName': string;
