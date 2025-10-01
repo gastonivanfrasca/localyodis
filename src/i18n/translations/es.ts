@@ -154,6 +154,9 @@ export const es: TranslationKeys = {
   'rss.refresh': 'Actualizar',
   'rss.link': 'Enlace RSS',
   'rss.example': 'ej. https://ejemplo.com/feed.xml',
+  'rss.newItems': 'nuevos ítems',
+  'rss.newItem': 'nuevo ítem',
+  'rss.upToDate': 'Al día',
   
   // YouTube
   'youtube.channelName': 'Nombre del canal',

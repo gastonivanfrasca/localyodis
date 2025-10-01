@@ -1,8 +1,8 @@
 import { ActionTypes, useMainContext } from "../context/main";
 import { Bookmark, Clock, Search, Settings } from "lucide-react";
 import { STORAGE_CONFIG, cleanupHiddenItems, extractItemTitle, filterHiddenItems } from "../utils/storage";
-import { fetchRSS, getRSSItemStrProp } from "../utils/rss";
-import { useEffect, useRef } from "react";
+import { calculateNewItemsCount, fetchRSS, getRSSItemLink, getRSSItemStrProp } from "../utils/rss";
+import { useEffect, useRef, useState } from "react";
 
 import { BackgroundedButtonWithIcon } from "./v2/AddSourceButton";
 import { DateSeparator } from "./v2/DateSeparator";
@@ -20,9 +20,17 @@ import { useNavigate } from "react-router";
 export const PubsList = () => {
   const { state, dispatch } = useMainContext();
   const { showError } = useError();
+  const { t } = useI18n();
 
   const scrollPositionRef = useRef(0);
   const navigationRef = useRef(state.navigation);
+  const [refreshStatus, setRefreshStatus] = useState<{ type: "new" | "upToDate" | null; count?: number }>({ type: null });
+
+  useEffect(() => {
+    if (state.navigation !== null) {
+      setRefreshStatus({ type: null });
+    }
+  }, [state.navigation]);
 
   useEffect(() => {
     const element = document.getElementById("pubs-list") as HTMLDivElement;
@@ -104,16 +112,27 @@ export const PubsList = () => {
       });
       try {
         const newItems = await fetchRSS(sourcesURL);
-        
+
         // Cleanup hidden items that no longer exist in the new feed
         cleanupHiddenItems(newItems);
-        
+
         // Aplicar límites de storage automáticamente
         const limitedItems = applyStorageLimits(newItems);
-        
+
         // Filter out hidden items before saving to localStorage
         const filteredItems = filterHiddenItems(limitedItems, state.hiddenItems);
-        
+
+        if (state.navigation === null) {
+          const newItemsCount = calculateNewItemsCount(state.items, filteredItems);
+          if (newItemsCount > 0) {
+            setRefreshStatus({ type: "new", count: newItemsCount });
+          } else if ((state.items?.length || 0) > 0) {
+            setRefreshStatus({ type: "upToDate" });
+          } else {
+            setRefreshStatus({ type: null });
+          }
+        }
+
         dispatch({
           type: ActionTypes.SET_ITEMS,
           payload: filteredItems,
@@ -161,7 +180,7 @@ export const PubsList = () => {
   const bookmarkItem = (item: RSSItem) => {
     const newBookmark = {
       title: getRSSItemStrProp(item, "title"),
-      link: extractLink(item),
+      link: getRSSItemLink(item),
       source: item.source,
       pubDate: getRSSItemStrProp(item, "pubDate"),
     };
@@ -173,7 +192,7 @@ export const PubsList = () => {
 
   const unbookmarkItem = (item: RSSItem) => {
     const updatedBookmarks = state.bookmarks.filter(
-      (bookmark) => bookmark.link !== extractLink(item)
+      (bookmark) => bookmark.link !== getRSSItemLink(item)
     );
     dispatch({
       type: ActionTypes.SET_BOOKMARKS,
@@ -191,7 +210,7 @@ export const PubsList = () => {
     const itemTitle = extractItemTitle(item);
     const filteredItems = state.items.filter(i => extractItemTitle(i) !== itemTitle);
     const filteredActiveItems = state.activeItems.filter(i => extractItemTitle(i) !== itemTitle);
-    
+
     dispatch({
       type: ActionTypes.SET_ITEMS,
       payload: filteredItems,
@@ -204,20 +223,29 @@ export const PubsList = () => {
   };
 
   const removeFromHistory = (item: RSSItem) => {
-    const itemLink = extractLink(item);
+    const itemLink = getRSSItemLink(item);
     dispatch({
       type: ActionTypes.REMOVE_FROM_HISTORY,
       payload: itemLink,
     });
-    
+
     // Also remove from activeItems if we're in history view
     if (state.navigation === Navigations.HISTORY) {
-      const filteredActiveItems = state.activeItems.filter(i => extractLink(i) !== itemLink);
+      const filteredActiveItems = state.activeItems.filter(i => getRSSItemLink(i) !== itemLink);
       dispatch({
         type: ActionTypes.SET_ACTIVE_ITEMS,
         payload: filteredActiveItems,
       });
     }
+  };
+
+  const handleRefreshPillClick = () => {
+    if (refreshStatus.type === null) return;
+
+    const element = document.getElementById("pubs-list");
+    element?.scrollTo({ top: 0, behavior: "smooth" });
+
+    setRefreshStatus({ type: null });
   };
 
   if (
@@ -255,6 +283,25 @@ export const PubsList = () => {
   return (
     <>
       <div id="pubs-list" className="p-0 flex flex-col gap-8 h-full w-full bg-white dark:bg-slate-950">
+        {refreshStatus.type && (
+          <div className="sticky top-4 z-10 flex justify-center pointer-events-none">
+            <button
+              type="button"
+              onClick={handleRefreshPillClick}
+              className="pointer-events-auto inline-flex items-center gap-2 rounded-full bg-blue-600 px-4 py-1 text-sm font-medium text-white shadow-lg transition hover:bg-blue-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-slate-950"
+            >
+              {refreshStatus.type === "new" && (
+                <>
+                  <span className="text-base font-semibold">+{refreshStatus.count}</span>
+                  <span>{refreshStatus.count === 1 ? t('rss.newItem') : t('rss.newItems')}</span>
+                </>
+              )}
+              {refreshStatus.type === "upToDate" && (
+                <span>{t('rss.upToDate')}</span>
+              )}
+            </button>
+          </div>
+        )}
         <Virtuoso
           className="hide-scrollbar"
           style={{
@@ -290,7 +337,7 @@ export const PubsList = () => {
             const item = currentItem.data!;
             const bookmark = state.bookmarks?.find((bookmark) => {
               const bookmarkLink = bookmark.link;
-              const itemLink = extractLink(item);
+              const itemLink = getRSSItemLink(item);
               return bookmarkLink === itemLink;
             }) as RSSItem | undefined;
 
@@ -419,19 +466,6 @@ export const SearchEmpty = () => {
       </div>
     </div>
   );
-};
-
-const extractLink = (item: RSSItem): string => {
-  if (Array.isArray(item.link) && item.link.length > 0) {
-    if (typeof item.link[0] === "object" && item.link[0]["$"]) {
-      return item.link[0]["$"].href;
-    }
-    if (typeof item.link[0] === "string") return item.link[0];
-  }
-
-  if (typeof item.link === "string") return item.link;
-
-  return item.id || "";
 };
 
 const PubListShapeSkeleton = () => {
