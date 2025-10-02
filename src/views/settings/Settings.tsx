@@ -1,4 +1,5 @@
 import { ConfirmationModal } from "../../components/ConfirmationModal";
+import { Globe2, RotateCcw } from "lucide-react";
 import { NavigationTitleWithBack } from "../../components/v2/NavigationTitleWithBack";
 import { useI18n } from "../../context/i18n";
 import { useState } from "react";
@@ -22,28 +23,35 @@ export const Settings = () => {
   return (
     <div className="min-h-dvh bg-white dark:bg-slate-950 text-black dark:text-white font-sans flex flex-col">
       <NavigationTitleWithBack label={t('settings.title')} />
-      
+
       {/* Main Content Container - Centered on Desktop */}
       <div className="flex-1 flex justify-center">
-        <div className="w-full max-w-2xl px-6 mt-16 flex flex-col gap-5 py-6">
-          
+        <div className="w-full max-w-2xl px-6 mt-16 flex flex-col gap-6 py-10">
+
           {/* Language Selection */}
-          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-6">
-            <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-2">
-              {t('settings.language')}
-            </h3>
-            <p className="text-blue-700 dark:text-blue-300 text-sm mb-4">
-              {t('settings.language.description')}
-            </p>
+          <div className="bg-zinc-100 dark:bg-slate-900 border border-zinc-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
+            <div className="flex items-start gap-4 mb-6">
+              <div className="p-3 rounded-xl bg-white dark:bg-slate-950 border border-zinc-200 dark:border-slate-800 text-zinc-700 dark:text-zinc-300">
+                <Globe2 className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-1">
+                  {t('settings.language')}
+                </h3>
+                <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                  {t('settings.language.description')}
+                </p>
+              </div>
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {languages.map((lang) => (
                 <button
                   key={lang.code}
                   onClick={() => handleLanguageChange(lang.code)}
-                  className={`flex items-center gap-3 p-3 rounded-xl border transition ${
+                  className={`flex items-start gap-3 p-4 rounded-xl border transition text-left shadow-sm ${
                     language === lang.code
-                      ? 'bg-blue-100 dark:bg-blue-900/50 border-blue-300 dark:border-blue-600 text-blue-900 dark:text-blue-100'
-                      : 'bg-white dark:bg-slate-800 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700'
+                      ? 'bg-zinc-900 text-white dark:bg-zinc-200 dark:text-zinc-900 border-transparent'
+                      : 'bg-white dark:bg-slate-950 border-zinc-200 dark:border-slate-800 text-zinc-700 dark:text-zinc-300 hover:border-zinc-400 dark:hover:border-slate-700'
                   }`}
                 >
                   <div className="text-left">
@@ -56,16 +64,23 @@ export const Settings = () => {
           </div>
 
           {/* Reset Configuration Button */}
-          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-6">
-            <h3 className="text-lg font-semibold text-red-900 dark:text-red-100 mb-2">
-              {t('settings.reset.title')}
-            </h3>
-            <p className="text-red-700 dark:text-red-300 text-sm mb-4">
-              {t('settings.reset.description')}
-            </p>
+          <div className="bg-zinc-100 dark:bg-slate-900 border border-zinc-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
+            <div className="flex items-start gap-4 mb-6">
+              <div className="p-3 rounded-xl bg-white dark:bg-slate-950 border border-zinc-200 dark:border-slate-800 text-red-500">
+                <RotateCcw className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-1">
+                  {t('settings.reset.title')}
+                </h3>
+                <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                  {t('settings.reset.description')}
+                </p>
+              </div>
+            </div>
             <button
               onClick={() => setIsResetModalOpen(true)}
-              className="bg-red-600 hover:bg-red-700 text-white font-medium py-2.5 px-6 rounded-xl transition text-sm tracking-tight"
+              className="inline-flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white font-medium py-2.5 px-6 rounded-xl transition text-sm tracking-tight"
             >
               {t('settings.reset')}
             </button>
