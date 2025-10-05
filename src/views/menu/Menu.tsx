@@ -8,6 +8,7 @@ import { Navigations } from "../../types/navigation";
 import Snackbar from "../../components/Snackbar";
 import { ThemeSwitcher } from "../../components/ThemeSwitcher";
 import { useI18n } from "../../context/i18n";
+import kromemo from "kromemo";
 
 export const Menu = () => {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ export const Menu = () => {
   const { t } = useI18n();
 
   const handleHistoryClick = () => {
+    kromemo.trackEvent({ name: 'clicked_menu_history' });
     dispatch({
       type: ActionTypes.SET_NAVIGATION,
       payload: Navigations.HISTORY,
@@ -29,16 +31,16 @@ export const Menu = () => {
       {/* Main Content Container - Centered on Desktop */}
       <div className="flex-1 flex justify-center">
         <div className="w-full max-w-2xl px-6 mt-16 flex flex-col gap-5 py-6">
-          <Link to={"/sources"} className="cursor-pointer">
+          <Link to={"/sources"} className="cursor-pointer" onClick={() => kromemo.trackEvent({ name: 'clicked_menu_sources' })}>
             <MenuItem icon={<Rss />} label={t('sources.title')} />
           </Link>
           <button onClick={handleHistoryClick} className="cursor-pointer">
             <MenuItem icon={<Clock />} label={t('history.title')} />
           </button>
-          <Link to={"/statistics"} className="cursor-pointer">
+          <Link to={"/statistics"} className="cursor-pointer" onClick={() => kromemo.trackEvent({ name: 'clicked_menu_statistics' })}>
             <MenuItem icon={<BarChart3 />} label={t('statistics.title')} />
           </Link>
-          <Link to={"/settings"} className="cursor-pointer">
+          <Link to={"/settings"} className="cursor-pointer" onClick={() => kromemo.trackEvent({ name: 'clicked_menu_settings' })}>
             <MenuItem icon={<Settings />} label={t('settings.title')} />
           </Link>
           <ThemeSwitcher />

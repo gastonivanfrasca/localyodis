@@ -6,6 +6,7 @@ import { ActionTypes } from '../../context/main';
 import { ActiveIndicator } from '../ActiveIndicator';
 import { SidebarButton } from './SidebarButton';
 import { useI18n } from '../../context/i18n';
+import kromemo from 'kromemo';
 import { useMainContext } from '../../context/main';
 
 // Home Button for Sidebar
@@ -19,6 +20,7 @@ export const SidebarHomeButton = ({ mode }: { mode: HomeButtonModes }) => {
   const isActive = location.pathname === "/" && state.navigation === null;
 
   const handleHomeClick = () => {
+    kromemo.trackEvent({ name: 'clicked_nav_home', payload: { active: !isActive } });
     // If not on home page, navigate to home
     if (location.pathname !== "/") {
       navigate("/");
@@ -83,6 +85,7 @@ export const SidebarBookmarksButton = () => {
   const isActive = state.navigation === Navigations.BOOKMARKEDS;
   
   const handleClick = () => {
+    kromemo.trackEvent({ name: 'clicked_nav_bookmarks', payload: { active: !isActive } });
     if (isActive) {
       dispatch({
         type: ActionTypes.SET_NAVIGATION,
@@ -113,6 +116,7 @@ export const SidebarSearchButton = () => {
   const isActive = state.navigation === Navigations.SEARCH;
   
   const handleClick = () => {
+    kromemo.trackEvent({ name: 'clicked_nav_search', payload: { active: !isActive } });
     if (isActive) {
       dispatch({
         type: ActionTypes.SET_NAVIGATION,
@@ -150,6 +154,7 @@ export const SidebarHistoryButton = () => {
   const isActive = state.navigation === Navigations.HISTORY;
   
   const handleClick = () => {
+    kromemo.trackEvent({ name: 'clicked_nav_history', payload: { active: !isActive } });
     if (isActive) {
       dispatch({
         type: ActionTypes.SET_NAVIGATION,
@@ -179,6 +184,7 @@ export const SidebarMenuButton = () => {
   const navigate = useNavigate();
 
   const handleClick = () => {
+    kromemo.trackEvent({ name: 'clicked_nav_menu' });
     navigate("/menu");
   };
 
@@ -212,6 +218,7 @@ export const SidebarDiscoverButton = () => {
   const isActive = location.pathname === "/discover";
 
   const handleClick = () => {
+    kromemo.trackEvent({ name: 'clicked_nav_discover' });
     navigate("/discover");
   };
 

@@ -7,6 +7,7 @@ import { RSSItem } from "../../types/rss";
 import { RoundedIdentifier } from "./RoundedIdentifier";
 import { useNavigate } from "react-router";
 import { useState } from "react";
+import { kromemo } from "kromemo";
 
 interface PubListItemProps {
   item: RSSItem;
@@ -35,6 +36,7 @@ export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onU
   }
 
   const handleSourceClick = () => {
+    kromemo.trackEvent({ name: 'clicked_source', payload: { id: sourceData.id, name: sourceData.name } });
     navigate(`/sources/${sourceData.id}`);
   };
 
@@ -52,6 +54,8 @@ export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onU
       type: ActionTypes.ADD_TO_HISTORY,
       payload: historyItem,
     });
+
+    kromemo.trackEvent({ name: 'opened_item_link', payload: { link, sourceId: item.source, sourceName: sourceData.name } });
 
     // Open link in new tab
     window.open(link, "_blank");
@@ -95,6 +99,7 @@ export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onU
       
       // Hide item after animation completes (300ms)
       setTimeout(() => {
+        kromemo.trackEvent({ name: 'hid_item', payload: { link } });
         onHide(item);
       }, 300);
     } else {
@@ -185,7 +190,7 @@ export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onU
             {bookmark !== undefined ? (
               <button
                 className="text-gray-700 dark:text-gray-200 cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors p-1"
-                onClick={() => onUnbookmark(item)}
+                onClick={() => { kromemo.trackEvent({ name: 'unbookmarked_item', payload: { link } }); onUnbookmark(item); }}
               >
                 <BookmarkCheck
                   className="h-4 w-4"
@@ -195,7 +200,7 @@ export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onU
             ) : (
               <button
                 className="text-gray-700 dark:text-gray-200 cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors p-1"
-                onClick={() => onBookmark(item)}
+                onClick={() => { kromemo.trackEvent({ name: 'bookmarked_item', payload: { link } }); onBookmark(item); }}
               >
                 <Bookmark className="h-4 w-4 text-gray-800 dark:text-gray-400" />
               </button>

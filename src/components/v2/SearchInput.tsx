@@ -4,6 +4,7 @@ import { X } from "lucide-react";
 import { getRSSItemStrProp } from "../../utils/rss";
 import { useEffect } from "react";
 import { useI18n } from "../../context/i18n";
+import kromemo from "kromemo";
 
 export const SearchInput = () => {
   const { state, dispatch } = useMainContext();
@@ -47,6 +48,9 @@ export const SearchInput = () => {
   };
 
   const handleClearSearch = () => {
+    kromemo.trackEvent({
+      name: 'cleared_search',
+    });
     dispatch({
       type: ActionTypes.SET_NAVIGATION,
       payload: null,

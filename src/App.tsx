@@ -14,6 +14,7 @@ import { useNavigate } from "react-router";
 function App() {
   const { state } = useMainContext();
   const navigate = useNavigate();
+ 
 
   // Redirect to FTU if no sources are configured
   useEffect(() => {

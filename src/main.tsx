@@ -13,6 +13,18 @@ import { Statistics } from "./views/statistics/Statistics.tsx";
 import { StrictMode } from "react";
 import { ThemeLayout } from "./layouts/ThemeLayout.tsx";
 import { createRoot } from "react-dom/client";
+import kromemo from "kromemo";
+
+
+kromemo.init({
+  projectId: import.meta.env.VITE_KROMEMO_PROJECT_ID,
+  apiKey: import.meta.env.VITE_KROMEMO_API_KEY,
+  endpointBase: import.meta.env.VITE_KROMEMO_ENDPOINT,
+  autoPageViews: false, // we'll track named views manually
+  autoErrors: true,
+  dedupeWindowMs: import.meta.env.VITE_KROMEMO_DEDUPE_MS ? Number(import.meta.env.VITE_KROMEMO_DEDUPE_MS) : 800,
+});
+
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

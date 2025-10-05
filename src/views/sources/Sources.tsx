@@ -9,6 +9,7 @@ import Snackbar from "../../components/Snackbar";
 import { Source } from "../../types/storage";
 import { SourcesList } from "../../components/SourcesList";
 import { useI18n } from "../../context/i18n";
+import kromemo from "kromemo";
 
 export const Sources = () => {
   const [isRSSModalOpen, setIsRSSModalOpen] = useState(false);
@@ -45,7 +46,7 @@ export const Sources = () => {
             {/* Add Source Buttons */}
             <div className="flex flex-row sm:flex-row gap-4 w-full justify-center">
               <BackgroundedButtonWithIcon
-                onClick={() => setIsRSSModalOpen(true)}
+                onClick={() => { kromemo.trackEvent({ name: 'opened_add_rss_modal' }); setIsRSSModalOpen(true); }}
                 icon={<Rss className="w-5 h-5 text-zinc-800 dark:text-zinc-200" />}
                 label={t('sources.addRss')}
               />

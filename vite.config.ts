@@ -48,7 +48,8 @@ export default defineConfig(() => {
       },
     },
     test: {
-      environment: "jsdom",
+      // Use happy-dom to avoid jsdom incompatibilities on Node 21 environments
+      environment: "happy-dom",
       setupFiles: "./vitest.setup.ts",
       globals: true,
     },

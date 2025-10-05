@@ -13,6 +13,7 @@ import { useMainContext } from "../../context/main";
 import { useNavigate } from "react-router";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import kromemo from "kromemo";
 
 const generateRandomColor = () => {
   const randomColor = Math.floor(Math.random() * 16777215).toString(16);
@@ -38,6 +39,7 @@ export const FirstTimeUser = () => {
   const [activeTab, setActiveTab] = useState<Tab>('recommended');
 
   const handleFinishSetup = () => {
+    kromemo.trackEvent({ name: 'ftu_finish', payload: { totalSources } });
     navigate("/");
   };
   
@@ -51,6 +53,7 @@ export const FirstTimeUser = () => {
   const [selectedLanguage, setSelectedLanguage] = useState<SupportedLanguage | 'all'>('all');
 
   const handleCategorySelect = (categoryId: string) => {
+    kromemo.trackEvent({ name: 'ftu_toggle_category', payload: { categoryId } });
     const newSelected = new Set(selectedCategories);
     if (newSelected.has(categoryId)) {
       newSelected.delete(categoryId);
@@ -61,6 +64,7 @@ export const FirstTimeUser = () => {
   };
 
   const handleLanguageSelect = (language: SupportedLanguage | 'all') => {
+    kromemo.trackEvent({ name: 'ftu_select_language', payload: { language } });
     setSelectedLanguage(language);
   };
 
@@ -68,6 +72,7 @@ export const FirstTimeUser = () => {
     const existingSource = state.sources.find(source => source.url === sourceUrl);
 
     if (existingSource) {
+      kromemo.trackEvent({ name: 'ftu_removed_predefined_source', payload: { url: sourceUrl } });
       const updatedSources = state.sources.filter(source => source.url !== sourceUrl);
       const updatedActiveSources = state.activeSources.filter(id => id !== existingSource.id);
 
@@ -83,6 +88,7 @@ export const FirstTimeUser = () => {
       .find(source => source.url === sourceUrl);
 
     if (sourceDetails) {
+      kromemo.trackEvent({ name: 'ftu_added_predefined_source', payload: { url: sourceDetails.url, name: sourceDetails.name, language: sourceDetails.language } });
       const bgColor = generateRandomColor();
       const textColor = generateTextColorForBackground(bgColor);
       const sourceId = uuidv4();

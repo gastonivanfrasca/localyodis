@@ -3,6 +3,7 @@ import { Moon, Sun } from "lucide-react";
 
 import { MenuItem } from "./v2/MenuItem";
 import { useI18n } from "../context/i18n";
+import kromemo from "kromemo";
 
 enum Themes {
   DARK = "dark",
@@ -32,6 +33,10 @@ export const ThemeSwitcher = () => {
     }
     document.body.classList.add(theme);
     dispatch({ type: ActionTypes.SET_THEME, payload: theme });
+    kromemo.trackEvent({
+      name: 'switched_theme',
+      payload: { theme },
+    });
   };
 
   return (

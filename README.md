@@ -25,6 +25,17 @@ export default tseslint.config({
 })
 ```
 
+## Analytics (Kromemo)
+
+This app integrates the Kromemo SDK to track key views and user actions. Analytics is disabled by default. To enable it, set the following environment variables in `.env.local`:
+
+- `VITE_KROMEMO_PROJECT_ID` — your public project identifier
+- `VITE_KROMEMO_API_KEY` — server-issued API key
+- `VITE_KROMEMO_ENDPOINT` — optional base URL for the ingest server (e.g. `https://metrics.example.com`)
+- `VITE_KROMEMO_DEDUPE_MS` — optional client-side dedupe window in ms (default 800)
+
+No configuration present means analytics remains a no-op and the app continues to work normally.
+
 - Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
 - Optionally add `...tseslint.configs.stylisticTypeChecked`
 - Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:

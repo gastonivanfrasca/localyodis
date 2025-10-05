@@ -17,6 +17,7 @@ import Snackbar from "../../components/Snackbar";
 import { errorMap } from "../../utils/errors";
 import { useError } from "../../utils/useError";
 import { useMainContext } from "../../context/main";
+import kromemo from "kromemo";
 
 export const SourceProfile = () => {
   const { id } = useParams<{ id: string }>();
@@ -89,7 +90,8 @@ export const SourceProfile = () => {
 
   const handleRemoveSource = useCallback(() => {
     if (!source) return;
-    
+
+    kromemo.trackEvent({ name: 'removed_source', payload: { id: source.id, name: source.name } });
     // Remove source from sources array
     const updatedSources = state.sources.filter(s => s.id !== source.id);
     dispatch({
@@ -134,7 +136,8 @@ export const SourceProfile = () => {
 
   const handleSaveEdit = useCallback(() => {
     if (!source || !editingName.trim()) return;
-    
+
+    kromemo.trackEvent({ name: 'updated_source_name', payload: { id: source.id, from: source.name, to: editingName.trim() } });
     dispatch({
       type: ActionTypes.UPDATE_SOURCE,
       payload: {
@@ -167,6 +170,7 @@ export const SourceProfile = () => {
     if (!source) return;
     
     const textColor = generateTextColorForBackground(color);
+    kromemo.trackEvent({ name: 'updated_source_color', payload: { id: source.id, color } });
     
     dispatch({
       type: ActionTypes.UPDATE_SOURCE,
