@@ -42,14 +42,15 @@ export const getBrowserLanguage = (): SupportedLanguage => {
 // Utility function to get translation by key
 export const getTranslation = (
   language: SupportedLanguage,
-  key: keyof typeof en
+  key: keyof typeof en,
+  fallback?: string
 ): string => {
   const langTranslations = translations[language];
   if (!langTranslations) {
-    return translations[DEFAULT_LANGUAGE]?.[key] || key;
+    return translations[DEFAULT_LANGUAGE]?.[key] || fallback || key;
   }
-  
-  return langTranslations[key] || translations[DEFAULT_LANGUAGE]?.[key] || key;
+
+  return langTranslations[key] || translations[DEFAULT_LANGUAGE]?.[key] || fallback || key;
 };
 
 // Utility function to get language option by code

@@ -2,6 +2,7 @@ import { ActionTypes, useMainContext } from "../../context/main";
 import { Bookmark, BookmarkCheck, EyeOff } from "lucide-react";
 import { HistoryItem, Source } from "../../types/storage";
 import { formatOlderDateTime, formatTime, getDateCategory } from "../../utils/format";
+import { trackEvent } from "../../utils/analytics";
 
 import { RSSItem } from "../../types/rss";
 import { RoundedIdentifier } from "./RoundedIdentifier";
@@ -35,6 +36,10 @@ export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onU
   }
 
   const handleSourceClick = () => {
+    trackEvent("source_opened", {
+      sourceId: sourceData.id,
+      sourceName: sourceData.name,
+    });
     navigate(`/sources/${sourceData.id}`);
   };
 
@@ -55,6 +60,30 @@ export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onU
 
     // Open link in new tab
     window.open(link, "_blank");
+
+    trackEvent("publication_opened", {
+      sourceId: sourceData.id,
+      sourceName: sourceData.name,
+      link,
+    });
+  };
+
+  const handleBookmark = () => {
+    trackEvent("publication_bookmarked", {
+      sourceId: sourceData.id,
+      sourceName: sourceData.name,
+      link,
+    });
+    onBookmark(item);
+  };
+
+  const handleUnbookmark = () => {
+    trackEvent("publication_unbookmarked", {
+      sourceId: sourceData.id,
+      sourceName: sourceData.name,
+      link,
+    });
+    onUnbookmark(item);
   };
 
   // Swipe gesture handlers
@@ -95,6 +124,11 @@ export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onU
       
       // Hide item after animation completes (300ms)
       setTimeout(() => {
+        trackEvent("publication_hidden", {
+          sourceId: sourceData.id,
+          sourceName: sourceData.name,
+          link,
+        });
         onHide(item);
       }, 300);
     } else {
@@ -185,7 +219,7 @@ export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onU
             {bookmark !== undefined ? (
               <button
                 className="text-gray-700 dark:text-gray-200 cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors p-1"
-                onClick={() => onUnbookmark(item)}
+                onClick={handleUnbookmark}
               >
                 <BookmarkCheck
                   className="h-4 w-4"
@@ -195,7 +229,7 @@ export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onU
             ) : (
               <button
                 className="text-gray-700 dark:text-gray-200 cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors p-1"
-                onClick={() => onBookmark(item)}
+                onClick={handleBookmark}
               >
                 <Bookmark className="h-4 w-4 text-gray-800 dark:text-gray-400" />
               </button>

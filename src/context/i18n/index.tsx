@@ -6,7 +6,7 @@ import { en } from '../../i18n/translations/en';
 interface I18nContextType {
   language: SupportedLanguage;
   setLanguage: (language: SupportedLanguage) => void;
-  t: (key: keyof typeof en) => string;
+  t: (key: keyof typeof en, fallback?: string) => string;
   languages: typeof SUPPORTED_LANGUAGES;
 }
 
@@ -33,8 +33,8 @@ export const I18nProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Translation function
-  const t = (key: keyof typeof en): string => {
-    return getTranslation(language, key);
+  const t = (key: keyof typeof en, fallback?: string): string => {
+    return getTranslation(language, key, fallback);
   };
 
   // Update HTML lang attribute when language changes
