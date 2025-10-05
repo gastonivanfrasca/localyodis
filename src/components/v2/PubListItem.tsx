@@ -7,6 +7,7 @@ import { RSSItem } from "../../types/rss";
 import { RoundedIdentifier } from "./RoundedIdentifier";
 import { useNavigate } from "react-router";
 import { useState } from "react";
+import { trackEvent } from "../../utils/analytics";
 
 interface PubListItemProps {
   item: RSSItem;
@@ -25,7 +26,7 @@ export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onU
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
   const [swipeProgress, setSwipeProgress] = useState(0);
-  
+
   if (!sourceData) return null;
 
   const link = extractLink(item);
@@ -34,7 +35,14 @@ export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onU
     title = title["_"];
   }
 
+  const baseEventData = {
+    sourceId: sourceData.id,
+    sourceType: sourceData.type,
+    itemId: item.id ?? link,
+  };
+
   const handleSourceClick = () => {
+    trackEvent("source_opened", baseEventData);
     navigate(`/sources/${sourceData.id}`);
   };
 
@@ -52,6 +60,8 @@ export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onU
       type: ActionTypes.ADD_TO_HISTORY,
       payload: historyItem,
     });
+
+    trackEvent("publication_opened", baseEventData);
 
     // Open link in new tab
     window.open(link, "_blank");
@@ -95,6 +105,7 @@ export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onU
       
       // Hide item after animation completes (300ms)
       setTimeout(() => {
+        trackEvent("publication_hidden", baseEventData);
         onHide(item);
       }, 300);
     } else {
@@ -185,7 +196,10 @@ export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onU
             {bookmark !== undefined ? (
               <button
                 className="text-gray-700 dark:text-gray-200 cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors p-1"
-                onClick={() => onUnbookmark(item)}
+                onClick={() => {
+                  trackEvent("publication_unbookmarked", baseEventData);
+                  onUnbookmark(item);
+                }}
               >
                 <BookmarkCheck
                   className="h-4 w-4"
@@ -195,7 +209,10 @@ export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onU
             ) : (
               <button
                 className="text-gray-700 dark:text-gray-200 cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors p-1"
-                onClick={() => onBookmark(item)}
+                onClick={() => {
+                  trackEvent("publication_bookmarked", baseEventData);
+                  onBookmark(item);
+                }}
               >
                 <Bookmark className="h-4 w-4 text-gray-800 dark:text-gray-400" />
               </button>
