@@ -26,8 +26,12 @@ export const useAutoHideOnView = ({
   const elementRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hasBeenHiddenRef = useRef(false);
-  const hasBeenReadRef = useRef(false); // Track if item has been "read" (visible long enough)
+  const hasBeenReadRef = useRef(false);
   const [isVisible, setIsVisible] = useState(false);
+  
+  // Store onHide in a ref to avoid re-running the effect when it changes
+  const onHideRef = useRef(onHide);
+  onHideRef.current = onHide;
 
   const clearTimer = useCallback(() => {
     if (timerRef.current) {
@@ -74,7 +78,7 @@ export const useAutoHideOnView = ({
             
             if (exitedThroughTop) {
               hasBeenHiddenRef.current = true;
-              onHide();
+              onHideRef.current();
             }
           }
         }
@@ -91,7 +95,7 @@ export const useAutoHideOnView = ({
       observer.disconnect();
       clearTimer();
     };
-  }, [enabled, threshold, visibilityDelay, onHide, clearTimer]);
+  }, [enabled, threshold, visibilityDelay, clearTimer]);
 
   return {
     ref: elementRef,
