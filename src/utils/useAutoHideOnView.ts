@@ -13,7 +13,8 @@ interface UseAutoHideOnViewOptions {
 
 /**
  * Hook that marks an item as "read" after it has been visible for a specified duration,
- * then hides it when the item leaves the viewport.
+ * then hides it when the item leaves the viewport by scrolling UP (exits through the top).
+ * This prevents layout shift since items below the viewport are not affected.
  * Uses Intersection Observer to detect visibility.
  */
 export const useAutoHideOnView = ({
@@ -65,10 +66,16 @@ export const useAutoHideOnView = ({
           // Clear timer if element leaves before being marked as read
           clearTimer();
           
-          // Hide the item when it leaves the viewport IF it was already read
+          // Only hide if item was read AND it exited through the TOP of the viewport
+          // (user scrolled down, so no layout shift will occur)
           if (hasBeenReadRef.current && !hasBeenHiddenRef.current) {
-            hasBeenHiddenRef.current = true;
-            onHide();
+            const rect = entry.boundingClientRect;
+            const exitedThroughTop = rect.bottom < 0;
+            
+            if (exitedThroughTop) {
+              hasBeenHiddenRef.current = true;
+              onHide();
+            }
           }
         }
       },

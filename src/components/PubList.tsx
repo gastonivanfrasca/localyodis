@@ -229,13 +229,15 @@ export const PubsList = () => {
   }, [dispatch, state.bookmarks]);
 
   const hideItem = useCallback((item: RSSItem) => {
+    // Extract title to use as identifier for hidden items
+    const itemTitle = extractItemTitle(item);
+    
     dispatch({
       type: ActionTypes.HIDE_ITEM,
-      payload: item,
+      payload: itemTitle, // Pass title string, not the item object
     });
     
     // Remove hidden item from both items and activeItems arrays
-    const itemTitle = extractItemTitle(item);
     const filteredItems = state.items.filter(i => extractItemTitle(i) !== itemTitle);
     const filteredActiveItems = state.activeItems.filter(i => extractItemTitle(i) !== itemTitle);
     
