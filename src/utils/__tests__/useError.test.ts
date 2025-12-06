@@ -19,8 +19,6 @@ vi.mock("../../context/main", async () => {
         scrollPosition: 0,
         loading: false,
         lastUpdated: "2024-01-01T00:00:00.000Z",
-        newItemsCount: 0,
-        latestFetchStatus: "idle",
         searchQuery: null,
         activeItems: [],
         error: null,

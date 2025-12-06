@@ -28,6 +28,12 @@ export type TranslationKeys = {
   'settings.reset.cancel': string;
   'settings.reset.modal.title': string;
   'settings.reset.modal.message': string;
+  'settings.notifications': string;
+  'settings.notifications.description': string;
+  'settings.notifications.enable': string;
+  'settings.notifications.permissionGranted': string;
+  'settings.notifications.permissionDenied': string;
+  'settings.notifications.permissionRequired': string;
   
   // Common
   'common.back': string;
@@ -77,6 +83,7 @@ export type TranslationKeys = {
   'sources.customNamePlaceholder': string;
   'sources.customNameHelp': string;
   'sources.addCustomSource': string;
+  'sources.notifications.enable': string;
   
   // Discover
   'discover.title': string;
@@ -154,9 +161,6 @@ export type TranslationKeys = {
   'ftu.addInterests': string;
 
   // Feed
-  'feed.newItems': string;
-  'feed.newItem': string;
-  'feed.upToDate': string;
 
   // RSS Feed
   'rss.lastUpdated': string;
@@ -164,6 +168,11 @@ export type TranslationKeys = {
   'rss.refresh': string;
   'rss.link': string;
   'rss.example': string;
+  
+  // Notifications
+  'notifications.newItem': string;
+  'notifications.newItems': string;
+  'notifications.newItemsFromSource': string;
   
   // YouTube
   'youtube.channelName': string;

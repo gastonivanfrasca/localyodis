@@ -1,5 +1,6 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
-import type { LocallyStoredData, HistoryItem } from "../../types/storage";
+import type { HistoryItem, LocallyStoredData } from "../../types/storage";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
 import type { RSSItem } from "../../types/rss";
 
 vi.mock("../i18n", () => ({
@@ -19,8 +20,6 @@ const createState = (overrides: Partial<LocallyStoredData> = {}): LocallyStoredD
   scrollPosition: 0,
   loading: false,
   lastUpdated: "2024-01-01T00:00:00.000Z",
-  newItemsCount: 0,
-  latestFetchStatus: "idle",
   searchQuery: null,
   activeItems: [],
   error: null,

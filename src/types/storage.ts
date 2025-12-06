@@ -11,6 +11,7 @@ export type Source = {
   textColor: string;
   initial: string;
   type: string;
+  notificationsEnabled?: boolean;
 };
 
 export type Items = {
@@ -44,8 +45,6 @@ export type LocallyStoredData = {
   scrollPosition: number;
   loading: boolean;
   lastUpdated: string;
-  newItemsCount: number;
-  latestFetchStatus: 'idle' | 'new' | 'upToDate';
   searchQuery: string | null;
   activeItems: RSSItem[];
   error: ErrorState;

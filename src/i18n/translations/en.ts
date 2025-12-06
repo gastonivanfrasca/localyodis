@@ -22,6 +22,12 @@ export const en: TranslationKeys = {
   'settings.reset.cancel': 'Cancel',
   'settings.reset.modal.title': 'Reset Configuration',
   'settings.reset.modal.message': 'Are you sure you want to reset all configuration? This will delete all your sources, bookmarks, and settings.',
+  'settings.notifications': 'Notifications',
+  'settings.notifications.description': 'Receive notifications when new items are available in your RSS sources.',
+  'settings.notifications.enable': 'Enable notifications',
+  'settings.notifications.permissionGranted': 'Permission granted',
+  'settings.notifications.permissionDenied': 'Permission denied. Please enable notifications in your browser settings.',
+  'settings.notifications.permissionRequired': 'Permission required',
   
   // Common
   'common.back': 'Back',
@@ -71,6 +77,7 @@ export const en: TranslationKeys = {
   'sources.customNamePlaceholder': 'Enter a custom name for this source',
   'sources.customNameHelp': 'If no name is provided, we\'ll use the website domain',
   'sources.addCustomSource': 'Add Custom Source',
+  'sources.notifications.enable': 'Notifications',
   
   // Discover
   'discover.title': 'Discover',
@@ -149,9 +156,6 @@ export const en: TranslationKeys = {
   'ftu.addInterests': 'Add your interests to get started',
 
   // Feed
-  'feed.newItems': 'new items',
-  'feed.newItem': 'new item',
-  'feed.upToDate': 'Up to date',
 
   // RSS Feed
   'rss.lastUpdated': 'Last updated',
@@ -159,6 +163,11 @@ export const en: TranslationKeys = {
   'rss.refresh': 'Refresh',
   'rss.link': 'RSS link',
   'rss.example': 'e.g. https://example.com/feed.xml',
+  
+  // Notifications
+  'notifications.newItem': 'New item available',
+  'notifications.newItems': 'new items',
+  'notifications.newItemsFromSource': 'new items from this source',
   
   // YouTube
   'youtube.channelName': 'Channel name',

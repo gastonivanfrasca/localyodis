@@ -22,6 +22,12 @@ export const es: TranslationKeys = {
   'settings.reset.cancel': 'Cancelar',
   'settings.reset.modal.title': 'Restablecer configuración',
   'settings.reset.modal.message': '¿Estás seguro de que quieres restablecer toda la configuración? Esto eliminará todas tus fuentes, favoritos y configuraciones.',
+  'settings.notifications': 'Notificaciones',
+  'settings.notifications.description': 'Recibe notificaciones cuando haya nuevos ítems disponibles en tus fuentes RSS.',
+  'settings.notifications.enable': 'Habilitar notificaciones',
+  'settings.notifications.permissionGranted': 'Permiso concedido',
+  'settings.notifications.permissionDenied': 'Permiso denegado. Por favor, habilita las notificaciones en la configuración de tu navegador.',
+  'settings.notifications.permissionRequired': 'Permiso requerido',
   
   // Common
   'common.back': 'Atrás',
@@ -71,6 +77,7 @@ export const es: TranslationKeys = {
   'sources.customNamePlaceholder': 'Ingresa un nombre personalizado para esta fuente',
   'sources.customNameHelp': 'Si no se proporciona un nombre, usaremos el dominio del sitio web',
   'sources.addCustomSource': 'Agregar Fuente Personalizada',
+  'sources.notifications.enable': 'Notificaciones',
   
   // Discover
   'discover.title': 'Descubrir',
@@ -149,9 +156,6 @@ export const es: TranslationKeys = {
   'ftu.addInterests': 'Añade tus intereses para empezar',
 
   // Feed
-  'feed.newItems': 'nuevos ítems',
-  'feed.newItem': 'nuevo ítem',
-  'feed.upToDate': 'Al día',
 
   // RSS Feed
   'rss.lastUpdated': 'Última actualización',
@@ -159,6 +163,11 @@ export const es: TranslationKeys = {
   'rss.refresh': 'Actualizar',
   'rss.link': 'Enlace RSS',
   'rss.example': 'ej. https://ejemplo.com/feed.xml',
+  
+  // Notifications
+  'notifications.newItem': 'Nuevo ítem disponible',
+  'notifications.newItems': 'nuevos ítems',
+  'notifications.newItemsFromSource': 'nuevos ítems de esta fuente',
   
   // YouTube
   'youtube.channelName': 'Nombre del canal',

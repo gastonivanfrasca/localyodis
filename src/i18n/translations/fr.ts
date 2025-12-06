@@ -22,6 +22,12 @@ export const fr: TranslationKeys = {
   'settings.reset.cancel': 'Annuler',
   'settings.reset.modal.title': 'Réinitialiser la configuration',
   'settings.reset.modal.message': 'Êtes-vous sûr de vouloir réinitialiser toute la configuration ? Ceci supprimera toutes vos sources, favoris et paramètres.',
+  'settings.notifications': 'Notifications',
+  'settings.notifications.description': 'Recevez des notifications lorsqu\'il y a de nouveaux éléments disponibles dans vos sources RSS.',
+  'settings.notifications.enable': 'Activer les notifications',
+  'settings.notifications.permissionGranted': 'Autorisation accordée',
+  'settings.notifications.permissionDenied': 'Autorisation refusée. Veuillez activer les notifications dans les paramètres de votre navigateur.',
+  'settings.notifications.permissionRequired': 'Autorisation requise',
   
   // Common
   'common.back': 'Retour',
@@ -71,6 +77,7 @@ export const fr: TranslationKeys = {
   'sources.customNamePlaceholder': 'Entrez un nom personnalisé pour cette source',
   'sources.customNameHelp': 'Si aucun nom n\'est fourni, nous utiliserons le domaine du site web',
   'sources.addCustomSource': 'Ajouter une Source Personnalisée',
+  'sources.notifications.enable': 'Notifications',
   
   // Discover
   'discover.title': 'Découvrir',
@@ -149,9 +156,6 @@ export const fr: TranslationKeys = {
   'ftu.addInterests': 'Ajoutez vos intérêts pour commencer',
 
   // Feed
-  'feed.newItems': 'nouveaux articles',
-  'feed.newItem': 'nouvel article',
-  'feed.upToDate': 'À jour',
 
   // RSS Feed
   'rss.lastUpdated': 'Dernière mise à jour',
@@ -159,6 +163,11 @@ export const fr: TranslationKeys = {
   'rss.refresh': 'Actualiser',
   'rss.link': 'Lien RSS',
   'rss.example': 'ex. https://exemple.com/feed.xml',
+  
+  // Notifications
+  'notifications.newItem': 'Nouvel élément disponible',
+  'notifications.newItems': 'nouveaux éléments',
+  'notifications.newItemsFromSource': 'nouveaux éléments de cette source',
   
   // YouTube
   'youtube.channelName': 'Nom de la chaîne',

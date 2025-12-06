@@ -12,6 +12,12 @@ export default defineConfig(() => {
       tailwindcss(),
       VitePWA({
         registerType: "autoUpdate",
+        strategies: "injectManifest",
+        srcDir: "public",
+        filename: "sw.js",
+        injectManifest: {
+          injectionPoint: undefined, // No necesitamos precaching, solo background sync
+        },
         devOptions: {
           enabled: true,
         },

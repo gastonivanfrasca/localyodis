@@ -2,8 +2,9 @@ import { Action, ActionTypes, MainContext } from ".";
 import { extractItemTitle, filterHiddenItems, getLocallyStoredData, storeDataLocally } from "../../utils/storage";
 import { useEffect, useReducer } from "react";
 
-import { LocallyStoredData } from "../../types/storage";
+import { LocallyStoredData, Source } from "../../types/storage";
 import { getBrowserLanguage } from "../../i18n";
+import { sendStorageDataToSW } from "../../utils/backgroundSync";
 
 const localData = getLocallyStoredData();
 
@@ -18,8 +19,6 @@ const initialState: LocallyStoredData = {
   bookmarks: localData.bookmarks,
   navigation: localData.navigation || null,
   lastUpdated: localData.lastUpdated,
-  newItemsCount: localData.newItemsCount ?? 0,
-  latestFetchStatus: localData.latestFetchStatus ?? 'idle',
   activeSources: localData.activeSources || localData.sources.map((source) => source.id),
   scrollPosition: localData.scrollPosition,
   loading: localData.loading,
@@ -97,12 +96,6 @@ const reducer = (state: LocallyStoredData, action: Action) => {
         ...state,
         history: state.history.filter(item => item.link !== action.payload)
       };
-    case ActionTypes.SET_NEW_ITEMS_STATUS:
-      return {
-        ...state,
-        newItemsCount: action.payload.count,
-        latestFetchStatus: action.payload.status,
-      };
     default:
       return state;
   }
@@ -113,6 +106,16 @@ export const MainProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     storeDataLocally(state);
+    
+    // Sincronizar datos con el Service Worker para background sync
+    const hasNotificationsEnabled = state.sources.some((s: Source) => s.notificationsEnabled);
+    if (hasNotificationsEnabled && 'serviceWorker' in navigator) {
+      sendStorageDataToSW({
+        sources: state.sources,
+        items: state.items,
+        activeSources: state.activeSources,
+      });
+    }
   }, [state]);
 
   return (

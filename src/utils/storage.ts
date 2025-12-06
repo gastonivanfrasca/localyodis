@@ -22,8 +22,6 @@ const defaultLocallyStoredData = {
   navigation: null,
   items: [],
   lastUpdated: new Date().toISOString(),
-  newItemsCount: 0,
-  latestFetchStatus: 'idle',
   searchQuery: null,
   activeItems: [],
   error: null,
@@ -126,17 +124,6 @@ export const getLocallyStoredData = (): LocallyStoredData => {
   // Ensure history exists (for backward compatibility)
   if (!parsedStoredData.history) {
     parsedStoredData.history = [];
-  }
-
-  if (typeof parsedStoredData.newItemsCount !== 'number') {
-    parsedStoredData.newItemsCount = 0;
-  }
-
-  if (
-    parsedStoredData.latestFetchStatus !== 'new' &&
-    parsedStoredData.latestFetchStatus !== 'upToDate'
-  ) {
-    parsedStoredData.latestFetchStatus = 'idle';
   }
 
   // Ensure language exists (for backward compatibility)
