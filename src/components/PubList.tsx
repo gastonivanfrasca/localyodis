@@ -341,6 +341,9 @@ export const PubsList = () => {
               return bookmarkLink === itemLink;
             }) as RSSItem | undefined;
 
+            // Auto-hide only on main feed (when navigation is null)
+            const isMainFeed = state.navigation === null;
+
             return (
               <div className={isFirstItem ? 'pt-6' : ''}>
                 <PubListItem
@@ -352,6 +355,7 @@ export const PubsList = () => {
                   onBookmark={bookmarkItem}
                   onUnbookmark={unbookmarkItem}
                   onHide={state.navigation === Navigations.HISTORY ? removeFromHistory : hideItem}
+                  autoHideOnView={isMainFeed}
                 />
               </div>
             );

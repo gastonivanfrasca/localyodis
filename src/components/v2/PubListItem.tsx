@@ -6,8 +6,9 @@ import { formatOlderDateTime, formatTime, getDateCategory } from "../../utils/fo
 import { RSSItem } from "../../types/rss";
 import { RoundedIdentifier } from "./RoundedIdentifier";
 import { useNavigate } from "react-router";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { kromemo } from "kromemo";
+import { useAutoHideOnView } from "../../utils/useAutoHideOnView";
 
 interface PubListItemProps {
   item: RSSItem;
@@ -17,19 +18,40 @@ interface PubListItemProps {
   onBookmark: (item: RSSItem) => void;
   onUnbookmark: (item: RSSItem) => void;
   onHide: (item: RSSItem) => void;
+  /** Enable auto-hide when item is visible in viewport for a duration */
+  autoHideOnView?: boolean;
 }
 
-export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onUnbookmark, onHide }: PubListItemProps) => {
+export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onUnbookmark, onHide, autoHideOnView = false }: PubListItemProps) => {
   const navigate = useNavigate();
   const { dispatch } = useMainContext();
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
   const [swipeProgress, setSwipeProgress] = useState(0);
+
+  const link = extractLink(item);
+
+  // Auto-hide on view functionality
+  const handleAutoHide = useCallback(() => {
+    if (!isAnimating) {
+      setIsAnimating(true);
+      setTimeout(() => {
+        kromemo.trackEvent({ name: 'auto_hid_item', payload: { link } });
+        onHide(item);
+      }, 300);
+    }
+  }, [isAnimating, link, onHide, item]);
+
+  const { ref: autoHideRef } = useAutoHideOnView({
+    enabled: autoHideOnView && !isAnimating,
+    visibilityDelay: 1500, // 1.5 seconds of visibility before auto-hiding
+    threshold: 0.7, // 70% of the item must be visible
+    onHide: handleAutoHide,
+  });
   
   if (!sourceData) return null;
 
-  const link = extractLink(item);
   let title = getRSSItemStrProp(item, "title");
   if (typeof title === "object") {
     title = title["_"];
@@ -110,6 +132,7 @@ export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onU
 
   return (
     <div
+      ref={autoHideRef}
       className={`relative flex flex-row w-full gap-1 md:w-full text-left cursor-pointer mb-6 pb-0 border-b border-gray-200 dark:border-gray-700 transition-all duration-300 overflow-hidden ${
         isAnimating ? 'swipe-out' : ''
       }`}
