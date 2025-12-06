@@ -32,21 +32,16 @@ export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onU
 
   const link = extractLink(item);
 
-  // Auto-hide on view functionality
+  // Auto-hide on view functionality - hide when item leaves viewport after being read
   const handleAutoHide = useCallback(() => {
-    if (!isAnimating) {
-      setIsAnimating(true);
-      setTimeout(() => {
-        kromemo.trackEvent({ name: 'auto_hid_item', payload: { link } });
-        onHide(item);
-      }, 300);
-    }
-  }, [isAnimating, link, onHide, item]);
+    kromemo.trackEvent({ name: 'auto_hid_item', payload: { link } });
+    onHide(item);
+  }, [link, onHide, item]);
 
   const { ref: autoHideRef } = useAutoHideOnView({
-    enabled: autoHideOnView && !isAnimating,
-    visibilityDelay: 1500, // 1.5 seconds of visibility before auto-hiding
-    threshold: 0.7, // 70% of the item must be visible
+    enabled: autoHideOnView,
+    visibilityDelay: 1500, // 1.5 seconds of visibility to mark as read
+    threshold: 0, // Hide when item completely leaves the viewport
     onHide: handleAutoHide,
   });
   
