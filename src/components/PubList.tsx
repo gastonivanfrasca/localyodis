@@ -2,7 +2,7 @@ import { ActionTypes, useMainContext } from "../context/main";
 import { Bookmark, Clock, Search, Settings } from "lucide-react";
 import { STORAGE_CONFIG, cleanupHiddenItems, extractItemTitle, filterHiddenItems } from "../utils/storage";
 import { fetchRSS, getRSSItemStrProp } from "../utils/rss";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 import { BackgroundedButtonWithIcon } from "./v2/AddSourceButton";
 import { DateSeparator } from "./v2/DateSeparator";
@@ -205,7 +205,7 @@ export const PubsList = () => {
     t,
   ]);
 
-  const bookmarkItem = (item: RSSItem) => {
+  const bookmarkItem = useCallback((item: RSSItem) => {
     const newBookmark = {
       title: getRSSItemStrProp(item, "title"),
       link: extractLink(item),
@@ -216,9 +216,9 @@ export const PubsList = () => {
       type: ActionTypes.SET_BOOKMARKS,
       payload: [...state.bookmarks, newBookmark],
     });
-  };
+  }, [dispatch, state.bookmarks]);
 
-  const unbookmarkItem = (item: RSSItem) => {
+  const unbookmarkItem = useCallback((item: RSSItem) => {
     const updatedBookmarks = state.bookmarks.filter(
       (bookmark) => bookmark.link !== extractLink(item)
     );
@@ -226,9 +226,9 @@ export const PubsList = () => {
       type: ActionTypes.SET_BOOKMARKS,
       payload: updatedBookmarks,
     });
-  };
+  }, [dispatch, state.bookmarks]);
 
-  const hideItem = (item: RSSItem) => {
+  const hideItem = useCallback((item: RSSItem) => {
     dispatch({
       type: ActionTypes.HIDE_ITEM,
       payload: item,
@@ -248,9 +248,9 @@ export const PubsList = () => {
       type: ActionTypes.SET_ACTIVE_ITEMS,
       payload: filteredActiveItems,
     });
-  };
+  }, [dispatch, state.items, state.activeItems]);
 
-  const removeFromHistory = (item: RSSItem) => {
+  const removeFromHistory = useCallback((item: RSSItem) => {
     const itemLink = extractLink(item);
     dispatch({
       type: ActionTypes.REMOVE_FROM_HISTORY,
@@ -265,7 +265,7 @@ export const PubsList = () => {
         payload: filteredActiveItems,
       });
     }
-  };
+  }, [dispatch, state.navigation, state.activeItems]);
 
   if (
     state.activeItems?.length < 1 &&
