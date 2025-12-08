@@ -1,70 +1,11 @@
-import { useEffect, useRef, useCallback } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 interface UseAutoHideOnViewOptions {
   /** Whether auto-hide is enabled (default: true) */
   enabled?: boolean;
-  /** Callback when item should be hidden */
-  onHide: () => void;
+  /** Callback when item should be marked as read */
+  onMarkAsRead: () => void;
 }
-
-// Global queue for batching hide operations to prevent layout shift
-const hideQueue: Set<() => void> = new Set();
-let flushTimeout: ReturnType<typeof setTimeout> | null = null;
-let isScrolling = false;
-let scrollEndTimeout: ReturnType<typeof setTimeout> | null = null;
-
-/**
- * Flush all pending hide operations
- */
-const flushHideQueue = () => {
-  if (hideQueue.size === 0) return;
-  
-  // Execute all pending hides
-  hideQueue.forEach(callback => callback());
-  hideQueue.clear();
-};
-
-/**
- * Schedule a hide operation to be executed when scrolling stops
- */
-const scheduleHide = (callback: () => void) => {
-  hideQueue.add(callback);
-  
-  // If not currently scrolling, flush after a short delay
-  if (!isScrolling) {
-    if (flushTimeout) clearTimeout(flushTimeout);
-    flushTimeout = setTimeout(flushHideQueue, 150);
-  }
-};
-
-/**
- * Track scroll state globally
- */
-const setupGlobalScrollTracking = (scrollParent: HTMLElement) => {
-  const handleScroll = () => {
-    isScrolling = true;
-    
-    // Clear any pending flush
-    if (flushTimeout) {
-      clearTimeout(flushTimeout);
-      flushTimeout = null;
-    }
-    
-    // Reset scroll end detection
-    if (scrollEndTimeout) clearTimeout(scrollEndTimeout);
-    scrollEndTimeout = setTimeout(() => {
-      isScrolling = false;
-      // Flush queue when scrolling stops
-      flushHideQueue();
-    }, 200);
-  };
-  
-  scrollParent.addEventListener('scroll', handleScroll, { passive: true });
-  return () => scrollParent.removeEventListener('scroll', handleScroll);
-};
-
-// Track which scroll parents we've set up
-const trackedScrollParents = new WeakSet<HTMLElement>();
 
 /**
  * Find the scrollable parent of an element
@@ -86,24 +27,24 @@ const getScrollParent = (element: HTMLElement): HTMLElement | null => {
 };
 
 /**
- * Hook that hides an item when it exits through the top of the scroll container.
- * Batches hide operations to prevent layout shift during scrolling.
+ * Hook that marks an item as read when it exits through the top of the scroll container.
+ * The item stays visible but will be hidden on next page load.
  */
 export const useAutoHideOnView = ({
   enabled = true,
-  onHide,
+  onMarkAsRead,
 }: UseAutoHideOnViewOptions) => {
   const elementRef = useRef<HTMLDivElement>(null);
-  const hasBeenHiddenRef = useRef(false);
+  const hasBeenMarkedRef = useRef(false);
   const wasVisibleRef = useRef(false);
   const scrollParentRef = useRef<HTMLElement | null>(null);
   
-  // Store onHide in a ref to avoid re-running the effect when it changes
-  const onHideRef = useRef(onHide);
-  onHideRef.current = onHide;
+  // Store callback in a ref to avoid re-running the effect when it changes
+  const onMarkAsReadRef = useRef(onMarkAsRead);
+  onMarkAsReadRef.current = onMarkAsRead;
 
   const checkVisibility = useCallback(() => {
-    if (!enabled || hasBeenHiddenRef.current) return;
+    if (!enabled || hasBeenMarkedRef.current) return;
     
     const element = elementRef.current;
     const scrollParent = scrollParentRef.current;
@@ -118,21 +59,21 @@ export const useAutoHideOnView = ({
     
     if (isVisible) {
       wasVisibleRef.current = true;
-    } else if (wasVisibleRef.current && !hasBeenHiddenRef.current) {
+    } else if (wasVisibleRef.current && !hasBeenMarkedRef.current) {
       // Element was visible but now it's not
       // Check if it exited through the top (element is above the scroll container)
       const exitedThroughTop = elementRect.bottom <= parentRect.top;
       
       if (exitedThroughTop) {
-        hasBeenHiddenRef.current = true;
-        // Schedule hide instead of executing immediately
-        scheduleHide(() => onHideRef.current());
+        hasBeenMarkedRef.current = true;
+        // Mark as read - item stays visible but won't appear on next load
+        onMarkAsReadRef.current();
       }
     }
   }, [enabled]);
 
   useEffect(() => {
-    if (!enabled || hasBeenHiddenRef.current) {
+    if (!enabled || hasBeenMarkedRef.current) {
       return;
     }
 
@@ -147,12 +88,6 @@ export const useAutoHideOnView = ({
       return;
     }
     scrollParentRef.current = scrollParent;
-
-    // Setup global scroll tracking for this scroll parent (only once per parent)
-    if (!trackedScrollParents.has(scrollParent)) {
-      trackedScrollParents.add(scrollParent);
-      setupGlobalScrollTracking(scrollParent);
-    }
 
     // Check initial visibility
     checkVisibility();

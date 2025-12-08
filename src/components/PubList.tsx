@@ -252,6 +252,15 @@ export const PubsList = () => {
     });
   }, [dispatch, state.items, state.activeItems]);
 
+  // Mark item as read without removing from current view (will be hidden on next load)
+  const markAsRead = useCallback((item: RSSItem) => {
+    const itemTitle = extractItemTitle(item);
+    dispatch({
+      type: ActionTypes.MARK_AS_READ,
+      payload: itemTitle,
+    });
+  }, [dispatch]);
+
   const removeFromHistory = useCallback((item: RSSItem) => {
     const itemLink = extractLink(item);
     dispatch({
@@ -343,7 +352,7 @@ export const PubsList = () => {
               return bookmarkLink === itemLink;
             }) as RSSItem | undefined;
 
-            // Auto-hide only on main feed (when navigation is null)
+            // Auto-mark as read only on main feed (when navigation is null)
             const isMainFeed = state.navigation === null;
 
             return (
@@ -357,7 +366,8 @@ export const PubsList = () => {
                   onBookmark={bookmarkItem}
                   onUnbookmark={unbookmarkItem}
                   onHide={state.navigation === Navigations.HISTORY ? removeFromHistory : hideItem}
-                  autoHideOnView={isMainFeed}
+                  onMarkAsRead={markAsRead}
+                  autoMarkAsRead={isMainFeed}
                 />
               </div>
             );

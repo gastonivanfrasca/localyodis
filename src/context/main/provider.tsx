@@ -79,6 +79,15 @@ const reducer = (state: LocallyStoredData, action: Action) => {
         hiddenItems: [...state.hiddenItems, action.payload],
         activeItems: state.activeItems.filter(item => extractItemTitle(item) !== action.payload)
       };
+    case ActionTypes.MARK_AS_READ:
+      // Only add to hiddenItems, don't remove from current view (will be hidden on next load)
+      if (state.hiddenItems.includes(action.payload)) {
+        return state; // Already marked as read
+      }
+      return { 
+        ...state, 
+        hiddenItems: [...state.hiddenItems, action.payload]
+      };
     case ActionTypes.UNHIDE_ITEM:
       return { 
         ...state, 

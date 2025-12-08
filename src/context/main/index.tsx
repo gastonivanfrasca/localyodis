@@ -32,6 +32,7 @@ export enum ActionTypes {
   CLEAR_ERROR = "CLEAR_ERROR",
   SET_HIDDEN_ITEMS = "SET_HIDDEN_ITEMS",
   HIDE_ITEM = "HIDE_ITEM",
+  MARK_AS_READ = "MARK_AS_READ", // Only adds to hiddenItems, doesn't remove from view
   UNHIDE_ITEM = "UNHIDE_ITEM",
   ADD_TO_HISTORY = "ADD_TO_HISTORY",
   CLEAR_HISTORY = "CLEAR_HISTORY",

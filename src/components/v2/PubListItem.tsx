@@ -18,11 +18,13 @@ interface PubListItemProps {
   onBookmark: (item: RSSItem) => void;
   onUnbookmark: (item: RSSItem) => void;
   onHide: (item: RSSItem) => void;
-  /** Enable auto-hide when item is visible in viewport for a duration */
-  autoHideOnView?: boolean;
+  /** Mark item as read when it exits viewport (won't appear on next load) */
+  onMarkAsRead?: (item: RSSItem) => void;
+  /** Enable auto-mark-as-read when item exits through top of viewport */
+  autoMarkAsRead?: boolean;
 }
 
-export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onUnbookmark, onHide, autoHideOnView = false }: PubListItemProps) => {
+export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onUnbookmark, onHide, onMarkAsRead, autoMarkAsRead = false }: PubListItemProps) => {
   const navigate = useNavigate();
   const { dispatch } = useMainContext();
   const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -32,15 +34,17 @@ export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onU
 
   const link = extractLink(item);
 
-  // Auto-hide when item exits through the top of the viewport
-  const handleAutoHide = useCallback(() => {
-    kromemo.trackEvent({ name: 'auto_hid_item', payload: { link } });
-    onHide(item);
-  }, [link, onHide, item]);
+  // Mark as read when item exits through the top of the viewport
+  const handleMarkAsRead = useCallback(() => {
+    if (onMarkAsRead) {
+      kromemo.trackEvent({ name: 'auto_marked_as_read', payload: { link } });
+      onMarkAsRead(item);
+    }
+  }, [link, onMarkAsRead, item]);
 
   const { ref: autoHideRef } = useAutoHideOnView({
-    enabled: autoHideOnView,
-    onHide: handleAutoHide,
+    enabled: autoMarkAsRead && !!onMarkAsRead,
+    onMarkAsRead: handleMarkAsRead,
   });
   
   if (!sourceData) return null;
