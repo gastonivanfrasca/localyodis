@@ -39,26 +39,19 @@ export const PubsList = () => {
     }
   }, [state.navigation, state.activeItems]);
 
+  // Separate effect for bookmarks view updates (without triggering RSS re-fetch)
   useEffect(() => {
-    dispatch({
-      type: ActionTypes.SET_LOADING,
-      payload: true,
-    });
-
     if (state.navigation === Navigations.BOOKMARKEDS) {
       dispatch({
         type: ActionTypes.SET_ACTIVE_ITEMS,
         payload: state.bookmarks,
       });
-      dispatch({
-        type: ActionTypes.SET_LOADING,
-        payload: false,
-      });
-      return;
     }
+  }, [state.navigation, state.bookmarks, dispatch]);
 
+  // Separate effect for history view updates (without triggering RSS re-fetch)
+  useEffect(() => {
     if (state.navigation === Navigations.HISTORY) {
-      // Convert history items to RSS-like format for PubListItem compatibility
       const historyAsRSSItems = state.history?.map(historyItem => ({
         title: historyItem.title,
         link: historyItem.link,
@@ -72,6 +65,25 @@ export const PubsList = () => {
         type: ActionTypes.SET_ACTIVE_ITEMS,
         payload: historyAsRSSItems,
       });
+    }
+  }, [state.navigation, state.history, dispatch]);
+
+  // Main effect for RSS fetching and navigation changes
+  useEffect(() => {
+    dispatch({
+      type: ActionTypes.SET_LOADING,
+      payload: true,
+    });
+
+    if (state.navigation === Navigations.BOOKMARKEDS) {
+      dispatch({
+        type: ActionTypes.SET_LOADING,
+        payload: false,
+      });
+      return;
+    }
+
+    if (state.navigation === Navigations.HISTORY) {
       dispatch({
         type: ActionTypes.SET_LOADING,
         payload: false,
@@ -193,13 +205,14 @@ export const PubsList = () => {
         });
       }
     })();
+  // Note: state.bookmarks and state.history are intentionally NOT in dependencies
+  // to prevent re-fetching RSS (which filters hiddenItems) when bookmarking items
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     state.navigation,
     dispatch,
     state.sources,
     state.activeSources,
-    state.bookmarks,
-    state.history,
     permission,
     sendNotification,
     t,
