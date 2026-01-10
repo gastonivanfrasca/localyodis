@@ -134,7 +134,8 @@ async function getStoredDataFromIndexedDB() {
       const getRequest = store.get('data');
       
       getRequest.onsuccess = () => {
-        const data = getRequest.result?.value || { sources: [], items: [], activeSources: [] };
+        const storedValue = getRequest.result;
+        const data = storedValue?.value || storedValue || { sources: [], items: [], activeSources: [] };
         resolve(data);
       };
       
@@ -316,4 +317,3 @@ self.addEventListener('notificationclick', (event) => {
     })
   );
 });
-
