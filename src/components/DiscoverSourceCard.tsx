@@ -1,6 +1,7 @@
-import { Check, Minus, Plus, Rss } from "lucide-react";
+import { Check, Lock, Minus, Plus, Rss } from "lucide-react";
 
 import { PredefinedSource } from "../types/predefined-sources";
+import { useI18n } from "../context/i18n";
 
 type DiscoverSourceCardProps = {
   source: PredefinedSource;
@@ -9,6 +10,8 @@ type DiscoverSourceCardProps = {
 };
 
 export const DiscoverSourceCard = ({ source, isAdded, onToggle }: DiscoverSourceCardProps) => {
+  const { t } = useI18n();
+
   return (
     <div
       className={`
@@ -68,14 +71,23 @@ export const DiscoverSourceCard = ({ source, isAdded, onToggle }: DiscoverSource
         </div>
         <div className="flex-1">
           <h4 className={`
-            font-semibold mb-2 text-base tracking-tight
+            font-semibold mb-2 text-base tracking-tight flex flex-wrap items-center gap-2
             ${
               isAdded
                 ? 'text-green-800 dark:text-green-200'
                 : 'text-zinc-800 dark:text-white'
             }
           `}>
-            {source.name}
+            <span>{source.name}</span>
+            {source.hasPaywall && (
+              <span
+                className="inline-flex items-center rounded-full border border-zinc-300/70 dark:border-zinc-600/70 text-zinc-600 dark:text-zinc-300 p-1"
+                title={t('sources.paywall')}
+                aria-label={t('sources.paywall')}
+              >
+                <Lock className="w-3 h-3" />
+              </span>
+            )}
           </h4>
           <p className={`
             text-sm leading-relaxed

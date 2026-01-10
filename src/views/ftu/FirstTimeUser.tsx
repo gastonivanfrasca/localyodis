@@ -4,6 +4,7 @@ import { ActionTypes } from "../../context/main";
 import { AddCustomSourceSection } from "../../components/v2/AddCustomSourceSection";
 import { CategoryPill } from "../../components/CategoryPill";
 import { DiscoverSourceCard } from "../../components/DiscoverSourceCard";
+import { PaywallHelpButton } from "../../components/PaywallHelpButton";
 import { Settings } from "lucide-react";
 import { SupportedLanguage } from "../../types/i18n";
 import { getPredefinedSources } from "../../utils/predefined-sources";
@@ -145,18 +146,21 @@ export const FirstTimeUser = () => {
       case 'recommended':
         return (
           <section>
-             <div className="mb-6">
-              <h2 className="text-lg font-semibold text-zinc-800 dark:text-white tracking-tight mb-1">
-                {t('discover.predefinedSources')}
-              </h2>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-4">
-                {t('discover.predefinedSourcesSubtitle')}
-              </p>
-              {selectedCategories.size > 0 && (
-                <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                  {addedSourcesInCategory} {t('discover.addedCount')} {filteredSources.length} {t('discover.added')}
+             <div className="mb-6 flex items-start justify-between gap-3">
+              <div>
+                <h2 className="text-lg font-semibold text-zinc-800 dark:text-white tracking-tight mb-1">
+                  {t('discover.predefinedSources')}
+                </h2>
+                <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-4">
+                  {t('discover.predefinedSourcesSubtitle')}
                 </p>
-              )}
+                {selectedCategories.size > 0 && (
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                    {addedSourcesInCategory} {t('discover.addedCount')} {filteredSources.length} {t('discover.added')}
+                  </p>
+                )}
+              </div>
+              <PaywallHelpButton />
             </div>
             
             <div className="relative mb-6">

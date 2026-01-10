@@ -1,5 +1,6 @@
 import { PredefinedSource } from "../types/predefined-sources";
-import { Rss, Check } from "lucide-react";
+import { Check, Lock, Rss } from "lucide-react";
+import { useI18n } from "../context/i18n";
 
 type SourceCardProps = {
   source: PredefinedSource;
@@ -8,6 +9,8 @@ type SourceCardProps = {
 };
 
 export const SourceCard = ({ source, isSelected, onToggle }: SourceCardProps) => {
+  const { t } = useI18n();
+
   return (
     <div
       onClick={() => onToggle(source.url)}
@@ -40,8 +43,17 @@ export const SourceCard = ({ source, isSelected, onToggle }: SourceCardProps) =>
           <Rss className="w-4 h-4 text-zinc-700 dark:text-zinc-300" />
         </div>
         <div className="flex-1">
-          <h4 className="font-semibold text-zinc-800 dark:text-white mb-2 text-base tracking-tight">
-            {source.name}
+          <h4 className="font-semibold text-zinc-800 dark:text-white mb-2 text-base tracking-tight flex flex-wrap items-center gap-2">
+            <span>{source.name}</span>
+            {source.hasPaywall && (
+              <span
+                className="inline-flex items-center rounded-full border border-zinc-300/70 dark:border-zinc-600/70 text-zinc-600 dark:text-zinc-300 p-1"
+                title={t('sources.paywall')}
+                aria-label={t('sources.paywall')}
+              >
+                <Lock className="w-3 h-3" />
+              </span>
+            )}
           </h4>
           <p className="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">
             {source.description}

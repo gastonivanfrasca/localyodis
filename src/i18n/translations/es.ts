@@ -63,6 +63,7 @@ export const es: TranslationKeys = {
   'sources.addedSuccessfully': '¡Fuente agregada exitosamente!',
   'sources.removedSuccessfully': 'Fuente deseleccionada correctamente.',
   'sources.noSourcesFound': 'No se encontraron fuentes que coincidan con',
+  'sources.paywall': 'Con muro de pago',
   'sources.addCustom': 'Agregar Fuente Personalizada',
   'sources.addCustomSubtitle': 'Agrega cualquier feed RSS o sitio web ingresando su URL',
   'sources.url': 'URL RSS',
@@ -195,7 +196,11 @@ export const es: TranslationKeys = {
   'time.daysAgo': 'días atrás',
   'time.dayAgo': 'día atrás',
   
-
+  // Help
+  'help.paywall.iconLabel': 'Información de muro de pago',
+  'help.paywall.title': 'Indicador de muro de pago',
+  'help.paywall.description': 'Las fuentes con un candado pueden requerir una suscripción o inicio de sesión para acceder al contenido completo.',
+  'help.paywall.example': 'El candado indica que la fuente puede tener muro de pago.',
 
   // Accessibility
   'a11y.closeModal': 'Cerrar modal',
