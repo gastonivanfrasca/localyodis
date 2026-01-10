@@ -69,6 +69,7 @@ export type TranslationKeys = {
   'sources.addedSuccessfully': string;
   'sources.removedSuccessfully': string;
   'sources.noSourcesFound': string;
+  'sources.paywall': string;
   'sources.addCustom': string;
   'sources.addCustomSubtitle': string;
   'sources.url': string;

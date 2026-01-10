@@ -63,6 +63,7 @@ export const en: TranslationKeys = {
   'sources.addedSuccessfully': 'Source added successfully!',
   'sources.removedSuccessfully': 'Source removed successfully!',
   'sources.noSourcesFound': 'No sources found matching',
+  'sources.paywall': 'Paywall',
   'sources.addCustom': 'Add Custom Source',
   'sources.addCustomSubtitle': 'Add any RSS feed or website by entering its URL',
   'sources.url': 'RSS URL',

@@ -63,6 +63,7 @@ export const fr: TranslationKeys = {
   'sources.addedSuccessfully': 'Source ajoutée avec succès !',
   'sources.removedSuccessfully': 'Source retirée avec succès.',
   'sources.noSourcesFound': 'Aucune source trouvée correspondant à',
+  'sources.paywall': 'Mur payant',
   'sources.addCustom': 'Ajouter une Source Personnalisée',
   'sources.addCustomSubtitle': 'Ajoutez n\'importe quel flux RSS ou site web en saisissant son URL',
   'sources.url': 'URL RSS',
