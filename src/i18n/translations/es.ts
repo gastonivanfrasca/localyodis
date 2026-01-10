@@ -156,6 +156,8 @@ export const es: TranslationKeys = {
   'ftu.addInterests': 'Añade tus intereses para empezar',
 
   // Feed
+  'feed.upToDate': '¡Estás al día!',
+  'feed.upToDateDescription': 'No hay artículos nuevos. Vuelve más tarde para ver más contenido.',
 
   // RSS Feed
   'rss.lastUpdated': 'Última actualización',

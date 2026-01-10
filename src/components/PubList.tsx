@@ -1,8 +1,8 @@
 import { ActionTypes, useMainContext } from "../context/main";
-import { Bookmark, Clock, Search, Settings } from "lucide-react";
+import { Bookmark, CheckCheck, CheckCircle, Clock, Search, Settings } from "lucide-react";
 import { STORAGE_CONFIG, cleanupHiddenItems, extractItemTitle, filterHiddenItems } from "../utils/storage";
 import { fetchRSS, getRSSItemStrProp } from "../utils/rss";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { BackgroundedButtonWithIcon } from "./v2/AddSourceButton";
 import { DateSeparator } from "./v2/DateSeparator";
@@ -17,6 +17,7 @@ import { useError } from "../utils/useError";
 import { useI18n } from "../context/i18n";
 import { useNavigate } from "react-router";
 import { useNotifications } from "../utils/useNotifications";
+import { kromemo } from "kromemo";
 
 export const PubsList = () => {
   const { state, dispatch } = useMainContext();
@@ -26,6 +27,12 @@ export const PubsList = () => {
 
   const scrollPositionRef = useRef(0);
   const navigationRef = useRef(state.navigation);
+
+  // Swipe left state for clearing all items
+  const [leftSwipeTouchStart, setLeftSwipeTouchStart] = useState<number | null>(null);
+  const [leftSwipeTouchEnd, setLeftSwipeTouchEnd] = useState<number | null>(null);
+  const [leftSwipeProgress, setLeftSwipeProgress] = useState(0);
+  const [isClearing, setIsClearing] = useState(false);
 
   useEffect(() => {
     const element = document.getElementById("pubs-list") as HTMLDivElement;
@@ -291,12 +298,85 @@ export const PubsList = () => {
     }
   }, [dispatch, state.navigation, state.activeItems]);
 
+  // Hide all currently active items (clear feed / mark all as read)
+  const hideAllActive = useCallback(() => {
+    // Get all item titles from active items
+    const itemTitles = state.activeItems.map(item => extractItemTitle(item));
+    
+    kromemo.trackEvent({ name: 'hid_all_active', payload: { itemCount: itemTitles.length } });
+    
+    dispatch({
+      type: ActionTypes.HIDE_ALL_ACTIVE,
+      payload: itemTitles,
+    });
+  }, [dispatch, state.activeItems]);
+
+  // Left swipe handlers for clearing all items
+  const handleLeftSwipeTouchStart = useCallback((e: React.TouchEvent) => {
+    setLeftSwipeTouchEnd(null);
+    setLeftSwipeTouchStart(e.targetTouches[0].clientX);
+    setLeftSwipeProgress(0);
+  }, []);
+
+  const handleLeftSwipeTouchMove = useCallback((e: React.TouchEvent) => {
+    const currentX = e.targetTouches[0].clientX;
+    setLeftSwipeTouchEnd(currentX);
+    
+    if (leftSwipeTouchStart) {
+      const distance = leftSwipeTouchStart - currentX;
+      if (distance > 0) { // Left swipe only
+        // Normalize progress: 0-1 based on 150px swipe distance
+        const progress = Math.min(distance / 150, 1);
+        setLeftSwipeProgress(progress);
+      } else {
+        setLeftSwipeProgress(0);
+      }
+    }
+  }, [leftSwipeTouchStart]);
+
+  const handleLeftSwipeTouchEnd = useCallback(() => {
+    if (!leftSwipeTouchStart || !leftSwipeTouchEnd) {
+      setLeftSwipeProgress(0);
+      return;
+    }
+    
+    const distance = leftSwipeTouchStart - leftSwipeTouchEnd;
+    const isLeftSwipe = distance > 100; // Threshold for left swipe
+    
+    if (isLeftSwipe && !isClearing && state.activeItems.length > 0) {
+      // Start clearing animation
+      setIsClearing(true);
+      setLeftSwipeProgress(1);
+      
+      // Clear all items after animation
+      setTimeout(() => {
+        hideAllActive();
+        setIsClearing(false);
+        setLeftSwipeProgress(0);
+      }, 400);
+    } else {
+      // Reset if swipe wasn't sufficient
+      setLeftSwipeProgress(0);
+    }
+    
+    setLeftSwipeTouchStart(null);
+    setLeftSwipeTouchEnd(null);
+  }, [leftSwipeTouchStart, leftSwipeTouchEnd, isClearing, state.activeItems.length, hideAllActive]);
+
+  // Check if we're in the main feed (where left swipe should work)
+  const isMainFeed = state.navigation === null;
+
   if (
     state.activeItems?.length < 1 &&
     state.navigation === null &&
     !state.loading
   ) {
-    return <PubListEmpty />;
+    // If there are no sources, show "no sources added" message
+    // If there are sources but no items, show "you're up to date" message
+    if (state.sources.length === 0) {
+      return <PubListEmpty />;
+    }
+    return <FeedUpToDate />;
   }
 
   if (
@@ -325,7 +405,36 @@ export const PubsList = () => {
 
   return (
     <>
-      <div id="pubs-list" className="p-0 flex flex-col gap-8 h-full w-full bg-white dark:bg-slate-950">
+      <div 
+        id="pubs-list" 
+        className="p-0 flex flex-col gap-8 h-full w-full bg-white dark:bg-slate-950 relative"
+        onTouchStart={isMainFeed ? handleLeftSwipeTouchStart : undefined}
+        onTouchMove={isMainFeed ? handleLeftSwipeTouchMove : undefined}
+        onTouchEnd={isMainFeed ? handleLeftSwipeTouchEnd : undefined}
+      >
+        {/* Fullscreen overlay for left swipe (clear all) */}
+        {leftSwipeProgress > 0 && isMainFeed && (
+          <div 
+            className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none"
+            style={{
+              background: `rgba(59, 130, 246, ${leftSwipeProgress * 0.85})`,
+              backdropFilter: `blur(${leftSwipeProgress * 8}px)`,
+              transition: isClearing ? 'all 0.4s ease-out' : 'none',
+            }}
+          >
+            <div 
+              className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center"
+              style={{
+                transform: `scale(${0.6 + leftSwipeProgress * 0.6})`,
+                opacity: leftSwipeProgress,
+                transition: isClearing ? 'all 0.3s ease-out' : 'none',
+              }}
+            >
+              <CheckCheck className="w-12 h-12 text-white" />
+            </div>
+          </div>
+        )}
+
         <Virtuoso
           className="hide-scrollbar"
           style={{
@@ -364,9 +473,6 @@ export const PubsList = () => {
               const itemLink = extractLink(item);
               return bookmarkLink === itemLink;
             }) as RSSItem | undefined;
-
-            // Auto-mark as read only on main feed (when navigation is null)
-            const isMainFeed = state.navigation === null;
 
             return (
               <div className={isFirstItem ? 'pt-6' : ''}>
@@ -408,6 +514,27 @@ export const PubListEmpty = () => {
         icon={<Settings className="w-5 h-5 text-zinc-800 dark:text-zinc-200" />}
         label={t('sources.goToSources')}
       />
+    </div>
+  );
+};
+
+export const FeedUpToDate = () => {
+  const { t } = useI18n();
+  return (
+    <div className="p-4 md:p-16 flex flex-col gap-6 max-h-full overflow-scroll items-center justify-center min-h-[400px] bg-white dark:bg-slate-950">
+      <div className="flex flex-col items-center gap-4 max-w-md mx-auto">
+        <div className="w-16 h-16 bg-green-50 dark:bg-green-900/20 rounded-full flex items-center justify-center">
+          <CheckCircle className="w-8 h-8 text-green-500 dark:text-green-400" />
+        </div>
+        <div className="text-center space-y-2">
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+            {t('feed.upToDate')}
+          </h3>
+          <p className="text-gray-600 dark:text-gray-400 text-sm md:text-base px-4 md:px-0">
+            {t('feed.upToDateDescription')}
+          </p>
+        </div>
+      </div>
     </div>
   );
 };

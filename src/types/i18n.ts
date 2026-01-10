@@ -161,6 +161,8 @@ export type TranslationKeys = {
   'ftu.addInterests': string;
 
   // Feed
+  'feed.upToDate': string;
+  'feed.upToDateDescription': string;
 
   // RSS Feed
   'rss.lastUpdated': string;

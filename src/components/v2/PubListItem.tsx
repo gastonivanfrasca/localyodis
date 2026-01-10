@@ -80,7 +80,7 @@ export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onU
     window.open(link, "_blank");
   };
 
-  // Swipe gesture handlers
+  // Swipe gesture handlers (right swipe only - for hiding individual items)
   const handleTouchStart = (e: React.TouchEvent) => {
     setTouchEnd(null);
     setTouchStart(e.targetTouches[0].clientX);
@@ -93,7 +93,7 @@ export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onU
     
     if (touchStart) {
       const distance = currentX - touchStart;
-      if (distance > 0) { // Only for right swipes
+      if (distance > 0) { // Right swipe only (hide single item)
         // Normalize progress: 0-1 based on 150px swipe distance
         const progress = Math.min(distance / 150, 1);
         setSwipeProgress(progress);
@@ -110,10 +110,10 @@ export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onU
     }
     
     const distance = touchStart - touchEnd;
-    const isRightSwipe = distance < -80; // Increased threshold for better UX
+    const isRightSwipe = distance < -80; // Threshold for right swipe (hide single item)
     
     if (isRightSwipe && !isAnimating) {
-      // Start exit animation
+      // Start exit animation for single item hide
       setIsAnimating(true);
       
       // Hide item after animation completes (300ms)
@@ -140,16 +140,18 @@ export const PubListItem = ({ item, index, sourceData, bookmark, onBookmark, onU
       style={{
         transform: isAnimating 
           ? 'translateX(100%) scale(0.9)' 
-          : `translateX(${swipeProgress * 30}px) scale(${1 - swipeProgress * 0.05})`, // Show preview during swipe
-        opacity: isAnimating ? 0 : Math.max(0.3, 1 - swipeProgress * 0.7), // Fade preview
-        transition: isAnimating 
+          : swipeProgress > 0
+            ? `translateX(${swipeProgress * 30}px) scale(${1 - swipeProgress * 0.05})`
+            : 'translateX(0) scale(1)',
+        opacity: isAnimating ? 0 : Math.max(0.3, 1 - swipeProgress * 0.7),
+        transition: isAnimating
           ? 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease-out' 
           : swipeProgress === 0 && touchEnd !== null 
-            ? 'transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease-out' // Bounce back
+            ? 'transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease-out'
             : 'none'
       }}
     >
-      {/* Swipe indicator background */}
+      {/* Right swipe indicator background (hide single item) */}
       {swipeProgress > 0 && (
         <div 
           className="absolute inset-0 bg-gradient-to-r from-red-100 to-red-200 dark:from-red-900/20 dark:to-red-800/20 flex items-center justify-end pr-4"

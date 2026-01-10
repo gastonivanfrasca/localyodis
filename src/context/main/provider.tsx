@@ -93,6 +93,24 @@ const reducer = (state: LocallyStoredData, action: Action) => {
         ...state, 
         hiddenItems: state.hiddenItems.filter(id => id !== action.payload)
       };
+    case ActionTypes.HIDE_ALL_ACTIVE: {
+      const itemTitles = action.payload as string[];
+      // Add all titles to hiddenItems (avoid duplicates)
+      const existingHiddenSet = new Set(state.hiddenItems);
+      const newHiddenItems = [...state.hiddenItems];
+      itemTitles.forEach(title => {
+        if (!existingHiddenSet.has(title)) {
+          newHiddenItems.push(title);
+        }
+      });
+      // Clear all active items and items
+      return {
+        ...state,
+        hiddenItems: newHiddenItems,
+        activeItems: [],
+        items: [],
+      };
+    }
     case ActionTypes.ADD_TO_HISTORY:
       return { 
         ...state, 

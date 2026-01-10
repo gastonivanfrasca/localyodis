@@ -34,6 +34,7 @@ export enum ActionTypes {
   HIDE_ITEM = "HIDE_ITEM",
   MARK_AS_READ = "MARK_AS_READ", // Only adds to hiddenItems, doesn't remove from view
   UNHIDE_ITEM = "UNHIDE_ITEM",
+  HIDE_ALL_ACTIVE = "HIDE_ALL_ACTIVE", // Hide all currently active items (clear feed)
   ADD_TO_HISTORY = "ADD_TO_HISTORY",
   CLEAR_HISTORY = "CLEAR_HISTORY",
   REMOVE_FROM_HISTORY = "REMOVE_FROM_HISTORY",
