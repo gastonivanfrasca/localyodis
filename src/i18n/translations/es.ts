@@ -196,7 +196,11 @@ export const es: TranslationKeys = {
   'time.daysAgo': 'días atrás',
   'time.dayAgo': 'día atrás',
   
-
+  // Help
+  'help.paywall.iconLabel': 'Información de muro de pago',
+  'help.paywall.title': 'Indicador de muro de pago',
+  'help.paywall.description': 'Las fuentes con un candado pueden requerir una suscripción o inicio de sesión para acceder al contenido completo.',
+  'help.paywall.example': 'El candado indica que la fuente puede tener muro de pago.',
 
   // Accessibility
   'a11y.closeModal': 'Cerrar modal',

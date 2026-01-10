@@ -196,7 +196,11 @@ export const fr: TranslationKeys = {
   'time.daysAgo': 'jours passés',
   'time.dayAgo': 'jour passé',
   
-
+  // Help
+  'help.paywall.iconLabel': 'Info sur le mur payant',
+  'help.paywall.title': 'Indicateur de mur payant',
+  'help.paywall.description': 'Les sources avec un cadenas peuvent nécessiter un abonnement ou une connexion pour accéder au contenu complet.',
+  'help.paywall.example': 'Le cadenas indique qu\'une source peut être payante.',
 
   // Accessibility
   'a11y.closeModal': 'Fermer la modale',

@@ -201,6 +201,11 @@ export type TranslationKeys = {
   'time.daysAgo': string;
   'time.dayAgo': string;
   
+  // Help
+  'help.paywall.iconLabel': string;
+  'help.paywall.title': string;
+  'help.paywall.description': string;
+  'help.paywall.example': string;
 
 
   // Accessibility

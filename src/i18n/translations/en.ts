@@ -196,7 +196,11 @@ export const en: TranslationKeys = {
   'time.daysAgo': 'days ago',
   'time.dayAgo': 'day ago',
   
-
+  // Help
+  'help.paywall.iconLabel': 'Paywall info',
+  'help.paywall.title': 'Paywall indicator',
+  'help.paywall.description': 'Sources marked with a lock may require a subscription or login to access full content.',
+  'help.paywall.example': 'Lock icon means a source may be paywalled.',
 
   // Accessibility
   'a11y.closeModal': 'Close modal',
