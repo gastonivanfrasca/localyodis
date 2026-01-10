@@ -5,7 +5,6 @@ import { HistoryButton } from "../HistoryButton";
 import { HomeButton } from "../HomeButton";
 import { HomeButtonModes } from "../../types/navigation";
 import { MenuButton } from "../MenuButton";
-import { PaywallHelpButton } from "../PaywallHelpButton";
 import { SearchButton } from "../SearchButton";
 
 type ButtonsProps = {
@@ -41,11 +40,6 @@ export const HomeButtons = ({ orientation = 'horizontal' }: ButtonsProps = {}) =
       <div className={buttonClasses}>
         <MenuButton />
       </div>
-      {orientation === 'horizontal' && (
-        <div className={buttonClasses}>
-          <PaywallHelpButton />
-        </div>
-      )}
     </div>
   );
 };
