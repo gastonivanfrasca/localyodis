@@ -1,17 +1,12 @@
 import { ConfirmationModal } from "../../components/ConfirmationModal";
-import { Check, Languages, RotateCcw, Bell } from "lucide-react";
+import { Check, Languages, RotateCcw } from "lucide-react";
 import { NavigationTitleWithBack } from "../../components/v2/NavigationTitleWithBack";
 import { useI18n } from "../../context/i18n";
-import { useState, useRef, useEffect } from "react";
-import { useNotifications } from "../../utils/useNotifications";
+import { useState } from "react";
 
 export const Settings = () => {
   const [isResetModalOpen, setIsResetModalOpen] = useState(false);
-  const [isTestingBackgroundSync, setIsTestingBackgroundSync] = useState(false);
-  const [notificationCount, setNotificationCount] = useState(0);
   const { t, language, setLanguage, languages } = useI18n();
-  const { permission } = useNotifications();
-  const testIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleResetConfiguration = () => {
     // Clear all localStorage data
@@ -24,108 +19,6 @@ export const Settings = () => {
   const handleLanguageChange = (languageCode: string) => {
     setLanguage(languageCode as typeof language);
   };
-
-  const handleTestBackgroundSync = () => {
-    if (isTestingBackgroundSync) {
-      // Detener el test
-      if (testIntervalRef.current) {
-        clearInterval(testIntervalRef.current);
-        testIntervalRef.current = null;
-      }
-      setIsTestingBackgroundSync(false);
-      setNotificationCount(0);
-    } else {
-      // Iniciar el test
-      // Verificar permisos directamente del navegador
-      const browserPermission = Notification.permission;
-      console.log('[Settings] Permisos del hook:', permission);
-      console.log('[Settings] Permisos del navegador:', browserPermission);
-      
-      if (browserPermission !== "granted") {
-        alert("Por favor, otorga permisos de notificación primero");
-        return;
-      }
-      
-      console.log('[Settings] Iniciando test de background sync');
-      
-      setIsTestingBackgroundSync(true);
-      setNotificationCount(0);
-      
-      // Enviar primera notificación inmediatamente
-      setNotificationCount(1);
-      console.log('[Settings] Enviando primera notificación...');
-      
-      // Usar Notification API directamente para asegurar que funcione
-      try {
-        // Usar rutas absolutas que funcionen en producción
-        const iconPath = window.location.origin + '/pwa-192x192.png';
-        const badgePath = window.location.origin + '/pwa-192x192.png';
-        
-        console.log('[Settings] Icon paths:', { iconPath, badgePath, origin: window.location.origin });
-        
-        const notification = new Notification(`Prueba de Background Sync #1`, {
-          body: "Notificación de prueba enviada cada minuto",
-          icon: iconPath,
-          badge: badgePath,
-          tag: "background-sync-test",
-        });
-        console.log('[Settings] Primera notificación creada:', notification);
-        
-        notification.onclick = () => {
-          window.focus();
-          notification.close();
-        };
-      } catch (error) {
-        console.error('[Settings] Error creando primera notificación:', error);
-      }
-      
-      // Configurar intervalo para enviar cada minuto
-      testIntervalRef.current = setInterval(() => {
-        setNotificationCount(prev => {
-          const newCount = prev + 1;
-          console.log(`[Settings] Enviando notificación #${newCount}...`);
-          
-          // Verificar permisos antes de cada notificación
-          if (Notification.permission !== "granted") {
-            console.warn(`[Settings] Permisos revocados en notificación #${newCount}`);
-            return prev;
-          }
-          
-          try {
-            // Usar rutas absolutas que funcionen en producción
-            const iconPath = window.location.origin + '/pwa-192x192.png';
-            const badgePath = window.location.origin + '/pwa-192x192.png';
-            
-            const notification = new Notification(`Prueba de Background Sync #${newCount}`, {
-              body: `Notificación de prueba #${newCount} - ${new Date().toLocaleTimeString()}`,
-              icon: iconPath,
-              badge: badgePath,
-              tag: "background-sync-test",
-            });
-            console.log(`[Settings] Notificación #${newCount} creada:`, notification);
-            
-            notification.onclick = () => {
-              window.focus();
-              notification.close();
-            };
-          } catch (error) {
-            console.error(`[Settings] Error creando notificación #${newCount}:`, error);
-          }
-          
-          return newCount;
-        });
-      }, 60 * 1000); // 1 minuto
-    }
-  };
-
-  // Limpiar intervalo al desmontar
-  useEffect(() => {
-    return () => {
-      if (testIntervalRef.current) {
-        clearInterval(testIntervalRef.current);
-      }
-    };
-  }, []);
 
   return (
     <div className="w-full min-h-dvh bg-white dark:bg-slate-950 text-black dark:text-white">
@@ -173,40 +66,6 @@ export const Settings = () => {
                     )}
                   </button>
                 ))}
-              </div>
-            </section>
-
-            {/* Background Sync Test */}
-            <section className="rounded-2xl border border-blue-200/60 dark:border-blue-900/60 bg-blue-50/60 dark:bg-blue-950/20 p-6 space-y-6">
-              <div className="flex items-start gap-4">
-                <div className="p-3 rounded-xl bg-blue-100/80 dark:bg-blue-900/40 border border-blue-200/70 dark:border-blue-900/60">
-                  <Bell className="w-5 h-5 text-blue-700 dark:text-blue-200" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 tracking-tight">
-                    Probar Background Sync
-                  </h3>
-                  <p className="text-sm text-blue-700/90 dark:text-blue-200/80 leading-relaxed">
-                    {isTestingBackgroundSync 
-                      ? `Enviando notificaciones cada minuto... (${notificationCount} enviadas)`
-                      : "Envía una notificación push cada minuto para probar el background sync"}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-end pt-2">
-                <button
-                  onClick={handleTestBackgroundSync}
-                  disabled={permission !== "granted"}
-                  className={`inline-flex items-center justify-center gap-2 font-semibold py-3 px-5 rounded-xl transition-all duration-200 shadow-sm ${
-                    isTestingBackgroundSync
-                      ? 'bg-red-600 hover:bg-red-700 text-white shadow-red-600/30'
-                      : 'bg-blue-600 hover:bg-blue-700 text-white shadow-blue-600/30'
-                  } ${permission !== "granted" ? 'opacity-50 cursor-not-allowed' : ''}`}
-                >
-                  <Bell className="w-4 h-4" />
-                  <span>{isTestingBackgroundSync ? 'Detener Prueba' : 'Iniciar Prueba'}</span>
-                </button>
               </div>
             </section>
 

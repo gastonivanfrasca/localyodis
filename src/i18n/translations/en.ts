@@ -22,12 +22,6 @@ export const en: TranslationKeys = {
   'settings.reset.cancel': 'Cancel',
   'settings.reset.modal.title': 'Reset Configuration',
   'settings.reset.modal.message': 'Are you sure you want to reset all configuration? This will delete all your sources, bookmarks, and settings.',
-  'settings.notifications': 'Notifications',
-  'settings.notifications.description': 'Receive notifications when new items are available in your RSS sources.',
-  'settings.notifications.enable': 'Enable notifications',
-  'settings.notifications.permissionGranted': 'Permission granted',
-  'settings.notifications.permissionDenied': 'Permission denied. Please enable notifications in your browser settings.',
-  'settings.notifications.permissionRequired': 'Permission required',
   
   // Common
   'common.back': 'Back',
@@ -77,7 +71,6 @@ export const en: TranslationKeys = {
   'sources.customNamePlaceholder': 'Enter a custom name for this source',
   'sources.customNameHelp': 'If no name is provided, we\'ll use the website domain',
   'sources.addCustomSource': 'Add Custom Source',
-  'sources.notifications.enable': 'Notifications',
   
   // Discover
   'discover.title': 'Discover',
@@ -166,11 +159,6 @@ export const en: TranslationKeys = {
   'rss.link': 'RSS link',
   'rss.example': 'e.g. https://example.com/feed.xml',
   
-  // Notifications
-  'notifications.newItem': 'New item available',
-  'notifications.newItems': 'new items',
-  'notifications.newItemsFromSource': 'new items from this source',
-  
   // YouTube
   'youtube.channelName': 'Channel name',
   'youtube.example': 'e.g. Example Channel Name',
@@ -193,18 +181,6 @@ export const en: TranslationKeys = {
   'error.required': 'RSS URL is required',
   'error.sourceExists': 'Source already exists',
   'error.invalidTitle': 'Invalid title format',
-  
-  // Notifications
-  'notification.close': 'Close notification',
-  'notification.example.error': 'This is an example error message',
-  'notification.example.warning': 'This is an example warning',
-  'notification.example.success': 'Operation completed successfully',
-  'notification.example.info': 'This is additional information',
-  'notification.test.title': 'Notification Test',
-  'notification.test.showError': 'Show Error',
-  'notification.test.showWarning': 'Show Warning',
-  'notification.test.showSuccess': 'Show Success',
-  'notification.test.showInfo': 'Show Info',
   
   // Modals
   'modal.close': 'Close modal',

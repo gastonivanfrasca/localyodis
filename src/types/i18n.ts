@@ -28,12 +28,6 @@ export type TranslationKeys = {
   'settings.reset.cancel': string;
   'settings.reset.modal.title': string;
   'settings.reset.modal.message': string;
-  'settings.notifications': string;
-  'settings.notifications.description': string;
-  'settings.notifications.enable': string;
-  'settings.notifications.permissionGranted': string;
-  'settings.notifications.permissionDenied': string;
-  'settings.notifications.permissionRequired': string;
   
   // Common
   'common.back': string;
@@ -83,7 +77,6 @@ export type TranslationKeys = {
   'sources.customNamePlaceholder': string;
   'sources.customNameHelp': string;
   'sources.addCustomSource': string;
-  'sources.notifications.enable': string;
   
   // Discover
   'discover.title': string;
@@ -171,11 +164,6 @@ export type TranslationKeys = {
   'rss.link': string;
   'rss.example': string;
   
-  // Notifications
-  'notifications.newItem': string;
-  'notifications.newItems': string;
-  'notifications.newItemsFromSource': string;
-  
   // YouTube
   'youtube.channelName': string;
   'youtube.example': string;
@@ -198,18 +186,6 @@ export type TranslationKeys = {
   'error.required': string;
   'error.sourceExists': string;
   'error.invalidTitle': string;
-  
-  // Notifications
-  'notification.close': string;
-  'notification.example.error': string;
-  'notification.example.warning': string;
-  'notification.example.success': string;
-  'notification.example.info': string;
-  'notification.test.title': string;
-  'notification.test.showError': string;
-  'notification.test.showWarning': string;
-  'notification.test.showSuccess': string;
-  'notification.test.showInfo': string;
   
   // Modals
   'modal.close': string;

@@ -22,12 +22,6 @@ export const es: TranslationKeys = {
   'settings.reset.cancel': 'Cancelar',
   'settings.reset.modal.title': 'Restablecer configuración',
   'settings.reset.modal.message': '¿Estás seguro de que quieres restablecer toda la configuración? Esto eliminará todas tus fuentes, favoritos y configuraciones.',
-  'settings.notifications': 'Notificaciones',
-  'settings.notifications.description': 'Recibe notificaciones cuando haya nuevos ítems disponibles en tus fuentes RSS.',
-  'settings.notifications.enable': 'Habilitar notificaciones',
-  'settings.notifications.permissionGranted': 'Permiso concedido',
-  'settings.notifications.permissionDenied': 'Permiso denegado. Por favor, habilita las notificaciones en la configuración de tu navegador.',
-  'settings.notifications.permissionRequired': 'Permiso requerido',
   
   // Common
   'common.back': 'Atrás',
@@ -77,7 +71,6 @@ export const es: TranslationKeys = {
   'sources.customNamePlaceholder': 'Ingresa un nombre personalizado para esta fuente',
   'sources.customNameHelp': 'Si no se proporciona un nombre, usaremos el dominio del sitio web',
   'sources.addCustomSource': 'Agregar Fuente Personalizada',
-  'sources.notifications.enable': 'Notificaciones',
   
   // Discover
   'discover.title': 'Descubrir',
@@ -166,11 +159,6 @@ export const es: TranslationKeys = {
   'rss.link': 'Enlace RSS',
   'rss.example': 'ej. https://ejemplo.com/feed.xml',
   
-  // Notifications
-  'notifications.newItem': 'Nuevo ítem disponible',
-  'notifications.newItems': 'nuevos ítems',
-  'notifications.newItemsFromSource': 'nuevos ítems de esta fuente',
-  
   // YouTube
   'youtube.channelName': 'Nombre del canal',
   'youtube.example': 'ej. Nombre del Canal de Ejemplo',
@@ -193,18 +181,6 @@ export const es: TranslationKeys = {
   'error.required': 'La URL del RSS es requerida',
   'error.sourceExists': 'La fuente ya existe',
   'error.invalidTitle': 'Formato de título inválido',
-  
-  // Notifications
-  'notification.close': 'Cerrar notificación',
-  'notification.example.error': 'Esto es un mensaje de error de ejemplo',
-  'notification.example.warning': 'Esto es una advertencia de ejemplo',
-  'notification.example.success': 'Operación completada exitosamente',
-  'notification.example.info': 'Esta es información adicional',
-  'notification.test.title': 'Prueba de notificaciones',
-  'notification.test.showError': 'Mostrar error',
-  'notification.test.showWarning': 'Mostrar advertencia',
-  'notification.test.showSuccess': 'Mostrar éxito',
-  'notification.test.showInfo': 'Mostrar información',
   
   // Modals
   'modal.close': 'Cerrar modal',
