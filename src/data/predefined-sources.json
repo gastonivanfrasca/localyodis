@@ -9,139 +9,162 @@
           "name": "TechCrunch",
           "url": "https://techcrunch.com/feed/",
           "description": "Startup and technology news",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": true
         },
         {
           "name": "Ars Technica",
           "url": "https://feeds.arstechnica.com/arstechnica/index",
           "description": "Technology, science, and policy",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "Wired",
           "url": "https://www.wired.com/feed/rss",
           "description": "Ideas that matter in technology",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": true
         },
         {
           "name": "Where's Your Ed At",
           "url": "https://www.wheresyoured.at/rss/",
           "description": "Ed Zitron's commentary on technology and business",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "AlternativeTo News",
           "url": "https://feed.alternativeto.net/news/all",
           "description": "Software alternatives and recommendations",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": true
         },
         {
           "name": "The Verge",
           "url": "https://www.theverge.com/rss/index.xml",
           "description": "Technology news and reviews",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": true
         },
         {
           "name": "Engadget",
           "url": "https://www.engadget.com/rss.xml",
           "description": "Consumer electronics and technology",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "CNET",
           "url": "https://www.cnet.com/rss/news/",
           "description": "Technology news and product reviews",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "Gizmodo",
           "url": "https://www.gizmodo.com/rss",
           "description": "Gadgets, technology, and science news",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "VentureBeat",
           "url": "https://feeds.feedburner.com/venturebeat/SZYF",
           "description": "AI and enterprise technology news",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "TechRadar",
           "url": "https://www.techradar.com/rss",
           "description": "Technology news and reviews",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": true
         },
         {
           "name": "Tom's Hardware",
           "url": "https://www.tomshardware.com/feeds/all",
           "description": "Computer hardware and technology",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": true
         },
         {
           "name": "AnandTech",
           "url": "https://www.anandtech.com/rss",
           "description": "In-depth hardware reviews and analysis",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "ZDNet",
           "url": "https://www.zdnet.com/news/rss.xml",
           "description": "Business technology news",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "Lifehacker",
           "url": "https://www.lifehacker.com/rss",
           "description": "Tips and tricks for life",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "Popular Mechanics",
           "url": "https://www.popularmechanics.com/rss",
           "description": "Science and technology for everyday life",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": true
         },
         {
           "name": "How-To Geek",
           "url": "https://www.howtogeek.com/feed/",
           "description": "Technology explanations and tutorials",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "MakeUseOf",
           "url": "https://www.makeuseof.com/feed/",
           "description": "Technology tips and guides",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "Techmeme",
           "url": "https://www.techmeme.com/feed.xml",
           "description": "Technology news aggregation",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": true
         },
         {
           "name": "El Mundo Tecnología",
           "url": "https://www.elmundo.es/rss/tecnologia.xml",
           "description": "Noticias de tecnología",
-          "language": "es"
+          "language": "es",
+          "hasPaywall": true
         },
         {
           "name": "ABC Tecnología",
           "url": "https://www.abc.es/rss/feeds/abc_Tecnologia.xml",
           "description": "Noticias de tecnología",
-          "language": "es"
+          "language": "es",
+          "hasPaywall": true
         },
         {
           "name": "Les Numériques",
           "url": "https://www.lesnumeriques.com/rss.xml",
           "description": "Actualités high-tech et tests",
-          "language": "fr"
+          "language": "fr",
+          "hasPaywall": true
         },
         {
           "name": "Futura Sciences",
           "url": "https://www.futura-sciences.com/rss/actualites.xml",
           "description": "Sciences et technologies",
-          "language": "fr"
+          "language": "fr",
+          "hasPaywall": false
         }
       ]
     },
@@ -154,109 +177,127 @@
           "name": "BBC News",
           "url": "http://feeds.bbci.co.uk/news/rss.xml",
           "description": "International news from the BBC",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "NPR News",
           "url": "https://feeds.npr.org/1001/rss.xml",
           "description": "US public radio news",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "El País",
           "url": "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/portada",
           "description": "Noticias de España y el mundo",
-          "language": "es"
+          "language": "es",
+          "hasPaywall": true
         },
         {
           "name": "BBC Mundo",
           "url": "https://feeds.bbci.co.uk/mundo/rss.xml",
           "description": "Noticias internacionales en español",
-          "language": "es"
+          "language": "es",
+          "hasPaywall": false
         },
         {
           "name": "Infobae",
           "url": "https://www.infobae.com/arc/outboundfeeds/rss/",
           "description": "Noticias de América Latina y el mundo",
-          "language": "es"
+          "language": "es",
+          "hasPaywall": false
         },
         {
           "name": "Google News Argentina",
           "url": "https://news.google.com/rss?hl=es-419&gl=AR&ceid=AR:es-419",
           "description": "Noticias destacadas de Argentina",
-          "language": "es"
+          "language": "es",
+          "hasPaywall": false
         },
         {
           "name": "Le Monde",
           "url": "https://www.lemonde.fr/rss/une.xml",
           "description": "Actualités françaises et internationales",
-          "language": "fr"
+          "language": "fr",
+          "hasPaywall": true
         },
         {
           "name": "France 24",
           "url": "https://www.france24.com/fr/rss",
           "description": "Actualités internationales en français",
-          "language": "fr"
+          "language": "fr",
+          "hasPaywall": true
         },
         {
           "name": "The Guardian",
           "url": "https://www.theguardian.com/world/rss",
           "description": "International news and analysis",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "The Atlantic",
           "url": "https://www.theatlantic.com/feed/all/",
           "description": "News, politics, and culture",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": true
         },
         {
           "name": "Forbes",
           "url": "https://www.forbes.com/real-time/feed2/",
           "description": "Business, technology, and finance news",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": true
         },
         {
           "name": "The New York Times",
           "url": "https://www.nytimes.com/svc/collections/v1/publish/https://www.nytimes.com/section/world/rss.xml",
           "description": "World news from The New York Times",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": true
         },
         {
           "name": "El Mundo",
           "url": "https://www.elmundo.es/rss/portada.xml",
           "description": "Noticias de España",
-          "language": "es"
+          "language": "es",
+          "hasPaywall": true
         },
         {
           "name": "ABC",
           "url": "https://www.abc.es/rss/feeds/abcPortada.xml",
           "description": "Noticias de España",
-          "language": "es"
+          "language": "es",
+          "hasPaywall": true
         },
         {
           "name": "Le Figaro",
           "url": "https://www.lefigaro.fr/rss/figaro_actualites.xml",
           "description": "Actualités françaises",
-          "language": "fr"
+          "language": "fr",
+          "hasPaywall": true
         },
         {
           "name": "L'Express",
           "url": "https://www.lexpress.fr/rss/alaune.xml",
           "description": "Actualités françaises et internationales",
-          "language": "fr"
+          "language": "fr",
+          "hasPaywall": true
         },
         {
           "name": "Página 12",
           "url": "https://www.pagina12.com.ar/rss/secciones/el-pais/notas",
           "description": "Noticias de Argentina",
-          "language": "es"
+          "language": "es",
+          "hasPaywall": false
         },
         {
           "name": "RTVE",
           "url": "http://www.rtve.es/rss/",
           "description": "Noticias de España",
-          "language": "es"
+          "language": "es",
+          "hasPaywall": false
         }
       ]
     },
@@ -269,43 +310,50 @@
           "name": "NASA",
           "url": "https://www.nasa.gov/rss/dyn/breaking_news.rss",
           "description": "Latest news from NASA",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "Science Daily",
           "url": "https://www.sciencedaily.com/rss/all.xml",
           "description": "Scientific discoveries",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "New Scientist",
           "url": "https://www.newscientist.com/feed/home/",
           "description": "Science and technology",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": true
         },
         {
           "name": "Nature",
           "url": "https://feeds.nature.com/nature/rss/current",
           "description": "Scientific research and discoveries",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": true
         },
         {
           "name": "Quanta Magazine",
           "url": "https://www.quantamagazine.org/feed/",
           "description": "Math, physics, and biology research",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "Space.com",
           "url": "http://www.space.com/feeds.xml",
           "description": "Space exploration and astronomy news",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": true
         },
         {
           "name": "Smithsonian Technology",
           "url": "https://www.smithsonianmag.com/rss/technology/",
           "description": "Technology stories from Smithsonian",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         }
       ]
     },
@@ -318,31 +366,36 @@
           "name": "Smashing Magazine",
           "url": "https://www.smashingmagazine.com/feed/",
           "description": "Web design and development",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "Creative Bloq",
           "url": "https://www.creativebloq.com/feed",
           "description": "Art, design, and inspiration",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": true
         },
         {
           "name": "Designer News",
           "url": "https://www.designernews.co/rss",
           "description": "Design community",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "Design Milk",
           "url": "https://www.design-milk.com/feed/",
           "description": "Modern design and architecture",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "Dribbble",
           "url": "https://www.dribbble.com/feed",
           "description": "Design inspiration and community",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         }
       ]
     },
@@ -355,91 +408,106 @@
           "name": "Dev.to",
           "url": "https://dev.to/feed",
           "description": "Developer community",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "Hacker News",
           "url": "https://hnrss.org/frontpage",
           "description": "Tech news and discussions",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "CSS-Tricks",
           "url": "https://css-tricks.com/feed/",
           "description": "CSS and frontend tips & tricks",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "JavaScript Weekly",
           "url": "https://javascriptweekly.com/rss/",
           "description": "Weekly JavaScript news",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "GitHub Blog",
           "url": "https://github.blog/feed/",
           "description": "GitHub news and engineering blog",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "Google Developers",
           "url": "https://developers.googleblog.com/feeds/posts/default",
           "description": "Google developer news and updates",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "AWS Blog",
           "url": "https://aws.amazon.com/blogs/aws/feed/",
           "description": "Amazon Web Services news and updates",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "Mozilla Blog",
           "url": "https://blog.mozilla.org/feed/",
           "description": "Mozilla news and open web advocacy",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "PHP News",
           "url": "https://www.php.net/news.rss",
           "description": "PHP language updates and releases",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "Python Jobs",
           "url": "https://www.python.org/jobs/feed/rss/",
           "description": "Python job opportunities",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "Ruby News",
           "url": "https://www.ruby-lang.org/en/feeds/news.rss",
           "description": "Ruby language news and updates",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "freeCodeCamp",
           "url": "https://www.freecodecamp.org/news/rss/",
           "description": "Free coding tutorials and articles",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "Scotch.io",
           "url": "https://www.scotch.io/feed",
           "description": "Web development tutorials",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "React Blog",
           "url": "https://www.reactjs.org/feed.xml",
           "description": "Official React blog and updates",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "Medium Programming",
           "url": "https://www.medium.com/feed/tag/programming",
           "description": "Programming articles on Medium",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": true
         }
       ]
     },
@@ -452,43 +520,50 @@
           "name": "Harvard Business Review",
           "url": "https://feeds.hbr.org/harvardbusiness",
           "description": "Management and strategy ideas",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": true
         },
         {
           "name": "Entrepreneur",
           "url": "https://www.entrepreneur.com/latest.rss",
           "description": "Entrepreneurship news",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": true
         },
         {
           "name": "Fast Company",
           "url": "https://www.fastcompany.com/rss",
           "description": "Business and technology innovation",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": true
         },
         {
           "name": "MarketWatch",
           "url": "https://www.marketwatch.com/rss/topstories",
           "description": "Financial news and market analysis",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": true
         },
         {
           "name": "CoinDesk",
           "url": "https://www.coindesk.com/feed/",
           "description": "Cryptocurrency and blockchain news",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "CoinTelegraph",
           "url": "https://www.cointelegraph.com/rss",
           "description": "Cryptocurrency news and analysis",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "Investing.com",
           "url": "https://www.investing.com/rss/news.rss",
           "description": "Financial markets and investment news",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": true
         }
       ]
     },
@@ -501,25 +576,29 @@
           "name": "Polygon",
           "url": "https://www.polygon.com/rss/index.xml",
           "description": "Video game news and reviews",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "Kotaku",
           "url": "https://www.kotaku.com/rss",
           "description": "Gaming news and culture",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": true
         },
         {
           "name": "PC Gamer",
           "url": "https://www.pcgamer.com/rss/",
           "description": "PC gaming news and reviews",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": true
         },
         {
           "name": "Rock Paper Shotgun",
           "url": "https://www.rockpapershotgun.com/feed",
           "description": "PC gaming news and features",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": true
         }
       ]
     },
@@ -532,33 +611,38 @@
           "name": "BBC Sport",
           "url": "https://www.bbc.com/sport/rss.xml",
           "description": "Sports news from BBC",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "ESPN",
           "url": "https://www.espn.com/espn/rss/news",
           "description": "Sports news and highlights",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": true
         },
         {
           "name": "Sky Sports",
           "url": "https://www.skysports.com/rss/0,20514,11661,00.xml",
           "description": "Football and sports news",
-          "language": "en"
+          "language": "en",
+          "hasPaywall": false
         },
         {
           "name": "Marca",
           "url": "https://www.marca.com/rss/futbol.xml",
           "description": "Noticias de fútbol",
-          "language": "es"
+          "language": "es",
+          "hasPaywall": true
         },
         {
           "name": "AS",
           "url": "https://www.as.com/rss/futbol.xml",
           "description": "Noticias de fútbol",
-          "language": "es"
+          "language": "es",
+          "hasPaywall": true
         }
       ]
     }
   ]
-} 
+}

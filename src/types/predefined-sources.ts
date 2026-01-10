@@ -5,6 +5,7 @@ export type PredefinedSource = {
   url: string;
   description: string;
   language: SupportedLanguage;
+  hasPaywall?: boolean;
 };
 
 export type SourceCategory = {
