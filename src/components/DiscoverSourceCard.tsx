@@ -80,9 +80,12 @@ export const DiscoverSourceCard = ({ source, isAdded, onToggle }: DiscoverSource
           `}>
             <span>{source.name}</span>
             {source.hasPaywall && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-200 px-2 py-0.5 text-xs font-medium">
+              <span
+                className="inline-flex items-center rounded-full border border-zinc-300/70 dark:border-zinc-600/70 text-zinc-600 dark:text-zinc-300 p-1"
+                title={t('sources.paywall')}
+                aria-label={t('sources.paywall')}
+              >
                 <Lock className="w-3 h-3" />
-                {t('sources.paywall')}
               </span>
             )}
           </h4>
