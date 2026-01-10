@@ -47,8 +47,11 @@ export const FirstTimeUser = () => {
   const canContinue = totalSources > 0;
 
   const predefinedSourcesData = getPredefinedSources();
+  const preselectedCategoryId = predefinedSourcesData.categories.find(
+    (category) => category.name === 'News'
+  )?.id ?? 'news';
   const [selectedCategories, setSelectedCategories] = useState<Set<string>>(
-    () => new Set(['news'])
+    () => new Set(preselectedCategoryId ? [preselectedCategoryId] : [])
   );
   const [selectedLanguage, setSelectedLanguage] = useState<SupportedLanguage | 'all'>('all');
 
