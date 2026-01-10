@@ -9,15 +9,10 @@ import Snackbar from "./components/Snackbar";
 import { useEffect } from "react";
 import { useMainContext } from "./context/main";
 import { useNavigate } from "react-router";
-import { useBackgroundSync } from "./utils/useBackgroundSync";
 
 function App() {
   const { state } = useMainContext();
   const navigate = useNavigate();
-  
-  // Inicializar background sync para notificaciones
-  useBackgroundSync();
- 
 
   // Redirect to FTU if no sources are configured
   useEffect(() => {

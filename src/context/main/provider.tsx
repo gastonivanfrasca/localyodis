@@ -2,9 +2,8 @@ import { Action, ActionTypes, MainContext } from ".";
 import { extractItemTitle, filterHiddenItems, getLocallyStoredData, storeDataLocally } from "../../utils/storage";
 import { useEffect, useReducer } from "react";
 
-import { LocallyStoredData, Source } from "../../types/storage";
+import { LocallyStoredData } from "../../types/storage";
 import { getBrowserLanguage } from "../../i18n";
-import { sendStorageDataToSW } from "../../utils/backgroundSync";
 
 const localData = getLocallyStoredData();
 
@@ -133,16 +132,6 @@ export const MainProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     storeDataLocally(state);
-    
-    // Sincronizar datos con el Service Worker para background sync
-    const hasNotificationsEnabled = state.sources.some((s: Source) => s.notificationsEnabled);
-    if (hasNotificationsEnabled && 'serviceWorker' in navigator) {
-      sendStorageDataToSW({
-        sources: state.sources,
-        items: state.items,
-        activeSources: state.activeSources,
-      });
-    }
   }, [state]);
 
   return (
@@ -151,4 +140,3 @@ export const MainProvider = ({ children }: { children: React.ReactNode }) => {
     </MainContext.Provider>
   );
 };
-

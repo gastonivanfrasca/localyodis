@@ -16,7 +16,7 @@ export default defineConfig(() => {
         srcDir: "public",
         filename: "sw.js",
         injectManifest: {
-          injectionPoint: undefined, // No necesitamos precaching, solo background sync
+          injectionPoint: undefined, // No necesitamos precaching
         },
         devOptions: {
           enabled: true,

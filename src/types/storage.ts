@@ -11,7 +11,6 @@ export type Source = {
   textColor: string;
   initial: string;
   type: string;
-  notificationsEnabled?: boolean;
 };
 
 export type Items = {

@@ -1,8 +1,7 @@
-import { Bell, Calendar, Check, Edit3, Palette, Rss, Trash2, X, Youtube } from "lucide-react";
+import { Calendar, Check, Edit3, Palette, Rss, Trash2, X, Youtube } from "lucide-react";
 import { extractItemTitle, filterHiddenItems } from "../../utils/storage";
 import { fetchRSS, getRSSItemStrProp } from "../../utils/rss";
 import { formatPubDate, generateTextColorForBackground, groupItemsByDateWithSeparators } from "../../utils/format";
-import { registerPeriodicSync, sendStorageDataToSW, triggerImmediateCheck } from "../../utils/backgroundSync";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 
@@ -18,17 +17,13 @@ import Snackbar from "../../components/Snackbar";
 import { errorMap } from "../../utils/errors";
 import kromemo from "kromemo";
 import { useError } from "../../utils/useError";
-import { useI18n } from "../../context/i18n";
 import { useMainContext } from "../../context/main";
-import { useNotifications } from "../../utils/useNotifications";
 
 export const SourceProfile = () => {
   const { id } = useParams<{ id: string }>();
   const { state, dispatch } = useMainContext();
   const { showError } = useError();
   const navigate = useNavigate();
-  const { t } = useI18n();
-  const { isSupported, permission, requestPermission } = useNotifications();
   const [sourceItems, setSourceItems] = useState<RSSItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
@@ -192,66 +187,6 @@ export const SourceProfile = () => {
     setEditingColor("");
   }, []);
 
-  const handleNotificationToggle = useCallback(async () => {
-    if (!source) return;
-
-    const currentlyEnabled = source.notificationsEnabled || false;
-
-    // If enabling and permission is not granted, request it
-    if (!currentlyEnabled && permission !== "granted") {
-      const granted = await requestPermission();
-      if (!granted) {
-        return; // Don't enable if permission was denied
-      }
-    }
-
-    kromemo.trackEvent({ 
-      name: 'updated_source_notifications', 
-      payload: { id: source.id, enabled: !currentlyEnabled } 
-    });
-
-    dispatch({
-      type: ActionTypes.UPDATE_SOURCE,
-      payload: {
-        id: source.id,
-        notificationsEnabled: !currentlyEnabled,
-      }
-    });
-
-    // Si se están activando las notificaciones, registrar background sync
-    if (!currentlyEnabled && permission === "granted") {
-      // Registrar periodic background sync
-      const registered = await registerPeriodicSync();
-      console.log('Periodic sync registrado:', registered);
-      
-      // Enviar datos actuales al service worker
-      const updatedSources = state.sources.map(s => 
-        s.id === source.id 
-          ? { ...s, notificationsEnabled: true }
-          : s
-      );
-      
-      await sendStorageDataToSW({
-        sources: updatedSources,
-        items: state.items,
-        activeSources: state.activeSources,
-      });
-      
-      console.log('Datos enviados al service worker:', {
-        sourcesCount: updatedSources.length,
-        itemsCount: state.items.length,
-        activeSourcesCount: state.activeSources.length,
-      });
-      
-      // Hacer una verificación inmediata para testing (opcional)
-      // Esto ayuda a verificar que todo funciona sin esperar al periodic sync
-      setTimeout(async () => {
-        await triggerImmediateCheck();
-        console.log('Verificación inmediata solicitada');
-      }, 2000);
-    }
-  }, [source, permission, requestPermission, dispatch, state]);
-
   useEffect(() => {
     if (!source) return;
     
@@ -383,29 +318,6 @@ export const SourceProfile = () => {
                     <Calendar className="w-4 h-4 flex-shrink-0" />
                     <span className="truncate">Added on {formatPubDate(source.addedOn)}</span>
                   </div>
-                  {isSupported && (
-                    <div className="flex items-center gap-2">
-                      <Bell className={`w-4 h-4 flex-shrink-0 ${source.notificationsEnabled ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'}`} />
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs">{t('sources.notifications.enable')}</span>
-                        <button
-                          onClick={handleNotificationToggle}
-                          disabled={permission === "denied"}
-                          className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
-                            source.notificationsEnabled && permission === "granted"
-                              ? 'bg-blue-600'
-                              : 'bg-zinc-300 dark:bg-zinc-700'
-                          } ${permission === "denied" ? 'opacity-50 cursor-not-allowed' : ''}`}
-                        >
-                          <span
-                            className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${
-                              source.notificationsEnabled && permission === "granted" ? 'translate-x-5' : 'translate-x-1'
-                            }`}
-                          />
-                        </button>
-                      </div>
-                    </div>
-                  )}
                 </div>
               </div>
               <div className="flex-shrink-0">

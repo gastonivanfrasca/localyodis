@@ -22,12 +22,6 @@ export const fr: TranslationKeys = {
   'settings.reset.cancel': 'Annuler',
   'settings.reset.modal.title': 'Réinitialiser la configuration',
   'settings.reset.modal.message': 'Êtes-vous sûr de vouloir réinitialiser toute la configuration ? Ceci supprimera toutes vos sources, favoris et paramètres.',
-  'settings.notifications': 'Notifications',
-  'settings.notifications.description': 'Recevez des notifications lorsqu\'il y a de nouveaux éléments disponibles dans vos sources RSS.',
-  'settings.notifications.enable': 'Activer les notifications',
-  'settings.notifications.permissionGranted': 'Autorisation accordée',
-  'settings.notifications.permissionDenied': 'Autorisation refusée. Veuillez activer les notifications dans les paramètres de votre navigateur.',
-  'settings.notifications.permissionRequired': 'Autorisation requise',
   
   // Common
   'common.back': 'Retour',
@@ -77,7 +71,6 @@ export const fr: TranslationKeys = {
   'sources.customNamePlaceholder': 'Entrez un nom personnalisé pour cette source',
   'sources.customNameHelp': 'Si aucun nom n\'est fourni, nous utiliserons le domaine du site web',
   'sources.addCustomSource': 'Ajouter une Source Personnalisée',
-  'sources.notifications.enable': 'Notifications',
   
   // Discover
   'discover.title': 'Découvrir',
@@ -166,11 +159,6 @@ export const fr: TranslationKeys = {
   'rss.link': 'Lien RSS',
   'rss.example': 'ex. https://exemple.com/feed.xml',
   
-  // Notifications
-  'notifications.newItem': 'Nouvel élément disponible',
-  'notifications.newItems': 'nouveaux éléments',
-  'notifications.newItemsFromSource': 'nouveaux éléments de cette source',
-  
   // YouTube
   'youtube.channelName': 'Nom de la chaîne',
   'youtube.example': 'ex. Nom de la Chaîne Exemple',
@@ -193,18 +181,6 @@ export const fr: TranslationKeys = {
   'error.required': 'L\'URL RSS est requise',
   'error.sourceExists': 'La source existe déjà',
   'error.invalidTitle': 'Format de titre invalide',
-  
-  // Notifications
-  'notification.close': 'Fermer la notification',
-  'notification.example.error': 'Ceci est un message d\'erreur d\'exemple',
-  'notification.example.warning': 'Ceci est un avertissement d\'exemple',
-  'notification.example.success': 'Opération terminée avec succès',
-  'notification.example.info': 'Ceci est une information supplémentaire',
-  'notification.test.title': 'Test de notifications',
-  'notification.test.showError': 'Afficher l\'erreur',
-  'notification.test.showWarning': 'Afficher l\'avertissement',
-  'notification.test.showSuccess': 'Afficher le succès',
-  'notification.test.showInfo': 'Afficher l\'information',
   
   // Modals
   'modal.close': 'Fermer le modal',

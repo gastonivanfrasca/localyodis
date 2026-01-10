@@ -16,13 +16,11 @@ import { groupItemsByDateWithSeparators } from "../utils/format";
 import { useError } from "../utils/useError";
 import { useI18n } from "../context/i18n";
 import { useNavigate } from "react-router";
-import { useNotifications } from "../utils/useNotifications";
 import { kromemo } from "kromemo";
 
 export const PubsList = () => {
   const { state, dispatch } = useMainContext();
   const { showError } = useError();
-  const { sendNotification, permission } = useNotifications();
   const { t } = useI18n();
 
   const scrollPositionRef = useRef(0);
@@ -136,47 +134,6 @@ export const PubsList = () => {
         // Filter out hidden items before saving to localStorage
         const filteredItems = filterHiddenItems(limitedItems, state.hiddenItems);
 
-        // Detect new items for notifications
-        // Check if there are any sources with notifications enabled
-        const hasNotificationsEnabled = state.sources.some(s => s.notificationsEnabled);
-        
-        if (permission === "granted" && hasNotificationsEnabled) {
-          const previousItems = state.items || [];
-          
-          // Create a Set of previous item links for fast lookup O(1)
-          const previousItemLinks = new Set(previousItems.map(extractLink));
-          
-          // Detect new items: items that are in the current feed but not in previous items
-          const newItems = filteredItems.filter(item => {
-            const link = extractLink(item);
-            return !previousItemLinks.has(link);
-          });
-
-          // Send notifications for new items from sources with notifications enabled
-          // Only send if there were previous items (to avoid notifying all items on first load)
-          // This ensures we only notify about genuinely new items, not items that were already loaded
-          if (newItems.length > 0 && previousItems.length > 0) {
-            newItems.forEach(item => {
-              const sourceId = item.source || "unknown";
-              const source = state.sources.find(s => s.id === sourceId);
-              
-              // Only send notification if source has notifications enabled
-              if (source?.notificationsEnabled) {
-                const sourceName = source.name || t('common.unknown');
-                const itemTitle = getRSSItemStrProp(item, "title");
-                
-                sendNotification(
-                  `${sourceName}: ${itemTitle}`,
-                  {
-                    body: t('notifications.newItem'),
-                    tag: `new-item-${sourceId}-${extractLink(item)}`,
-                  }
-                );
-              }
-            });
-          }
-        }
-
         dispatch({
           type: ActionTypes.SET_ITEMS,
           payload: filteredItems,
@@ -220,8 +177,6 @@ export const PubsList = () => {
     dispatch,
     state.sources,
     state.activeSources,
-    permission,
-    sendNotification,
     t,
   ]);
 
