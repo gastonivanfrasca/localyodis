@@ -1,4 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
+import { createRoot } from "react-dom/client";
+import React, { act, useEffect } from "react";
 import type { LocallyStoredData } from "../../types/storage";
 
 let dispatchMock = vi.fn();
@@ -35,7 +37,29 @@ describe("useError", () => {
     dispatchMock = vi.fn();
     const { useError } = await import("../useError");
     const { ActionTypes } = await import("../../context/main");
-    const { showError, clearError } = useError();
+    let hookApi: ReturnType<typeof useError> | null = null;
+    const container = document.createElement("div");
+    const root = createRoot(container);
+
+    const TestComponent = () => {
+      const api = useError();
+
+      useEffect(() => {
+        hookApi = api;
+      }, [api]);
+
+      return null;
+    };
+
+    await act(async () => {
+      root.render(React.createElement(TestComponent));
+    });
+
+    if (!hookApi) {
+      throw new Error("Hook API was not initialized");
+    }
+
+    const { showError, clearError } = hookApi;
 
     showError("Oops", "warning");
     expect(dispatchMock).toHaveBeenCalledWith({
@@ -47,6 +71,10 @@ describe("useError", () => {
     expect(dispatchMock).toHaveBeenCalledWith({
       type: ActionTypes.CLEAR_ERROR,
       payload: null,
+    });
+
+    await act(async () => {
+      root.unmount();
     });
   });
 });
