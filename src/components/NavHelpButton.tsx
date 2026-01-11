@@ -1,4 +1,13 @@
-import { CircleHelp, Hand, MousePointerClick, X } from "lucide-react";
+import {
+  Bookmark,
+  CircleHelp,
+  Compass,
+  Hand,
+  Home,
+  Menu,
+  Search,
+  X,
+} from "lucide-react";
 import { useState } from "react";
 
 import { useI18n } from "../context/i18n";
@@ -56,27 +65,27 @@ export const NavHelpButton = () => {
                 </p>
                 <ul className="mt-2 space-y-2">
                   <li className="flex items-start gap-2">
-                    <MousePointerClick className="mt-0.5 h-4 w-4 text-zinc-500 dark:text-zinc-400" />
+                    <Home className="mt-0.5 h-4 w-4 text-zinc-500 dark:text-zinc-400" />
                     <span>{t('help.nav.buttons.homeAction')}</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <MousePointerClick className="mt-0.5 h-4 w-4 text-zinc-500 dark:text-zinc-400" />
+                    <Bookmark className="mt-0.5 h-4 w-4 text-zinc-500 dark:text-zinc-400" />
                     <span>{t('help.nav.buttons.bookmarks')}</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <MousePointerClick className="mt-0.5 h-4 w-4 text-zinc-500 dark:text-zinc-400" />
+                    <CircleHelp className="mt-0.5 h-4 w-4 text-zinc-500 dark:text-zinc-400" />
                     <span>{t('help.nav.buttons.help')}</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <MousePointerClick className="mt-0.5 h-4 w-4 text-zinc-500 dark:text-zinc-400" />
+                    <Search className="mt-0.5 h-4 w-4 text-zinc-500 dark:text-zinc-400" />
                     <span>{t('help.nav.buttons.search')}</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <MousePointerClick className="mt-0.5 h-4 w-4 text-zinc-500 dark:text-zinc-400" />
+                    <Compass className="mt-0.5 h-4 w-4 text-zinc-500 dark:text-zinc-400" />
                     <span>{t('help.nav.buttons.discover')}</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <MousePointerClick className="mt-0.5 h-4 w-4 text-zinc-500 dark:text-zinc-400" />
+                    <Menu className="mt-0.5 h-4 w-4 text-zinc-500 dark:text-zinc-400" />
                     <span>{t('help.nav.buttons.menu')}</span>
                   </li>
                 </ul>
