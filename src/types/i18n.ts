@@ -206,6 +206,19 @@ export type TranslationKeys = {
   'help.paywall.title': string;
   'help.paywall.description': string;
   'help.paywall.example': string;
+  'help.nav.iconLabel': string;
+  'help.nav.title': string;
+  'help.nav.description': string;
+  'help.nav.buttonsTitle': string;
+  'help.nav.buttons.homeAction': string;
+  'help.nav.buttons.bookmarks': string;
+  'help.nav.buttons.help': string;
+  'help.nav.buttons.search': string;
+  'help.nav.buttons.discover': string;
+  'help.nav.buttons.menu': string;
+  'help.nav.gesturesTitle': string;
+  'help.nav.gestures.hideItem': string;
+  'help.nav.gestures.hideAll': string;
 
 
   // Accessibility

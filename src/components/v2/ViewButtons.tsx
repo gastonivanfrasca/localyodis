@@ -1,7 +1,7 @@
 import { BackArrowButton } from "./BackArrowButton";
 import { BookmarkedsButton } from "../BookmarkedsButton";
 import { DiscoverButton } from "../DiscoverButton";
-import { HistoryButton } from "../HistoryButton";
+import { NavHelpButton } from "../NavHelpButton";
 import { HomeButton } from "../HomeButton";
 import { HomeButtonModes } from "../../types/navigation";
 import { MenuButton } from "../MenuButton";
@@ -29,7 +29,7 @@ export const HomeButtons = ({ orientation = 'horizontal' }: ButtonsProps = {}) =
         <BookmarkedsButton />
       </div>
       <div className={buttonClasses}>
-        <HistoryButton />
+        <NavHelpButton />
       </div>
       <div className={buttonClasses}>
         <SearchButton />
