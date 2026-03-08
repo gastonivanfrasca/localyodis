@@ -1,4 +1,4 @@
-import { Calendar, Check, Edit3, Palette, Rss, Trash2, X, Youtube } from "lucide-react";
+import { Bell, BellOff, Calendar, Check, Edit3, Palette, Rss, Trash2, X, Youtube } from "lucide-react";
 import { extractItemTitle, filterHiddenItems } from "../../utils/storage";
 import { fetchRSS, getRSSItemStrProp } from "../../utils/rss";
 import { formatPubDate, generateTextColorForBackground, groupItemsByDateWithSeparators } from "../../utils/format";
@@ -18,11 +18,14 @@ import { errorMap } from "../../utils/errors";
 import kromemo from "kromemo";
 import { useError } from "../../utils/useError";
 import { useMainContext } from "../../context/main";
+import { usePushNotifications } from "../../utils/usePushNotifications";
+import { useI18n } from "../../context/i18n";
 
 export const SourceProfile = () => {
   const { id } = useParams<{ id: string }>();
   const { state, dispatch } = useMainContext();
   const { showError } = useError();
+  const { t } = useI18n();
   const navigate = useNavigate();
   const [sourceItems, setSourceItems] = useState<RSSItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -30,6 +33,7 @@ export const SourceProfile = () => {
   const [editingName, setEditingName] = useState("");
   const [isEditingColor, setIsEditingColor] = useState(false);
   const [editingColor, setEditingColor] = useState("");
+  const { loading: pushLoading, permission, setSourceEnabled, supported, isSourceEnabled, removeSourcePreference } = usePushNotifications();
 
   // Find the source by ID - memoize to prevent re-creation
   const source = useMemo(() => {
@@ -88,9 +92,10 @@ export const SourceProfile = () => {
     return bookmark ? item : undefined;
   }, [state.bookmarks, extractLink]);
 
-  const handleRemoveSource = useCallback(() => {
+  const handleRemoveSource = useCallback(async () => {
     if (!source) return;
 
+    await removeSourcePreference(source.url);
     kromemo.trackEvent({ name: 'removed_source', payload: { id: source.id, name: source.name } });
     // Remove source from sources array
     const updatedSources = state.sources.filter(s => s.id !== source.id);
@@ -108,7 +113,7 @@ export const SourceProfile = () => {
 
     // Navigate back to sources page
     navigate('/sources');
-  }, [source, state.sources, state.activeSources, dispatch, navigate]);
+  }, [source, removeSourcePreference, state.sources, state.activeSources, dispatch, navigate]);
 
   const handleHide = useCallback((item: RSSItem) => {
     dispatch({
@@ -220,6 +225,8 @@ export const SourceProfile = () => {
     );
   }
 
+  const sourceNotificationsEnabled = isSourceEnabled(source.url);
+
   return (
     <div className="min-h-screen bg-white dark:bg-slate-950 text-black dark:text-white font-sans flex flex-col">
       <NavigationTitleWithBack label={source.name || "Source Profile"} />
@@ -319,10 +326,34 @@ export const SourceProfile = () => {
                     <span className="truncate">Added on {formatPubDate(source.addedOn)}</span>
                   </div>
                 </div>
+                <div className="rounded-xl border border-zinc-200 dark:border-slate-700 bg-zinc-50 dark:bg-slate-800/70 p-4">
+                  <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                    <div>
+                      <p className="text-sm font-semibold text-zinc-900 dark:text-white">
+                        {t("push.sourceToggle")}
+                      </p>
+                      <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                        {supported ? t("push.sourceDescription") : t("push.unsupported")}
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => void setSourceEnabled(source, !sourceNotificationsEnabled)}
+                      disabled={!supported || permission === "denied" || pushLoading}
+                      className={`inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors disabled:opacity-60 ${
+                        sourceNotificationsEnabled
+                          ? "bg-zinc-900 text-white hover:bg-zinc-800"
+                          : "bg-zinc-200 text-zinc-800 hover:bg-zinc-300 dark:bg-slate-700 dark:text-zinc-100 dark:hover:bg-slate-600"
+                      }`}
+                    >
+                      {sourceNotificationsEnabled ? <BellOff className="w-4 h-4" /> : <Bell className="w-4 h-4" />}
+                      <span>{sourceNotificationsEnabled ? t("push.disable") : t("push.enable")}</span>
+                    </button>
+                  </div>
+                </div>
               </div>
               <div className="flex-shrink-0">
                 <button
-                  onClick={handleRemoveSource}
+                  onClick={() => void handleRemoveSource()}
                   className="p-2 rounded-lg bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/40 text-red-600 dark:text-red-400 transition-colors"
                   title="Remove source"
                 >

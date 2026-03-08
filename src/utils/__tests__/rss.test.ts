@@ -10,7 +10,7 @@ describe("rss utilities", () => {
   });
 
   it("fetches rss feeds for multiple sources", async () => {
-    const mockResponse = { feeds: [] };
+    const mockResponse = { feed: [] };
     const fetchMock = vi.fn().mockResolvedValue({ json: () => Promise.resolve(mockResponse) });
     globalThis.fetch = fetchMock;
 
@@ -18,7 +18,7 @@ describe("rss utilities", () => {
     const result = await fetchRSS([{ id: "1", url: "https://example.com" }]);
 
     expect(fetchMock).toHaveBeenCalledWith("https://api.example.com/rss/fetch-feeds", expect.objectContaining({ method: "POST" }));
-    expect(result).toEqual(mockResponse);
+    expect(result).toEqual([]);
   });
 
   it("fetches a single rss feed", async () => {

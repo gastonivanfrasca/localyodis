@@ -38,6 +38,7 @@ export enum ActionTypes {
   ADD_TO_HISTORY = "ADD_TO_HISTORY",
   CLEAR_HISTORY = "CLEAR_HISTORY",
   REMOVE_FROM_HISTORY = "REMOVE_FROM_HISTORY",
+  UPDATE_NOTIFICATION_SETTINGS = "UPDATE_NOTIFICATION_SETTINGS",
 }
 
 export const MainContext = createContext<MainContextType | null>(null);

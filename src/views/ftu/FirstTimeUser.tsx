@@ -11,6 +11,7 @@ import { getPredefinedSources } from "../../utils/predefined-sources";
 import { useError } from "../../utils/useError";
 import { useI18n } from "../../context/i18n";
 import { useMainContext } from "../../context/main";
+import { usePushNotifications } from "../../utils/usePushNotifications";
 import { useNavigate } from "react-router";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
@@ -36,6 +37,7 @@ export const FirstTimeUser = () => {
   const { state, dispatch } = useMainContext();
   const { t } = useI18n();
   const { showError } = useError();
+  const { removeSourcePreference } = usePushNotifications();
 
   const [activeTab, setActiveTab] = useState<Tab>('recommended');
 
@@ -72,10 +74,11 @@ export const FirstTimeUser = () => {
     setSelectedLanguage(language);
   };
 
-  const handleToggleSource = (sourceUrl: string) => {
+  const handleToggleSource = async (sourceUrl: string) => {
     const existingSource = state.sources.find(source => source.url === sourceUrl);
 
     if (existingSource) {
+      await removeSourcePreference(sourceUrl);
       kromemo.trackEvent({ name: 'ftu_removed_predefined_source', payload: { url: sourceUrl } });
       const updatedSources = state.sources.filter(source => source.url !== sourceUrl);
       const updatedActiveSources = state.activeSources.filter(id => id !== existingSource.id);
@@ -227,7 +230,7 @@ export const FirstTimeUser = () => {
                       key={source.url}
                       source={source}
                       isAdded={addedSourceUrls.has(source.url)}
-                      onToggle={handleToggleSource}
+                      onToggle={(url) => { void handleToggleSource(url); }}
                     />
                   ))}
                 </div>

@@ -28,6 +28,29 @@ export type TranslationKeys = {
   'settings.reset.cancel': string;
   'settings.reset.modal.title': string;
   'settings.reset.modal.message': string;
+  'push.sectionTitle': string;
+  'push.sectionDescription': string;
+  'push.enable': string;
+  'push.disable': string;
+  'push.refresh': string;
+  'push.unsupported': string;
+  'push.permissionDenied': string;
+  'push.permissionDefault': string;
+  'push.status.enabled': string;
+  'push.status.disabled': string;
+  'push.status.denied': string;
+  'push.status.unsupported': string;
+  'push.enabled': string;
+  'push.disabled': string;
+  'push.subscribedSources': string;
+  'push.sourceToggle': string;
+  'push.sourceDescription': string;
+  'push.sourceEnabled': string;
+  'push.sourceDisabled': string;
+  'push.error.enable': string;
+  'push.error.disable': string;
+  'push.error.sync': string;
+  'push.error.sourcePreference': string;
   
   // Common
   'common.back': string;

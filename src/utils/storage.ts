@@ -27,6 +27,13 @@ const defaultLocallyStoredData = {
   error: null,
   hiddenItems: [], // Initialize empty array for hidden items
   history: [], // Initialize empty array for history
+  notificationSettings: {
+    deviceId: null,
+    permission: "default",
+    subscribedSourceUrls: [],
+    lastSyncedAt: null,
+    configSynced: false,
+  },
 } as LocallyStoredData;
 
 export const storeDataLocally = (data: LocallyStoredData) => {
@@ -129,6 +136,10 @@ export const getLocallyStoredData = (): LocallyStoredData => {
   // Ensure language exists (for backward compatibility)
   if (!parsedStoredData.language) {
     parsedStoredData.language = getBrowserLanguage();
+  }
+
+  if (!parsedStoredData.notificationSettings) {
+    parsedStoredData.notificationSettings = defaultLocallyStoredData.notificationSettings;
   }
 
   parsedStoredData.sources.forEach((source) => {

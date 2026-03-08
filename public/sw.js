@@ -1,5 +1,5 @@
 // Service Worker para LocalYodis
-// Mantiene el registro básico sin notificaciones push ni background sync
+// Maneja el shell offline y Web Push para nuevas publicaciones.
 
 const APP_SHELL_CACHE = "localyodis-app-shell-v2";
 const APP_SHELL_FILES = ["/index.html"];
@@ -45,5 +45,45 @@ self.addEventListener("fetch", (event) => {
         throw error;
       }
     })()
+  );
+});
+
+self.addEventListener("push", (event) => {
+  if (!event.data) {
+    return;
+  }
+
+  const payload = event.data.json();
+  const title = payload.title || "LocalYodis";
+  const options = {
+    body: payload.body || "There is a new article available.",
+    icon: "/pwa-192x192.png",
+    badge: "/pwa-64x64.png",
+    data: {
+      url: payload.url || "/",
+      sourceUrl: payload.sourceUrl || null,
+      itemKey: payload.itemKey || null,
+    },
+  };
+
+  event.waitUntil(self.registration.showNotification(title, options));
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+
+  const destination = event.notification.data?.url || "/";
+
+  event.waitUntil(
+    self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((clients) => {
+      const existingClient = clients.find((client) => "focus" in client);
+
+      if (existingClient) {
+        existingClient.postMessage({ type: "push-notification-click", url: destination });
+        return existingClient.focus().then(() => existingClient.navigate(destination));
+      }
+
+      return self.clients.openWindow(destination);
+    })
   );
 });

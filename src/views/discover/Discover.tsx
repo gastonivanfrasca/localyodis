@@ -10,6 +10,7 @@ import { SupportedLanguage } from "../../types/i18n";
 import { getPredefinedSources } from "../../utils/predefined-sources";
 import { useError } from "../../utils/useError";
 import { useI18n } from "../../context/i18n";
+import { usePushNotifications } from "../../utils/usePushNotifications";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
@@ -32,6 +33,7 @@ export const Discover = () => {
   const { t } = useI18n();
   const { dispatch, state } = useMainContext();
   const { showError } = useError();
+  const { removeSourcePreference } = usePushNotifications();
   const [activeTab, setActiveTab] = useState<Tab>('recommended');
 
   const predefinedSourcesData = getPredefinedSources();
@@ -52,10 +54,11 @@ export const Discover = () => {
     setSelectedLanguage(language);
   };
 
-  const handleToggleSource = (sourceUrl: string) => {
+  const handleToggleSource = async (sourceUrl: string) => {
     const existingSource = state.sources.find(source => source.url === sourceUrl);
 
     if (existingSource) {
+      await removeSourcePreference(sourceUrl);
       const updatedSources = state.sources.filter(source => source.url !== sourceUrl);
       const updatedActiveSources = state.activeSources.filter(id => id !== existingSource.id);
 
@@ -206,7 +209,7 @@ export const Discover = () => {
                       key={source.url}
                       source={source}
                       isAdded={addedSourceUrls.has(source.url)}
-                      onToggle={handleToggleSource}
+                      onToggle={(url) => { void handleToggleSource(url); }}
                     />
                   ))}
                 </div>

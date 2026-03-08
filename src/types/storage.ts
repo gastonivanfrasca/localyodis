@@ -33,6 +33,16 @@ export type ErrorState = {
   type: 'error' | 'warning' | 'success' | 'info';
 } | null;
 
+export type PushPermissionState = NotificationPermission | 'unsupported';
+
+export type NotificationSettings = {
+  deviceId: string | null;
+  permission: PushPermissionState;
+  subscribedSourceUrls: string[];
+  lastSyncedAt: string | null;
+  configSynced: boolean;
+};
+
 export type LocallyStoredData = {
   theme: string;
   language: SupportedLanguage;
@@ -49,4 +59,5 @@ export type LocallyStoredData = {
   error: ErrorState;
   hiddenItems: string[]; // Array of hidden item IDs
   history: HistoryItem[]; // Array of visited links
+  notificationSettings: NotificationSettings;
 };

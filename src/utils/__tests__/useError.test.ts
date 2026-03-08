@@ -32,6 +32,13 @@ vi.mock("../../context/main", async () => {
         error: null,
         hiddenItems: [],
         history: [],
+        notificationSettings: {
+          deviceId: null,
+          permission: "default",
+          subscribedSourceUrls: [],
+          lastSyncedAt: null,
+          configSynced: false,
+        },
       } as LocallyStoredData,
       dispatch: dispatchMock,
     }),

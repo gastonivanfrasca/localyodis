@@ -25,6 +25,13 @@ const createState = (overrides: Partial<LocallyStoredData> = {}): LocallyStoredD
   error: null,
   hiddenItems: [],
   history: [],
+  notificationSettings: {
+    deviceId: null,
+    permission: "default",
+    subscribedSourceUrls: [],
+    lastSyncedAt: null,
+    configSynced: false,
+  },
   ...overrides,
 });
 

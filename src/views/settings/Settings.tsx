@@ -1,14 +1,34 @@
 import { ConfirmationModal } from "../../components/ConfirmationModal";
-import { Check, Languages, RotateCcw } from "lucide-react";
+import { Bell, Check, Languages, RotateCcw } from "lucide-react";
 import { NavigationTitleWithBack } from "../../components/v2/NavigationTitleWithBack";
+import { useMainContext } from "../../context/main";
 import { useI18n } from "../../context/i18n";
 import { useState } from "react";
+import { usePushNotifications } from "../../utils/usePushNotifications";
 
 export const Settings = () => {
   const [isResetModalOpen, setIsResetModalOpen] = useState(false);
+  const { state } = useMainContext();
   const { t, language, setLanguage, languages } = useI18n();
+  const {
+    disableNotifications,
+    enableNotifications,
+    loading: pushLoading,
+    permission,
+    subscribedSourcesCount,
+    supported,
+    syncFromServer,
+    syncing,
+  } = usePushNotifications();
+  const notificationSources = state.sources.filter((source) =>
+    state.notificationSettings.subscribedSourceUrls.includes(source.url)
+  );
 
-  const handleResetConfiguration = () => {
+  const handleResetConfiguration = async () => {
+    if (permission === "granted") {
+      await disableNotifications();
+    }
+
     // Clear all localStorage data
     localStorage.removeItem("localyodis");
     
@@ -19,6 +39,14 @@ export const Settings = () => {
   const handleLanguageChange = (languageCode: string) => {
     setLanguage(languageCode as typeof language);
   };
+
+  const notificationStatus = !supported
+    ? t("push.status.unsupported")
+    : permission === "granted"
+      ? t("push.status.enabled")
+      : permission === "denied"
+        ? t("push.status.denied")
+        : t("push.status.disabled");
 
   return (
     <div className="w-full min-h-dvh bg-white dark:bg-slate-950 text-black dark:text-white">
@@ -66,6 +94,76 @@ export const Settings = () => {
                     )}
                   </button>
                 ))}
+              </div>
+            </section>
+
+            <section className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-slate-900 shadow-sm p-6 space-y-6">
+              <div className="flex items-start gap-4">
+                <div className="p-3 rounded-xl bg-zinc-100 dark:bg-slate-800 border border-zinc-200 dark:border-slate-700">
+                  <Bell className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
+                </div>
+                <div className="flex-1">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                      <h3 className="text-lg font-semibold text-zinc-900 dark:text-white tracking-tight">
+                        {t("push.sectionTitle")}
+                      </h3>
+                      <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                        {t("push.sectionDescription")}
+                      </p>
+                    </div>
+                    <span className="inline-flex items-center rounded-full bg-zinc-100 dark:bg-slate-800 px-3 py-1 text-xs font-medium text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-slate-700">
+                      {notificationStatus}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="rounded-xl border border-zinc-200 dark:border-slate-700 bg-zinc-50 dark:bg-slate-800/70 p-4">
+                <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                  {t("push.subscribedSources")}: <span className="font-semibold text-zinc-900 dark:text-white">{subscribedSourcesCount}</span>
+                </p>
+                {notificationSources.length > 0 && (
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {notificationSources.map((source) => (
+                      <span
+                        key={source.id}
+                        className="inline-flex items-center rounded-full border border-zinc-200 dark:border-slate-600 bg-white dark:bg-slate-900 px-3 py-1 text-sm font-medium text-zinc-700 dark:text-zinc-200"
+                      >
+                        {source.name || source.url}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-end pt-2">
+                {supported && permission === "granted" ? (
+                  <>
+                    <button
+                      onClick={() => void syncFromServer()}
+                      disabled={pushLoading || syncing}
+                      className="inline-flex items-center justify-center gap-2 bg-zinc-200 dark:bg-slate-800 hover:bg-zinc-300 dark:hover:bg-slate-700 text-zinc-800 dark:text-zinc-200 font-semibold py-3 px-5 rounded-xl transition-all duration-200 disabled:opacity-60"
+                    >
+                      <span>{t("push.refresh")}</span>
+                    </button>
+                    <button
+                      onClick={() => void disableNotifications()}
+                      disabled={pushLoading}
+                      className="inline-flex items-center justify-center gap-2 bg-zinc-900 hover:bg-zinc-800 text-white font-semibold py-3 px-5 rounded-xl transition-all duration-200 disabled:opacity-60"
+                    >
+                      <span>{t("push.disable")}</span>
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    onClick={() => void enableNotifications()}
+                    disabled={!supported || pushLoading}
+                    className="inline-flex items-center justify-center gap-2 bg-zinc-900 hover:bg-zinc-800 text-white font-semibold py-3 px-5 rounded-xl transition-all duration-200 disabled:opacity-60"
+                  >
+                    <span>{t("push.enable")}</span>
+                  </button>
+                )}
               </div>
             </section>
 

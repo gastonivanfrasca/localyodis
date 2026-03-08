@@ -26,6 +26,7 @@ const initialState: LocallyStoredData = {
   error: null,
   hiddenItems: localData.hiddenItems || [],
   history: localData.history || [],
+  notificationSettings: localData.notificationSettings,
 };
 
 
@@ -121,6 +122,14 @@ const reducer = (state: LocallyStoredData, action: Action) => {
       return {
         ...state,
         history: state.history.filter(item => item.link !== action.payload)
+      };
+    case ActionTypes.UPDATE_NOTIFICATION_SETTINGS:
+      return {
+        ...state,
+        notificationSettings: {
+          ...state.notificationSettings,
+          ...action.payload,
+        },
       };
     default:
       return state;
