@@ -3,18 +3,22 @@ import { Bell, Check, Languages, RotateCcw } from "lucide-react";
 import { NavigationTitleWithBack } from "../../components/v2/NavigationTitleWithBack";
 import { useMainContext } from "../../context/main";
 import { useI18n } from "../../context/i18n";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { formatKeywordFilters, keywordFiltersEqual, parseKeywordFilters } from "../../utils/pushKeywords";
 import { usePushNotifications } from "../../utils/usePushNotifications";
 
 export const Settings = () => {
   const [isResetModalOpen, setIsResetModalOpen] = useState(false);
+  const [keywordInput, setKeywordInput] = useState("");
   const { state } = useMainContext();
   const { t, language, setLanguage, languages } = useI18n();
   const {
     disableNotifications,
     enableNotifications,
+    keywordFilters,
     loading: pushLoading,
     permission,
+    saveKeywordFilters,
     subscribedSourcesCount,
     supported,
     syncFromServer,
@@ -23,6 +27,12 @@ export const Settings = () => {
   const notificationSources = state.sources.filter((source) =>
     state.notificationSettings.subscribedSourceUrls.includes(source.url)
   );
+  const parsedKeywordFilters = parseKeywordFilters(keywordInput);
+  const keywordFiltersChanged = !keywordFiltersEqual(parsedKeywordFilters, keywordFilters);
+
+  useEffect(() => {
+    setKeywordInput(formatKeywordFilters(keywordFilters));
+  }, [keywordFilters]);
 
   const handleResetConfiguration = async () => {
     if (permission === "granted") {
@@ -38,6 +48,10 @@ export const Settings = () => {
 
   const handleLanguageChange = (languageCode: string) => {
     setLanguage(languageCode as typeof language);
+  };
+
+  const handleKeywordSave = async () => {
+    await saveKeywordFilters(parsedKeywordFilters);
   };
 
   const notificationStatus = !supported
@@ -135,6 +149,37 @@ export const Settings = () => {
                     ))}
                   </div>
                 )}
+              </div>
+
+              <div className="rounded-xl border border-zinc-200 dark:border-slate-700 bg-zinc-50 dark:bg-slate-800/70 p-4 space-y-3">
+                <div>
+                  <h4 className="text-sm font-semibold text-zinc-900 dark:text-white">
+                    {t("push.keywordTitle")}
+                  </h4>
+                  <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+                    {t("push.keywordDescription")}
+                  </p>
+                </div>
+                <textarea
+                  value={keywordInput}
+                  onChange={(event) => setKeywordInput(event.target.value)}
+                  placeholder={t("push.keywordPlaceholder")}
+                  disabled={permission !== "granted" || pushLoading}
+                  rows={3}
+                  className="w-full rounded-xl border border-zinc-200 dark:border-slate-600 bg-white dark:bg-slate-900 px-4 py-3 text-sm text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-300 dark:focus:ring-slate-500 disabled:opacity-60"
+                />
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                    {permission === "granted" ? t("push.keywordHelp") : t("push.keywordRequiresEnabled")}
+                  </p>
+                  <button
+                    onClick={() => void handleKeywordSave()}
+                    disabled={permission !== "granted" || pushLoading || syncing || !keywordFiltersChanged}
+                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-zinc-900 px-4 py-2 text-sm font-semibold text-white transition-all duration-200 hover:bg-zinc-800 disabled:opacity-60"
+                  >
+                    <span>{t("common.save")}</span>
+                  </button>
+                </div>
               </div>
 
               <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-end pt-2">

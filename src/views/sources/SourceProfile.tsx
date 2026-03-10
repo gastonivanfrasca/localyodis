@@ -13,7 +13,6 @@ import { NavigationTitleWithBack } from "../../components/v2/NavigationTitleWith
 import { PubListItem } from "../../components/v2/PubListItem";
 import { RSSItem } from "../../types/rss";
 import { RoundedIdentifier } from "../../components/v2/RoundedIdentifier";
-import Snackbar from "../../components/Snackbar";
 import { errorMap } from "../../utils/errors";
 import kromemo from "kromemo";
 import { useError } from "../../utils/useError";
@@ -220,7 +219,6 @@ export const SourceProfile = () => {
             <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">The source you're looking for doesn't exist.</p>
           </div>
         </div>
-        <Snackbar />
       </div>
     );
   }
@@ -409,8 +407,6 @@ export const SourceProfile = () => {
           </div>
         </div>
       </div>
-      
-      <Snackbar />
     </div>
   );
-}; 
+};

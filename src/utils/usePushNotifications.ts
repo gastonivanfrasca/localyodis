@@ -1,8 +1,8 @@
 import { ActionTypes, useMainContext } from "../context/main";
-import { disablePushDevice, ensureDeviceId, fetchPushConfig, getCurrentPushPermission, isPushSupported, registerPushDevice, setSourcePushPreference, subscribeBrowserToPush, unsubscribeBrowserFromPush } from "./push";
+import { disablePushDevice, ensureDeviceId, fetchPushConfig, getCurrentPushPermission, isPushSupported, registerPushDevice, setDeviceKeywordFilters, setSourcePushPreference, subscribeBrowserToPush, unsubscribeBrowserFromPush } from "./push";
 import { useCallback, useEffect, useState } from "react";
 
-import type { Source } from "../types/storage";
+import type { NotificationSettings, Source } from "../types/storage";
 import { useError } from "./useError";
 import { useI18n } from "../context/i18n";
 
@@ -13,7 +13,7 @@ export const usePushNotifications = () => {
   const [loading, setLoading] = useState(false);
   const [syncing, setSyncing] = useState(false);
 
-  const updateSettings = useCallback((next: Partial<typeof state.notificationSettings>) => {
+  const updateSettings = useCallback((next: Partial<NotificationSettings>) => {
     dispatch({
       type: ActionTypes.UPDATE_NOTIFICATION_SETTINGS,
       payload: next,
@@ -40,6 +40,7 @@ export const usePushNotifications = () => {
         deviceId,
         permission: config.permission,
         subscribedSourceUrls: config.subscribedSourceUrls,
+        keywordFilters: config.keywordFilters,
         lastSyncedAt: new Date().toISOString(),
         configSynced: true,
       });
@@ -97,12 +98,14 @@ export const usePushNotifications = () => {
         permission,
         locale: navigator.language,
         userAgent: navigator.userAgent,
+        keywordFilters: config.keywordFilters,
       });
 
       updateSettings({
         deviceId,
         permission,
         subscribedSourceUrls: config.subscribedSourceUrls,
+        keywordFilters: config.keywordFilters,
         lastSyncedAt: new Date().toISOString(),
         configSynced: true,
       });
@@ -194,6 +197,36 @@ export const usePushNotifications = () => {
     }
   }, [enableNotifications, showError, state.notificationSettings.deviceId, t, updateSettings]);
 
+  const saveKeywordFilters = useCallback(async (keywordFilters: string[]) => {
+    if (!state.notificationSettings.deviceId || state.notificationSettings.permission !== "granted") {
+      return false;
+    }
+
+    setLoading(true);
+
+    try {
+      const result = await setDeviceKeywordFilters({
+        deviceId: state.notificationSettings.deviceId,
+        keywordFilters,
+      });
+
+      updateSettings({
+        keywordFilters: result.keywordFilters,
+        lastSyncedAt: new Date().toISOString(),
+        configSynced: true,
+      });
+
+      showError(t("push.keywordSaved"), "success");
+      return true;
+    } catch (error) {
+      console.error(error);
+      showError(t("push.error.keywordFilters"));
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  }, [showError, state.notificationSettings.deviceId, state.notificationSettings.permission, t, updateSettings]);
+
   const removeSourcePreference = useCallback(async (sourceUrl: string) => {
     if (!state.notificationSettings.deviceId || state.notificationSettings.permission !== "granted") {
       return;
@@ -222,11 +255,13 @@ export const usePushNotifications = () => {
     supported: isPushSupported(),
     permission: state.notificationSettings.permission,
     subscribedSourceUrls: state.notificationSettings.subscribedSourceUrls,
+    keywordFilters: state.notificationSettings.keywordFilters,
     subscribedSourcesCount: state.notificationSettings.subscribedSourceUrls.length,
     enableNotifications,
     disableNotifications,
     syncFromServer,
     setSourceEnabled,
+    saveKeywordFilters,
     removeSourcePreference,
     isSourceEnabled: (sourceUrl: string) => state.notificationSettings.subscribedSourceUrls.includes(sourceUrl),
   };

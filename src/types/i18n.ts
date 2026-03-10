@@ -51,6 +51,13 @@ export type TranslationKeys = {
   'push.error.disable': string;
   'push.error.sync': string;
   'push.error.sourcePreference': string;
+  'push.keywordTitle': string;
+  'push.keywordDescription': string;
+  'push.keywordPlaceholder': string;
+  'push.keywordHelp': string;
+  'push.keywordRequiresEnabled': string;
+  'push.keywordSaved': string;
+  'push.error.keywordFilters': string;
   
   // Common
   'common.back': string;
@@ -157,6 +164,9 @@ export type TranslationKeys = {
   'bookmarks.emptyHint': string;
   'bookmarks.tapIcon': string;
   'bookmarks.toBookmark': string;
+  'bookmarks.savedFromNotification': string;
+  'bookmarks.alreadySaved': string;
+  'bookmarks.removedFromNotification': string;
   
   // First Time User
   'ftu.welcome': string;

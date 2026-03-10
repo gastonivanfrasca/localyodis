@@ -1,0 +1,2 @@
+-- Placeholder migration to preserve the remote Supabase migration history.
+-- The project already has version 20260308141123 applied remotely.

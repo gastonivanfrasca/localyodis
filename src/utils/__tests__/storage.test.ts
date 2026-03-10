@@ -29,6 +29,7 @@ const createState = (overrides: Partial<LocallyStoredData> = {}): LocallyStoredD
     deviceId: null,
     permission: "default",
     subscribedSourceUrls: [],
+    keywordFilters: [],
     lastSyncedAt: null,
     configSynced: false,
   },
@@ -81,6 +82,24 @@ describe("storage utilities", () => {
     expect(data.theme).toBe("dark");
     expect(data.history).toEqual([]);
     expect(data.language).toBe("en");
+    expect(data.notificationSettings.keywordFilters).toEqual([]);
+  });
+
+  it("hydrates missing keyword filters for existing notification settings", async () => {
+    const { getLocallyStoredData } = await import(modulePath);
+    localStorage.setItem("localyodis", JSON.stringify({
+      ...createState(),
+      notificationSettings: {
+        deviceId: "device-1",
+        permission: "granted",
+        subscribedSourceUrls: ["https://example.com/rss"],
+        lastSyncedAt: null,
+        configSynced: true,
+      },
+    }));
+
+    const data = getLocallyStoredData();
+    expect(data.notificationSettings.keywordFilters).toEqual([]);
   });
 
   it("removes a source from locally stored data", async () => {

@@ -1,5 +1,6 @@
 import { Action, ActionTypes, MainContext } from ".";
 import { extractItemTitle, filterHiddenItems, getLocallyStoredData, storeDataLocally } from "../../utils/storage";
+import { syncNotificationBookmarks } from "../../utils/notificationActionStore";
 import { useEffect, useReducer } from "react";
 
 import { LocallyStoredData } from "../../types/storage";
@@ -51,6 +52,16 @@ const reducer = (state: LocallyStoredData, action: Action) => {
       return { ...state, language: action.payload };
     case ActionTypes.SET_BOOKMARKS:
       return { ...state, bookmarks: action.payload };
+    case ActionTypes.ADD_BOOKMARK:
+      if (state.bookmarks.some((bookmark) => bookmark.link === action.payload.link)) {
+        return state;
+      }
+      return { ...state, bookmarks: [...state.bookmarks, action.payload] };
+    case ActionTypes.REMOVE_BOOKMARK:
+      return {
+        ...state,
+        bookmarks: state.bookmarks.filter((bookmark) => bookmark.link !== action.payload),
+      };
     case ActionTypes.SET_NAVIGATION:
       return { ...state, navigation: action.payload };
     case ActionTypes.SET_LAST_UPDATED:
@@ -142,6 +153,10 @@ export const MainProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     storeDataLocally(state);
   }, [state]);
+
+  useEffect(() => {
+    void syncNotificationBookmarks(state.bookmarks);
+  }, [state.bookmarks]);
 
   return (
     <MainContext.Provider value={{ state, dispatch }}>

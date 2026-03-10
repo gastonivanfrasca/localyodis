@@ -45,6 +45,13 @@ export const en: TranslationKeys = {
   'push.error.disable': 'We could not disable push notifications on this device.',
   'push.error.sync': 'We could not sync the notification status.',
   'push.error.sourcePreference': 'We could not update the source notification preference.',
+  'push.keywordTitle': 'Filter by keywords',
+  'push.keywordDescription': 'Only receive notifications whose title or summary contains any of these keywords.',
+  'push.keywordPlaceholder': 'e.g. artificial intelligence, openai, economy',
+  'push.keywordHelp': 'Separate them with commas or line breaks. Leave it empty to receive every alert.',
+  'push.keywordRequiresEnabled': 'Enable push notifications to save this filter.',
+  'push.keywordSaved': 'Keyword filters were saved for this device.',
+  'push.error.keywordFilters': 'We could not save the keyword filters.',
   
   // Common
   'common.back': 'Back',
@@ -152,6 +159,9 @@ export const en: TranslationKeys = {
   'bookmarks.emptyHint': 'icon on any publication to bookmark it',
   'bookmarks.tapIcon': 'Tap the',
   'bookmarks.toBookmark': 'to bookmark it',
+  'bookmarks.savedFromNotification': 'Article saved to bookmarks.',
+  'bookmarks.alreadySaved': 'This article is already in bookmarks.',
+  'bookmarks.removedFromNotification': 'Article removed from bookmarks.',
   
   // First Time User
   'ftu.welcome': 'Welcome to LocalYodis',

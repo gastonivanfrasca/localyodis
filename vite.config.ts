@@ -21,7 +21,7 @@ export default defineConfig(() => {
         devOptions: {
           enabled: true,
         },
-        includeAssets: ["logo.png", "maskable-icon-512x512.png", "apple-touch-icon-180x180.png"],
+        includeAssets: ["logo.png", "maskable-icon-512x512.png", "apple-touch-icon-180x180.png", "monochrome-icon.svg"],
         manifest: {
           name: 'Localyodis',
           short_name: 'Localyodis',
@@ -40,6 +40,12 @@ export default defineConfig(() => {
               src: 'pwa-512x512.png',
               sizes: '512x512',
               type: 'image/png'
+            },
+            {
+              src: 'monochrome-icon.svg',
+              sizes: 'any',
+              type: 'image/svg+xml',
+              purpose: 'monochrome'
             }
           ]
         }

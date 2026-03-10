@@ -5,7 +5,6 @@ import { Link, useNavigate } from "react-router";
 import { MenuItem } from "../../components/v2/MenuItem";
 import { NavigationTitleWithBack } from "../../components/v2/NavigationTitleWithBack";
 import { Navigations } from "../../types/navigation";
-import Snackbar from "../../components/Snackbar";
 import { ThemeSwitcher } from "../../components/ThemeSwitcher";
 import { useI18n } from "../../context/i18n";
 import kromemo from "kromemo";
@@ -44,7 +43,6 @@ export const Menu = () => {
             <MenuItem icon={<Settings />} label={t('settings.title')} />
           </Link>
           <ThemeSwitcher />
-          <Snackbar />
         </div>
       </div>
     </div>

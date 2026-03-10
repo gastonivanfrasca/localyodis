@@ -45,6 +45,13 @@ export const fr: TranslationKeys = {
   'push.error.disable': 'Impossible de désactiver les notifications push sur cet appareil.',
   'push.error.sync': 'Impossible de synchroniser l\'état des notifications.',
   'push.error.sourcePreference': 'Impossible de mettre à jour la préférence de notification de la source.',
+  'push.keywordTitle': 'Filtrer par mots-clés',
+  'push.keywordDescription': 'Recevez uniquement les notifications dont le titre ou le résumé contient l\'un de ces mots-clés.',
+  'push.keywordPlaceholder': 'ex. intelligence artificielle, openai, économie',
+  'push.keywordHelp': 'Séparez-les par des virgules ou des retours à la ligne. Laissez vide pour tout recevoir.',
+  'push.keywordRequiresEnabled': 'Activez les notifications push pour enregistrer ce filtre.',
+  'push.keywordSaved': 'Les filtres par mots-clés ont été enregistrés pour cet appareil.',
+  'push.error.keywordFilters': 'Impossible d\'enregistrer les filtres par mots-clés.',
   
   // Common
   'common.back': 'Retour',
@@ -152,6 +159,9 @@ export const fr: TranslationKeys = {
   'bookmarks.emptyHint': 'sur n\'importe quelle publication pour la marquer comme favorite',
   'bookmarks.tapIcon': 'Appuyez sur l\'icône',
   'bookmarks.toBookmark': 'pour la marquer comme favorite',
+  'bookmarks.savedFromNotification': 'Article enregistré dans les favoris.',
+  'bookmarks.alreadySaved': 'Cet article est déjà dans les favoris.',
+  'bookmarks.removedFromNotification': 'Article retiré des favoris.',
   
   // First Time User
   'ftu.welcome': 'Bienvenue sur LocalYodis',

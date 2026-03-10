@@ -22,7 +22,9 @@ type FeedResponse = FeedItem[] | {
 type PushDeviceRow = {
   device_id: string;
   endpoint: string;
+  locale: string | null;
   subscription: PushSubscriptionJSON;
+  keyword_filters: string[] | null;
 };
 
 type PushPreferenceRow = {
@@ -114,6 +116,54 @@ const extractItemKey = (item: FeedItem): string => {
     extractString(item.id) ||
     `${extractString(item.title)}::${item.pubDate ?? ""}`
   );
+};
+
+const normalizeForMatch = (value: string) => {
+  return value
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .toLowerCase();
+};
+
+const itemMatchesKeywords = (item: FeedItem, keywordFilters: string[] | null | undefined) => {
+  if (!keywordFilters || keywordFilters.length === 0) {
+    return true;
+  }
+
+  const searchableText = normalizeForMatch([
+    extractString(item.title),
+    extractString(item.description),
+  ].join(" "));
+
+  return keywordFilters.some((keyword) => searchableText.includes(normalizeForMatch(keyword)));
+};
+
+const getSaveActionLabel = (locale: string | null | undefined) => {
+  const normalizedLocale = locale?.toLowerCase() ?? "";
+
+  if (normalizedLocale.startsWith("es")) {
+    return "Guardar";
+  }
+
+  if (normalizedLocale.startsWith("fr")) {
+    return "Enregistrer";
+  }
+
+  return "Save";
+};
+
+const getRemoveActionLabel = (locale: string | null | undefined) => {
+  const normalizedLocale = locale?.toLowerCase() ?? "";
+
+  if (normalizedLocale.startsWith("es")) {
+    return "Quitar";
+  }
+
+  if (normalizedLocale.startsWith("fr")) {
+    return "Retirer";
+  }
+
+  return "Remove";
 };
 
 const sortNewestFirst = (items: FeedItem[]) => {
@@ -221,7 +271,7 @@ Deno.serve(async () => {
         .eq("enabled", true),
       supabase
         .from("push_devices")
-        .select("device_id, endpoint, subscription")
+        .select("device_id, endpoint, locale, subscription, keyword_filters")
         .eq("permission", "granted")
         .is("disabled_at", null),
     ]);
@@ -329,13 +379,22 @@ Deno.serve(async () => {
             continue;
           }
 
+          if (!itemMatchesKeywords(item, device.keyword_filters)) {
+            continue;
+          }
+
           const title = extractString(item.title) || subscriber.source_name || "New article";
           const payload = {
             title: subscriber.source_name || extractString(item.rssName) || "LocalYodis",
             body: title,
             url: extractLink(item),
+            articleTitle: title,
+            pubDate: item.pubDate ?? null,
+            sourceName: subscriber.source_name || extractString(item.rssName) || null,
             sourceUrl,
             itemKey,
+            saveActionLabel: getSaveActionLabel(device.locale),
+            removeActionLabel: getRemoveActionLabel(device.locale),
           };
 
           const { error: insertError } = await supabase.from("push_deliveries").insert({

@@ -11,6 +11,7 @@ type DeviceRegistrationBody = {
   permission: NotificationPermission;
   locale?: string;
   userAgent?: string;
+  keywordFilters?: string[];
 };
 
 type SourcePreferenceBody = {
@@ -27,7 +28,13 @@ type DisableDeviceBody = {
   permission?: NotificationPermission | "default";
 };
 
-type RequestBody = DeviceRegistrationBody | SourcePreferenceBody | DisableDeviceBody;
+type SetDeviceKeywordFiltersBody = {
+  action: "set-device-keyword-filters";
+  deviceId: string;
+  keywordFilters: string[];
+};
+
+type RequestBody = DeviceRegistrationBody | SourcePreferenceBody | DisableDeviceBody | SetDeviceKeywordFiltersBody;
 
 const jsonResponse = (body: unknown, status = 200) => {
   return new Response(JSON.stringify(body), {
@@ -70,6 +77,33 @@ const getSubscribedSourceUrls = async (deviceId: string) => {
   return (data ?? []).map((item) => item.source_url as string);
 };
 
+const sanitizeKeywordFilters = (values: unknown) => {
+  if (!Array.isArray(values)) {
+    return [];
+  }
+
+  const seen = new Set<string>();
+
+  return values
+    .filter((value): value is string => typeof value === "string")
+    .map((value) => value.trim().replace(/\s+/g, " "))
+    .filter((value) => value.length > 0 && value.length <= 80)
+    .filter((value) => {
+      const key = value
+        .normalize("NFD")
+        .replace(/\p{Diacritic}/gu, "")
+        .toLowerCase();
+
+      if (seen.has(key)) {
+        return false;
+      }
+
+      seen.add(key);
+      return true;
+    })
+    .slice(0, 20);
+};
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
@@ -88,7 +122,7 @@ Deno.serve(async (req) => {
         getAppSecret("push_vapid_public_key"),
         supabase
           .from("push_devices")
-          .select("device_id, permission")
+          .select("device_id, permission, keyword_filters")
           .eq("device_id", deviceId)
           .maybeSingle(),
         getSubscribedSourceUrls(deviceId),
@@ -103,6 +137,7 @@ Deno.serve(async (req) => {
         deviceId,
         permission: deviceResult.data?.permission ?? "default",
         subscribedSourceUrls,
+        keywordFilters: sanitizeKeywordFilters(deviceResult.data?.keyword_filters),
       });
     }
 
@@ -124,6 +159,7 @@ Deno.serve(async (req) => {
         permission: body.permission,
         locale: body.locale ?? null,
         user_agent: body.userAgent ?? null,
+        keyword_filters: sanitizeKeywordFilters(body.keywordFilters),
         disabled_at: null,
       });
 
@@ -153,6 +189,26 @@ Deno.serve(async (req) => {
       return jsonResponse({
         subscribedSourceUrls: await getSubscribedSourceUrls(body.deviceId),
       });
+    }
+
+    if (body.action === "set-device-keyword-filters") {
+      if (!body.deviceId) {
+        return jsonResponse({ error: "deviceId is required." }, 400);
+      }
+
+      const keywordFilters = sanitizeKeywordFilters(body.keywordFilters);
+      const { error } = await supabase
+        .from("push_devices")
+        .update({
+          keyword_filters: keywordFilters,
+        })
+        .eq("device_id", body.deviceId);
+
+      if (error) {
+        throw error;
+      }
+
+      return jsonResponse({ keywordFilters });
     }
 
     if (body.action === "disable-device") {

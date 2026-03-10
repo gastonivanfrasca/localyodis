@@ -36,6 +36,7 @@ vi.mock("../../context/main", async () => {
           deviceId: null,
           permission: "default",
           subscribedSourceUrls: [],
+          keywordFilters: [],
           lastSyncedAt: null,
           configSynced: false,
         },

@@ -39,6 +39,7 @@ export type NotificationSettings = {
   deviceId: string | null;
   permission: PushPermissionState;
   subscribedSourceUrls: string[];
+  keywordFilters: string[];
   lastSyncedAt: string | null;
   configSynced: boolean;
 };

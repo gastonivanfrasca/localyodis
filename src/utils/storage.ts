@@ -31,6 +31,7 @@ const defaultLocallyStoredData = {
     deviceId: null,
     permission: "default",
     subscribedSourceUrls: [],
+    keywordFilters: [],
     lastSyncedAt: null,
     configSynced: false,
   },
@@ -140,6 +141,10 @@ export const getLocallyStoredData = (): LocallyStoredData => {
 
   if (!parsedStoredData.notificationSettings) {
     parsedStoredData.notificationSettings = defaultLocallyStoredData.notificationSettings;
+  }
+
+  if (!Array.isArray(parsedStoredData.notificationSettings.keywordFilters)) {
+    parsedStoredData.notificationSettings.keywordFilters = [];
   }
 
   parsedStoredData.sources.forEach((source) => {

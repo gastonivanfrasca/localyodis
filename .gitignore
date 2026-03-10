@@ -32,3 +32,4 @@ test.json
 view.json
 NOTIFICATION_SETUP.md
 scripts/check-paywalls.mjs
+.env*.local

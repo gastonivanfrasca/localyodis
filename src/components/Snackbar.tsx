@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { ActionTypes } from '../context/main';
 import { useMainContext } from '../context/main';
@@ -8,6 +8,13 @@ const Snackbar: React.FC = () => {
   const { state, dispatch } = useMainContext();
   const { t } = useI18n();
   const [isVisible, setIsVisible] = useState(false);
+
+  const handleClose = useCallback(() => {
+    setIsVisible(false);
+    setTimeout(() => {
+      dispatch({ type: ActionTypes.CLEAR_ERROR, payload: null });
+    }, 300); // Wait for animation to complete
+  }, [dispatch]);
 
   useEffect(() => {
     if (state.error) {
@@ -21,14 +28,7 @@ const Snackbar: React.FC = () => {
     } else {
       setIsVisible(false);
     }
-  }, [state.error]);
-
-  const handleClose = () => {
-    setIsVisible(false);
-    setTimeout(() => {
-      dispatch({ type: ActionTypes.CLEAR_ERROR, payload: null });
-    }, 300); // Wait for animation to complete
-  };
+  }, [handleClose, state.error]);
 
   if (!state.error) return null;
 

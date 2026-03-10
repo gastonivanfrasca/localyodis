@@ -2,7 +2,11 @@ import type { NotificationSettings } from "../types/storage";
 
 export const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 export const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+export const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY ??
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNzeXdreXN0a2tpeHVqaHVhbnRmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5Nzc3MjEsImV4cCI6MjA4ODU1MzcyMX0.irgwW8PidC8VQdntRuG_mNDFb0iDIO8_c0iFl-kCyV4";
 export const PUSH_CONFIG_FUNCTION = `${SUPABASE_URL}/functions/v1/push-config`;
+
+const SUPABASE_CLIENT_KEY = SUPABASE_PUBLISHABLE_KEY ?? SUPABASE_ANON_KEY;
 
 type RegisterDevicePayload = {
   action: "register-device";
@@ -11,6 +15,7 @@ type RegisterDevicePayload = {
   permission: NotificationPermission;
   locale: string;
   userAgent: string;
+  keywordFilters: string[];
 };
 
 type SetSourcePreferencePayload = {
@@ -27,15 +32,22 @@ type DisableDevicePayload = {
   permission: NotificationPermission | "default";
 };
 
+type SetDeviceKeywordFiltersPayload = {
+  action: "set-device-keyword-filters";
+  deviceId: string;
+  keywordFilters: string[];
+};
+
 type PushConfigResponse = {
   publicVapidKey: string;
   deviceId: string;
   permission: NotificationSettings["permission"];
   subscribedSourceUrls: string[];
+  keywordFilters: string[];
 };
 
 const hasSupabasePushConfig = () => {
-  return Boolean(SUPABASE_URL && SUPABASE_PUBLISHABLE_KEY);
+  return Boolean(SUPABASE_URL && SUPABASE_CLIENT_KEY && SUPABASE_ANON_KEY);
 };
 
 const getBaseHeaders = (): HeadersInit => {
@@ -44,7 +56,8 @@ const getBaseHeaders = (): HeadersInit => {
   }
 
   return {
-    apikey: SUPABASE_PUBLISHABLE_KEY!,
+    apikey: SUPABASE_CLIENT_KEY!,
+    Authorization: `Bearer ${SUPABASE_ANON_KEY!}`,
   };
 };
 
@@ -140,6 +153,22 @@ export const setSourcePushPreference = async (payload: Omit<SetSourcePreferenceP
   });
 
   return parseResponse<{ subscribedSourceUrls: string[] }>(response);
+};
+
+export const setDeviceKeywordFilters = async (payload: Omit<SetDeviceKeywordFiltersPayload, "action">) => {
+  const response = await fetch(PUSH_CONFIG_FUNCTION, {
+    method: "POST",
+    headers: {
+      ...getBaseHeaders(),
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      action: "set-device-keyword-filters",
+      ...payload,
+    } satisfies SetDeviceKeywordFiltersPayload),
+  });
+
+  return parseResponse<{ keywordFilters: string[] }>(response);
 };
 
 export const disablePushDevice = async (payload: Omit<DisableDevicePayload, "action">) => {
