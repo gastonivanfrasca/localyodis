@@ -2,6 +2,7 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
 import { createClient } from "npm:@supabase/supabase-js@2";
 import webpush from "npm:web-push@3.6.7";
+import { matchesNotificationKeywordFilters, sanitizeNotificationSearchableText } from "../../../src/utils/notificationKeywordMatch.ts";
 
 type FeedItem = {
   title?: string | string[] | { _?: string };
@@ -118,24 +119,13 @@ const extractItemKey = (item: FeedItem): string => {
   );
 };
 
-const normalizeForMatch = (value: string) => {
-  return value
-    .normalize("NFD")
-    .replace(/\p{Diacritic}/gu, "")
-    .toLowerCase();
-};
-
 const itemMatchesKeywords = (item: FeedItem, keywordFilters: string[] | null | undefined) => {
-  if (!keywordFilters || keywordFilters.length === 0) {
-    return true;
-  }
-
-  const searchableText = normalizeForMatch([
+  const searchableText = sanitizeNotificationSearchableText([
     extractString(item.title),
     extractString(item.description),
   ].join(" "));
 
-  return keywordFilters.some((keyword) => searchableText.includes(normalizeForMatch(keyword)));
+  return matchesNotificationKeywordFilters(searchableText, keywordFilters);
 };
 
 const getSaveActionLabel = (locale: string | null | undefined) => {
