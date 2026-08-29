@@ -33,3 +33,21 @@ view.json
 NOTIFICATION_SETUP.md
 scripts/check-paywalls.mjs
 .env*.local
+
+# Android TWA / Gradle / secrets
+android-twa/local.properties
+android-twa/.gradle/
+android-twa/build/
+android-twa/app/build/
+android-twa/.cxx/
+android-twa/.externalNativeBuild/
+android-twa/.idea/
+android-twa/*.iml
+android-twa/**/*.keystore
+android-twa/**/*.jks
+android-twa/**/keystore.properties
+android-twa/*-release*.apk
+android-twa/*-release*.aab
+android-twa/app/release/
+android-twa/manifest-checksum.txt
+dev-dist/
